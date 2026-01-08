@@ -1,0 +1,238 @@
+{
+  "data": {
+    "2.0.21": [
+      {
+        "classifier": "windows-x86_64",
+        "archiveType": "Zip"
+      },
+      {
+        "classifier": "macos-aarch64",
+        "archiveType": "TarGz"
+      },
+      {
+        "classifier": "linux-x86_64",
+        "archiveType": "TarGz"
+      },
+      {
+        "classifier": "macos-x86_64",
+        "archiveType": "TarGz"
+      }
+    ],
+    "2.1.21": [
+      {
+        "classifier": "macos-aarch64",
+        "archiveType": "TarGz"
+      },
+      {
+        "classifier": "windows-x86_64",
+        "archiveType": "Zip"
+      },
+      {
+        "classifier": "linux-x86_64",
+        "archiveType": "TarGz"
+      },
+      {
+        "classifier": "macos-x86_64",
+        "archiveType": "TarGz"
+      }
+    ],
+    "2.0.0": [
+      {
+        "classifier": "macos-aarch64",
+        "archiveType": "TarGz"
+      },
+      {
+        "classifier": "windows-x86_64",
+        "archiveType": "Zip"
+      },
+      {
+        "classifier": "linux-x86_64",
+        "archiveType": "TarGz"
+      },
+      {
+        "classifier": "macos-x86_64",
+        "archiveType": "TarGz"
+      }
+    ],
+    "2.0.10": [
+      {
+        "classifier": "windows-x86_64",
+        "archiveType": "Zip"
+      },
+      {
+        "classifier": "macos-aarch64",
+        "archiveType": "TarGz"
+      },
+      {
+        "classifier": "linux-x86_64",
+        "archiveType": "TarGz"
+      },
+      {
+        "classifier": "macos-x86_64",
+        "archiveType": "TarGz"
+      }
+    ],
+    "2.0.20": [
+      {
+        "classifier": "macos-aarch64",
+        "archiveType": "TarGz"
+      },
+      {
+        "classifier": "windows-x86_64",
+        "archiveType": "Zip"
+      },
+      {
+        "classifier": "linux-x86_64",
+        "archiveType": "TarGz"
+      },
+      {
+        "classifier": "macos-x86_64",
+        "archiveType": "TarGz"
+      }
+    ],
+    "2.1.0": [
+      {
+        "classifier": "windows-x86_64",
+        "archiveType": "Zip"
+      },
+      {
+        "classifier": "macos-aarch64",
+        "archiveType": "TarGz"
+      },
+      {
+        "classifier": "linux-x86_64",
+        "archiveType": "TarGz"
+      },
+      {
+        "classifier": "macos-x86_64",
+        "archiveType": "TarGz"
+      }
+    ],
+    "2.1.10": [
+      {
+        "classifier": "macos-aarch64",
+        "archiveType": "TarGz"
+      },
+      {
+        "classifier": "windows-x86_64",
+        "archiveType": "Zip"
+      },
+      {
+        "classifier": "linux-x86_64",
+        "archiveType": "TarGz"
+      },
+      {
+        "classifier": "macos-x86_64",
+        "archiveType": "TarGz"
+      }
+    ],
+    "2.1.20": [
+      {
+        "classifier": "windows-x86_64",
+        "archiveType": "Zip"
+      },
+      {
+        "classifier": "macos-aarch64",
+        "archiveType": "TarGz"
+      },
+      {
+        "classifier": "linux-x86_64",
+        "archiveType": "TarGz"
+      },
+      {
+        "classifier": "macos-x86_64",
+        "archiveType": "TarGz"
+      }
+    ],
+    "2.2.0": [
+      {
+        "classifier": "macos-aarch64",
+        "archiveType": "TarGz"
+      },
+      {
+        "classifier": "windows-x86_64",
+        "archiveType": "Zip"
+      },
+      {
+        "classifier": "linux-x86_64",
+        "archiveType": "TarGz"
+      },
+      {
+        "classifier": "macos-x86_64",
+        "archiveType": "TarGz"
+      }
+    ],
+    "2.2.10": [
+      {
+        "classifier": "linux-x86_64",
+        "archiveType": "TarGz"
+      },
+      {
+        "classifier": "macos-aarch64",
+        "archiveType": "TarGz"
+      },
+      {
+        "classifier": "macos-x86_64",
+        "archiveType": "TarGz"
+      },
+      {
+        "classifier": "windows-x86_64",
+        "archiveType": "Zip"
+      }
+    ],
+    "2.2.20": [
+      {
+        "classifier": "linux-x86_64",
+        "archiveType": "TarGz"
+      },
+      {
+        "classifier": "macos-aarch64",
+        "archiveType": "TarGz"
+      },
+      {
+        "classifier": "macos-x86_64",
+        "archiveType": "TarGz"
+      },
+      {
+        "classifier": "windows-x86_64",
+        "archiveType": "Zip"
+      }
+    ],
+    "2.2.21": [
+      {
+        "classifier": "linux-x86_64",
+        "archiveType": "TarGz"
+      },
+      {
+        "classifier": "macos-aarch64",
+        "archiveType": "TarGz"
+      },
+      {
+        "classifier": "macos-x86_64",
+        "archiveType": "TarGz"
+      },
+      {
+        "classifier": "windows-x86_64",
+        "archiveType": "Zip"
+      }
+    ],
+    "2.3.0": [
+      {
+        "classifier": "linux-x86_64",
+        "archiveType": "TarGz"
+      },
+      {
+        "classifier": "macos-aarch64",
+        "archiveType": "TarGz"
+      },
+      {
+        "classifier": "macos-x86_64",
+        "archiveType": "TarGz"
+      },
+      {
+        "classifier": "windows-x86_64",
+        "archiveType": "Zip"
+      }
+    ]
+  }
+}

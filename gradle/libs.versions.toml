@@ -1,0 +1,46 @@
+[versions]
+
+kotlin = "2.3.0"
+
+kotlinxCoroutines = "1.10.2"
+kotlinxSerialization = "1.9.0"
+
+apache-commonsCompress = "1.28.0"
+
+junit = "6.0.1"
+
+kotest = "6.0.7"
+testBalloon = "0.7.1-K2.3.0"
+gradlePlugin-devPublishPlugin = "1.0.0"
+
+gradlePlugin-pluginPublishPlugin = "2.0.0"
+gradlePlugin-nmcp = "1.4.3"
+
+[libraries]
+
+kotlinxCoroutines-bom = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-bom", version.ref = "kotlinxCoroutines" }
+kotlinxCoroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core" }
+
+kotlinxSerialization-bom = { module = "org.jetbrains.kotlinx:kotlinx-serialization-bom", version.ref = "kotlinxSerialization" }
+kotlinxSerialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json" }
+kotlinxSerialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core" }
+
+apache-commonsCompress = { module = "org.apache.commons:commons-compress", version.ref = "apache-commonsCompress" }
+
+
+junit-bom = {module =  "org.junit:junit-bom"  , version.ref = "junit"}
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter"  }
+junit-platformLauncher = { module = "org.junit.platform:junit-platform-launcher"  }
+
+kotest-assertions = { module = "io.kotest:kotest-assertions-core-jvm", version.ref = "kotest" }
+
+#gradlePlugin-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+#gradlePlugin-kotlinSerialization = { module = "org.jetbrains.kotlin:kotlin-serialization", version.ref = "kotlin" }
+gradlePlugin-devPublish = { module = "dev.adamko.gradle:dev-publish-plugin", version.ref = "gradlePlugin-devPublishPlugin" }
+
+gradlePlugin-pluginPublishPlugin = { module = "com.gradle.publish:plugin-publish-plugin", version.ref = "gradlePlugin-pluginPublishPlugin" }
+gradlePlugin-nmcp = { module = "com.gradleup.nmcp:nmcp", version.ref = "gradlePlugin-nmcp" }
+
+[plugins]
+
+#kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
