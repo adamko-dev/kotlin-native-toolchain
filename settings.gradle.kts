@@ -4,6 +4,7 @@ rootProject.name = "kotlin-native-toolchain"
 
 pluginManagement {
   includeBuild("./build-tools/build-plugins/")
+  includeBuild("./build-tools/settings-plugins/")
   repositories {
     mavenCentral()
     gradlePluginPortal()
@@ -17,6 +18,10 @@ dependencyResolutionManagement {
   repositories {
     mavenCentral()
   }
+}
+
+plugins {
+  id("settings.conventions.git-versioning")
 }
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")

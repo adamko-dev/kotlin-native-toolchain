@@ -84,13 +84,14 @@ private data class PrefixPair(
 }
 
 /**
- * Sort directories before files, and then alphabetically.
+ * When used with [sortedWith],
+ * sorts directories before files, and then alphabetically.
  */
 private val PathComparator: Comparator<Path> =
   Comparator { a, b ->
     when {
-      a.isDirectory() && b.isRegularFile() -> 1
-      a.isRegularFile() && b.isDirectory() -> -1
+      a.isDirectory() && !b.isDirectory() -> -1
+      !a.isDirectory() && b.isDirectory() -> +1
       else                                 -> a.name.compareTo(b.name)
     }
   }

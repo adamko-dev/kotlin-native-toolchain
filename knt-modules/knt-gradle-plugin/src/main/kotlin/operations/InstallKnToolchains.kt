@@ -16,15 +16,19 @@ import org.gradle.api.logging.Logger
 import org.gradle.api.logging.Logging
 
 /**
- * Installs a Kotlin Native Prebuilt distribution.
+ * Installs a Kotlin Native Prebuilt distribution inside the base install directory
+ * (a.k.a. `KONAN_DATA_DIR`).
  *
  * Must only be evaluated during the task execution phase.
  *
  * If a tool is missing, it will be downloaded and installed.
+ *
+ * Returns the directories of the installed distributions
+ * (requested by [BaseKnToolchainsOperation.Parameters.knpDistSpecs]).
  */
 internal abstract class InstallKnToolchains
 @Inject
-internal constructor() : BaseKnToolchainsOperation<Path>() {
+internal constructor() : BaseKnToolchainsOperation<Set<Path>>() {
 
   /**
    * Download and provision a Kotlin Native Prebuilt distribution.
@@ -37,7 +41,7 @@ internal constructor() : BaseKnToolchainsOperation<Path>() {
    * or with non-uniform buildscript class loaders.
    * Engineering a solution to prevent concurrent installations is complex and beyond the current scope).
    */
-  override fun obtain(): Path = synchronized(Companion) {
+  override fun obtain(): Set<Path> = synchronized(Companion) {
     val installSpecs = getInstallSpecs()
 
     val installSpecStatuses = installSpecs.associateWith { spec -> spec.installStatus() }
@@ -87,7 +91,10 @@ internal constructor() : BaseKnToolchainsOperation<Path>() {
       updateLastAccessedTime(spec)
     }
 
-    return this@InstallKnToolchains.baseInstallDir
+    return installSpecs
+      .filter { it.type == DependencyInstallSpec.Type.KnpDist }
+      .map { it.installDir }
+      .toSet()
   }
 
   /**

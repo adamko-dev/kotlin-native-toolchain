@@ -2,7 +2,7 @@ package dev.adamko.kntoolchain.operations
 
 import dev.adamko.kntoolchain.internal.listInstallDirPathsMetadata
 import dev.adamko.kntoolchain.model.DependencyInstallReport
-import dev.adamko.kntoolchain.model.KnToolchainSpec
+import dev.adamko.kntoolchain.model.KotlinNativePrebuiltDistributionSpec
 import java.nio.file.Files
 import java.nio.file.Path
 import javax.inject.Inject
@@ -104,12 +104,12 @@ internal constructor() : BaseKnToolchainsOperation<DependencyInstallReport>() {
     private val logger: Logger = Logging.getLogger(CreateKnToolchainsStatusReport::class.java)
 
     internal fun ProviderFactory.createKnToolchainsStatusReport(
-      installSpecs: List<KnToolchainSpec>,
+      installSpecs: List<KotlinNativePrebuiltDistributionSpec>,
       konanDataDir: Provider<Directory>,
       checksumsDir: Provider<Directory>,
     ): Provider<DependencyInstallReport> {
       return of(CreateKnToolchainsStatusReport::class) { spec ->
-        spec.parameters.installSpecs.addAll(installSpecs)
+        spec.parameters.knpDistSpecs.addAll(installSpecs)
         spec.parameters.baseInstallDir.set(konanDataDir)
         spec.parameters.checksumsDir.set(checksumsDir)
       }

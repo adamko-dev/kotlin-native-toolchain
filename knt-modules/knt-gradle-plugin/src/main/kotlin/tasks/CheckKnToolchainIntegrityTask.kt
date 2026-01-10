@@ -5,7 +5,7 @@ package dev.adamko.kntoolchain.tasks
 import dev.adamko.kntoolchain.internal.GroupTestEventReporterContext
 import dev.adamko.kntoolchain.internal.start
 import dev.adamko.kntoolchain.model.DependencyInstallReport
-import dev.adamko.kntoolchain.model.KnToolchainSpec
+import dev.adamko.kntoolchain.model.KotlinNativePrebuiltDistributionSpec
 import dev.adamko.kntoolchain.operations.CreateKnToolchainsStatusReport.Companion.createKnToolchainsStatusReport
 import javax.inject.Inject
 import org.gradle.api.DefaultTask
@@ -47,7 +47,7 @@ internal constructor(
   @get:InputDirectory
   @get:PathSensitive(RELATIVE)
   @get:IgnoreEmptyDirectories
-  abstract val knToolchainsDir: DirectoryProperty
+  abstract val baseInstallDir: DirectoryProperty
 
   @get:InputDirectory
   @get:PathSensitive(RELATIVE)
@@ -55,16 +55,16 @@ internal constructor(
   abstract val checksumsDir: DirectoryProperty
 
   /**
-   * [Internal] - tracked by [knToolchainSpecsSourceFiles].
+   * [Internal] - tracked by [knpDistsSourceFiles].
    */
   @get:Internal
-  internal abstract val knToolchainSpecs: ListProperty<KnToolchainSpec>
+  internal abstract val knpDists: ListProperty<KotlinNativePrebuiltDistributionSpec>
 
   @get:InputFiles
   @get:PathSensitive(RELATIVE)
-  protected val knToolchainSpecsSourceFiles: Provider<FileCollection>
+  protected val knpDistsSourceFiles: Provider<FileCollection>
     get() =
-      knToolchainSpecs.map { specs ->
+      knpDists.map { specs ->
         specs.fold(objects.fileCollection()) { acc, tcSpec ->
           val files = objects.fileCollection()
             .from(tcSpec.sourceArchive)
@@ -114,8 +114,8 @@ internal constructor(
   private fun executeChecksumTests(root: GroupTestEventReporterContext) {
 
     val report = providers.createKnToolchainsStatusReport(
-      installSpecs = knToolchainSpecs.get(),
-      konanDataDir = knToolchainsDir,
+      installSpecs = knpDists.get(),
+      konanDataDir = baseInstallDir,
       checksumsDir = checksumsDir,
     )
 

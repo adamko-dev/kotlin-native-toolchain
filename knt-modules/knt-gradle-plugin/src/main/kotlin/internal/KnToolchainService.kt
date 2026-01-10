@@ -1,6 +1,6 @@
 package dev.adamko.kntoolchain.internal
 
-import dev.adamko.kntoolchain.model.KnToolchainSpec
+import dev.adamko.kntoolchain.model.KotlinNativePrebuiltDistributionSpec
 import javax.inject.Inject
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.services.BuildService
@@ -11,7 +11,7 @@ internal abstract class KnToolchainService
 
   internal interface Parameters : BuildServiceParameters
 
-  abstract val requestedKnToolchainSpecs: ListProperty<KnToolchainSpec>
+  abstract val requestedKnpDists: ListProperty<KotlinNativePrebuiltDistributionSpec>
 
   companion object {
     const val SERVICE_NAME = "knToolchainService"

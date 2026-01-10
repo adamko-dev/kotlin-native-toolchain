@@ -107,6 +107,11 @@ testing {
               "-DdevMavenRepo=${devMavenRepo.get().asFile.invariantSeparatorsPath}"
             )
           }
+
+          val projectVersion = providers.provider { project.version.toString() }
+          jvmArgumentProviders.add {
+            listOf("-DkntGradlePluginProjectVersion=${projectVersion.get()}")
+          }
         }
       }
     }

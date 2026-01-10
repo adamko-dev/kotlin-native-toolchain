@@ -1,6 +1,7 @@
 package dev.adamko.kntoolchain.internal
 
 import dev.adamko.kntoolchain.internal.KnpDependenciesCoordsSpec.Companion.knpDependenciesCoordsSpec
+import dev.adamko.kntoolchain.model.KotlinNativePrebuiltDistributionSpec
 import dev.adamko.kntoolchain.tools.datamodel.KonanDependenciesReport
 import dev.adamko.kntoolchain.tools.datamodel.KotlinVersionTargetDependencies
 import kotlinx.serialization.json.Json
@@ -131,14 +132,12 @@ internal constructor() :
      * See [KnpDependenciesCoordsSpec].
      */
     internal fun ProviderFactory.knpDependenciesCoordsSpec(
-      osName: Provider<String>,
-      archName: Provider<String>,
-      kotlinVersion: Provider<String>,
+      knpSpec: KotlinNativePrebuiltDistributionSpec,
     ): Provider<Set<Coordinates>> {
       return of(KnpDependenciesCoordsSpec::class) { spec ->
-        spec.parameters.osName.set(osName)
-        spec.parameters.archName.set(archName)
-        spec.parameters.kotlinVersion.set(kotlinVersion)
+        spec.parameters.osName.set(knpSpec.osFamily.map { it.name })
+        spec.parameters.archName.set(knpSpec.architecture.map { it.name })
+        spec.parameters.kotlinVersion.set(knpSpec.version)
       }
     }
   }

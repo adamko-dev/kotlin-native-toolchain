@@ -5,9 +5,9 @@ import dev.adamko.kntoolchain.internal.CACHE_DIR_TAG_FILENAME
 import dev.adamko.kntoolchain.internal.KnToolchainsDirSource.Companion.knToolchainsDir
 import dev.adamko.kntoolchain.internal.KnpDependenciesCoordsSpec.Companion.knpDependenciesCoordsSpec
 import dev.adamko.kntoolchain.internal.KnpDistributionConfigurations
-import dev.adamko.kntoolchain.internal.KnpDistributionDependencySpec.Companion.kotlinNativePrebuiltToolchainDependencySpec
-import dev.adamko.kntoolchain.model.KnToolchainArchitecture
-import dev.adamko.kntoolchain.model.KnToolchainOsFamily
+import dev.adamko.kntoolchain.internal.KnpDistributionDependencyCoordsSource.Companion.kotlinNativePrebuiltToolchainDependencySpec
+import dev.adamko.kntoolchain.model.Architecture
+import dev.adamko.kntoolchain.model.OsFamily
 import java.io.File
 import java.nio.file.Path
 import java.util.*
@@ -18,11 +18,9 @@ import org.gradle.api.artifacts.Dependency
 import org.gradle.api.file.ProjectLayout
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.model.ObjectFactory
-import org.gradle.api.plugins.ExtensionAware
 import org.gradle.api.provider.Provider
 import org.gradle.api.provider.ProviderFactory
 import org.gradle.kotlin.dsl.create
-import org.gradle.kotlin.dsl.extra
 
 /**
  * Installs a Kotlin/Native prebuilt distribution, including all dependencies.
@@ -56,26 +54,28 @@ internal constructor(
   internal fun createKnToolchainExtension(project: Project): KnToolchainProjectExtension {
     return project.extensions.create<KnToolchainProjectExtension>(EXTENSION_NAME).apply {
 
-      knToolchainsDir.convention(
-        layout.dir(
-          knToolchainsDirFromSettings
-            .orElse(providers.knToolchainsDir())
-            .map(Path::toFile)
-        )
+      baseInstallDir.convention(
+        baseInstallDirFromSettings
+          .orElse(layout.dir(providers.knToolchainsDir().map(Path::toFile)))
       )
       checksumsDir.convention(
-        layout.dir(
-          checksumsDirFromSettings
-            .map(Path::toFile)
-            .orElse(knToolchainsDir.dir("checksums").map { it.asFile })
+        checksumsDirFromSettings
+          .orElse(baseInstallDir.dir("checksums"))
+      )
+
+      kotlinNativePrebuiltDistribution.osFamily.convention(OsFamily.current())
+      kotlinNativePrebuiltDistribution.architecture.convention(Architecture.current())
+      kotlinNativePrebuiltDistribution.version.convention(providers.provider { kotlinGradlePluginVersion })
+
+      kotlinNativePrebuiltDistribution.coordinates.convention(
+        providers.kotlinNativePrebuiltToolchainDependencySpec(
+          osFamily = kotlinNativePrebuiltDistribution.osFamily,
+          architecture = kotlinNativePrebuiltDistribution.architecture,
+          version = kotlinNativePrebuiltDistribution.version,
         )
       )
 
-      hostOsFamily.convention(hostOs())
-      hostArchitecture.convention(hostArch())
-      currentKotlinVersion.convention(providers.provider { kotlinGradlePluginVersion })
-
-      knToolchain.installFileExcludes.convention(
+      kotlinNativePrebuiltDistribution.installFileExcludes.convention(
         setOf(
           "*/license/**",
           "*/licenses/**",
@@ -97,14 +97,9 @@ internal constructor(
   ) {
 
     val kotlinNativePrebuiltDependency: Provider<Dependency> =
-      providers.kotlinNativePrebuiltToolchainDependencySpec(
-        osName = knpToolchainExtension.hostOsFamily.map { it.name },
-        archName = knpToolchainExtension.hostArchitecture.map { it.name },
-        kotlinVersion = knpToolchainExtension.currentKotlinVersion,
-      )
-        .map {
-          project.dependencies.create(it)
-        }
+      knpToolchainExtension.kotlinNativePrebuiltDistribution.coordinates.map { coords ->
+        project.dependencies.create(coords)
+      }
 
     knpConfigurations.knpDistribution.configure { c ->
       c.defaultDependencies { dependencies ->
@@ -112,15 +107,13 @@ internal constructor(
       }
     }
 
-    knpToolchainExtension.knToolchain.sourceArchive.convention(
+    knpToolchainExtension.kotlinNativePrebuiltDistribution.sourceArchive.convention(
       knpConfigurations.knpDistribution()
     )
 
     val knpPrebuiltDependencies: Provider<List<Dependency>> =
       providers.knpDependenciesCoordsSpec(
-        osName = knpToolchainExtension.hostOsFamily.map { it.name },
-        archName = knpToolchainExtension.hostArchitecture.map { it.name },
-        kotlinVersion = knpToolchainExtension.currentKotlinVersion,
+        knpSpec = knpToolchainExtension.kotlinNativePrebuiltDistribution,
       )
         .map { coords ->
           coords.map { coord ->
@@ -149,50 +142,15 @@ internal constructor(
       }
     }
 
-    knpToolchainExtension.knToolchain.sourceDependencies.from(
+    knpToolchainExtension.kotlinNativePrebuiltDistribution.sourceDependencies.from(
       knpConfigurations.knpDistributionDependenciesResolver
     )
   }
-
-//  private fun configureRepositories(project: Project) {
-////    val repositories = project.repositories
-////
-////    if (repositories !is ExtensionAware) return
-////
-////    repositories.extra.set(
-////      KN_PREBUILT_DEPS_URL_PROPERTY,
-////      providers.gradleProperty(KN_PREBUILT_DEPS_URL_PROPERTY).orNull
-////    )
-////
-////    repositories.extensions.add("objectFactory", objects)
-//  }
 
   private fun RegularFileProperty.convention(file: Provider<File>): RegularFileProperty =
     convention(objects.fileProperty().fileProvider(file))
 
   companion object {
-    private fun hostOs(): KnToolchainOsFamily {
-      val javaOsName = System.getProperty("os.name")
-      return when {
-        javaOsName == "Mac OS X"         -> KnToolchainOsFamily.MacOs
-        javaOsName == "Linux"            -> KnToolchainOsFamily.Linux
-        javaOsName.startsWith("Windows") -> KnToolchainOsFamily.Windows
-        else                             -> throw IllegalStateException("Unknown operating system: $javaOsName")
-      }
-    }
-
-    private fun hostArch(): KnToolchainArchitecture {
-      return when (val osArch = System.getProperty("os.arch")) {
-        "x86_64",
-        "amd64"   -> KnToolchainArchitecture.X86_64
-
-        "arm64",
-        "aarch64" -> KnToolchainArchitecture.AArch64
-
-        else      -> throw IllegalStateException("Unknown hardware platform: $osArch")
-      }
-    }
-
     private val kotlinGradlePluginVersion: String? by lazy {
       val propFileName = "project.properties"
       val inputStream = this::class.java.classLoader!!.getResourceAsStream(propFileName)

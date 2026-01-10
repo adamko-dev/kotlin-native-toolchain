@@ -3,15 +3,11 @@ package dev.adamko.kntoolchain
 import dev.adamko.kntoolchain.internal.KnToolchainService
 import dev.adamko.kntoolchain.internal.isRootProject
 import dev.adamko.kntoolchain.tasks.CheckKnToolchainIntegrityTask
-import java.nio.file.Path
 import javax.inject.Inject
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.file.BuildLayout
 import org.gradle.api.initialization.Settings
-import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.Provider
-import org.gradle.api.provider.ProviderFactory
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.kotlin.dsl.*
 import org.gradle.language.base.plugins.LifecycleBasePlugin
@@ -19,9 +15,9 @@ import org.gradle.language.base.plugins.LifecycleBasePlugin
 abstract class KnToolchainSettingsPlugin
 @Inject
 internal constructor(
-  private val providers: ProviderFactory,
-  private val objects: ObjectFactory,
-  private val layout: BuildLayout,
+//  private val providers: ProviderFactory,
+//  private val objects: ObjectFactory,
+//  private val layout: BuildLayout,
 ) : Plugin<Settings> {
   override fun apply(settings: Settings) {
 
@@ -42,10 +38,10 @@ internal constructor(
     settings.gradle.afterProject { project ->
       project.plugins.withType<KnToolchainProjectPlugin>().configureEach { _ ->
         val projectExt = project.extensions.getByType<KnToolchainProjectExtension>()
-        kntService.get().requestedKnToolchainSpecs.add(projectExt.knToolchain)
+        kntService.get().requestedKnpDists.add(projectExt.kotlinNativePrebuiltDistribution)
 
-        projectExt.knToolchainsDirFromSettings.convention(settingsExtension.knToolchainsDir)
-        projectExt.checksumsDirFromSettings.convention(settingsExtension.knToolchainsDir)
+        projectExt.baseInstallDirFromSettings.convention(settingsExtension.baseInstallDir)
+        projectExt.checksumsDirFromSettings.convention(settingsExtension.checksumsDir)
       }
     }
   }
@@ -53,7 +49,7 @@ internal constructor(
 
   private fun createExtension(settings: Settings): KnToolchainSettingsExtension {
     return settings.extensions.create<KnToolchainSettingsExtension>(KnToolchainSettingsExtension.EXTENSION_NAME).apply {
-      checksumsDir.convention(knToolchainsDir.map { it.resolve("checksums") })
+      checksumsDir.convention(baseInstallDir.map { it.dir("checksums") })
     }
   }
 
@@ -66,7 +62,7 @@ internal constructor(
   @Suppress("UnstableApiUsage")
   private fun configureKnpRepository(settings: Settings): Unit = context(settings) {
     settings.dependencyResolutionManagement.repositories { repositories ->
-        repositories.kotlinNativePrebuiltDependencies()
+      repositories.kotlinNativePrebuiltDependencies()
 
 //      if (repositories !is ExtensionAware) return@repositories
 //
@@ -87,7 +83,7 @@ internal constructor(
   ) {
     val checkKnToolchainTask = registerCheckKonanDataIntegrityTask(
       project = rootProject,
-      kntExtension = kntExtension,
+      kntSettingsExtension = kntExtension,
       kntService = kntService,
     )
 
@@ -103,7 +99,7 @@ internal constructor(
    */
   private fun registerCheckKonanDataIntegrityTask(
     project: Project,
-    kntExtension: KnToolchainSettingsExtension,
+    kntSettingsExtension: KnToolchainSettingsExtension,
     kntService: Provider<KnToolchainService>,
   ): TaskProvider<CheckKnToolchainIntegrityTask> {
     require(project.isRootProject()) {
@@ -116,10 +112,10 @@ internal constructor(
       task.group = LifecycleBasePlugin.VERIFICATION_GROUP
       task.description = "Checks that the Kotlin/Native prebuilt toolchain installation is valid."
 
-      task.knToolchainSpecs.convention(kntService.flatMap { it.requestedKnToolchainSpecs })
+      task.knpDists.convention(kntService.flatMap { it.requestedKnpDists })
 
-      task.knToolchainsDir.convention(layout.dir(kntExtension.knToolchainsDir.map(Path::toFile)))
-      task.checksumsDir.convention(layout.dir(kntExtension.checksumsDir.map(Path::toFile)))
+      task.baseInstallDir.convention(kntSettingsExtension.baseInstallDir)
+      task.checksumsDir.convention(kntSettingsExtension.checksumsDir)
 //        kntExtension.knToolchainsDir)
 //      task.checksumsDir.convention(kntExtension.checksumsDir)
 

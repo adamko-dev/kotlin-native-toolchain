@@ -1,6 +1,8 @@
 package dev.adamko.kntoolchain.internal
 
-import dev.adamko.kntoolchain.internal.KnpDistributionDependencySpec.Companion.kotlinNativePrebuiltToolchainDependencySpec
+import dev.adamko.kntoolchain.internal.KnpDistributionDependencyCoordsSource.Companion.kotlinNativePrebuiltToolchainDependencySpec
+import dev.adamko.kntoolchain.model.Architecture
+import dev.adamko.kntoolchain.model.OsFamily
 import kotlin.properties.PropertyDelegateProvider
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
@@ -11,14 +13,14 @@ import org.gradle.kotlin.dsl.of
  * Builds a GAV coordinate string for the KotlinNativePrebuilt distribution
  * for the specified OS, Arch, Kotlin version, etc.
  *
- * Use [KnpDistributionDependencySpec.Companion.kotlinNativePrebuiltToolchainDependencySpec]
+ * Use [KnpDistributionDependencyCoordsSource.Companion.kotlinNativePrebuiltToolchainDependencySpec]
  * to create a new instance.
  *
  * (A [ValueSource] is used just to make it easier to combine lots of [Provider]s.)
  */
-internal abstract class KnpDistributionDependencySpec
+internal abstract class KnpDistributionDependencyCoordsSource
 internal constructor() :
-  ValueSource<String, KnpDistributionDependencySpec.Parameters> {
+  ValueSource<String, KnpDistributionDependencyCoordsSource.Parameters> {
 
   internal interface Parameters : ValueSourceParameters {
     val group: Property<String>
@@ -47,22 +49,25 @@ internal constructor() :
 
   companion object {
     /**
-     * See [KnpDistributionDependencySpec].
+     * See [KnpDistributionDependencyCoordsSource].
      */
     internal fun ProviderFactory.kotlinNativePrebuiltToolchainDependencySpec(
+      osFamily: Provider<OsFamily>,
+      architecture: Provider<Architecture>,
+      version: Provider<String>,
       group: Provider<String> = provider { "org.jetbrains.kotlin" },
       module: Provider<String> = provider { "kotlin-native-prebuilt" },
-      osName: Provider<String>,
-      archName: Provider<String>,
-      kotlinVersion: Provider<String>,
-      archiveExtension: Provider<String> = osName.map { if ("win" in it.lowercase()) "zip" else "tar.gz" },
+      archiveExtension: Provider<String> =
+        osFamily.map { os ->
+          if (os is OsFamily.Windows) "zip" else "tar.gz"
+        }
     ): Provider<String> {
-      return of(KnpDistributionDependencySpec::class) { spec ->
+      return of(KnpDistributionDependencyCoordsSource::class) { spec ->
         spec.parameters.group.set(group)
         spec.parameters.module.set(module)
-        spec.parameters.osName.set(osName)
-        spec.parameters.archName.set(archName)
-        spec.parameters.kotlinVersion.set(kotlinVersion)
+        spec.parameters.osName.set(osFamily.map { it.name })
+        spec.parameters.archName.set(architecture.map { it.name })
+        spec.parameters.kotlinVersion.set(version)
         spec.parameters.archiveExtension.set(archiveExtension)
       }
     }

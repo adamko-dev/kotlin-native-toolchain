@@ -40,6 +40,7 @@ java {
 
 tasks.withType<Test>().configureEach {
   useJUnitPlatform()
+  systemProperty("junit.jupiter.tempdir.cleanup.mode.default", "ON_SUCCESS")
 }
 
 sourceSets.configureEach {

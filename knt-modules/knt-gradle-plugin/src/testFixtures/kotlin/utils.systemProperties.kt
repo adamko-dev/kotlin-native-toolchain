@@ -14,3 +14,5 @@ fun <T> systemProperty(
     }
     convert(value)
   }
+
+val kntGradlePluginProjectVersion: String by systemProperty()

@@ -1,17 +1,17 @@
 package dev.adamko.kntoolchain
 
 import dev.adamko.kntoolchain.internal.adding
-import dev.adamko.kntoolchain.model.KnToolchainArchitecture
-import dev.adamko.kntoolchain.model.KnToolchainOsFamily
-import dev.adamko.kntoolchain.model.KnToolchainSpec
+import dev.adamko.kntoolchain.model.KotlinNativePrebuiltDistributionSpec
+import dev.adamko.kntoolchain.model.OsFamily
 import dev.adamko.kntoolchain.operations.InstallKnToolchains
 import java.nio.file.Path
 import javax.inject.Inject
 import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.logging.Logger
+import org.gradle.api.logging.Logging
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.plugins.ExtensionAware
 import org.gradle.api.plugins.ExtensionContainer
-import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 import org.gradle.api.provider.ProviderFactory
 import org.gradle.kotlin.dsl.newInstance
@@ -27,7 +27,7 @@ internal constructor(
   /**
    * Installation directory for all Kotlin/Native Toolchains.
    */
-  abstract val knToolchainsDir: DirectoryProperty
+  abstract val baseInstallDir: DirectoryProperty
 
   /**
    * Directory containing checksum files used for avoiding re-provisioning toolchains
@@ -35,33 +35,8 @@ internal constructor(
    */
   abstract val checksumsDir: DirectoryProperty
 
-//  internal abstract val knToolchainsDirFromSettings: DirectoryProperty
-  internal abstract val knToolchainsDirFromSettings:  Property<Path>
-//  internal abstract val checksumsDirFromSettings: DirectoryProperty
-  internal abstract val checksumsDirFromSettings:  Property<Path>
-
-  /**
-   * The operating system family of the current machine.
-   *
-   * Used to determine which Kotlin/Native toolchain variant to download.
-   *
-   * @see org.jetbrains.kotlin.konan.target.HostManager.Companion.simpleOsName
-   */
-  abstract val hostOsFamily: Property<KnToolchainOsFamily>
-
-  /**
-   * The architecture of the current machine.
-   *
-   * Used to determine which Kotlin/Native toolchain variant to download.
-   */
-  abstract val hostArchitecture: Property<KnToolchainArchitecture>
-
-  /**
-   * The project's current Kotlin version.
-   *
-   * Used to determine which Kotlin/Native toolchain variant to download.
-   */
-  abstract val currentKotlinVersion: Property<String>
+  internal abstract val baseInstallDirFromSettings: DirectoryProperty
+  internal abstract val checksumsDirFromSettings: DirectoryProperty
 
   /**
    * The specification of the Kotlin/Native toolchain distribution to install.
@@ -71,9 +46,9 @@ internal constructor(
    *
    * Use [provisionInstallation] to obtain a [Provider] for the installed distribution.
    */
-  val knToolchain: KnToolchainSpec =
+  val kotlinNativePrebuiltDistribution: KotlinNativePrebuiltDistributionSpec =
     extensions.adding(
-      "knToolchain",
+      "kotlinNativePrebuiltDistribution",
       objects.newInstance()
     )
 
@@ -89,9 +64,43 @@ internal constructor(
    */
   fun provisionInstallation(): Provider<Path> {
     return providers.of(InstallKnToolchains::class) { vs ->
-      vs.parameters.installSpecs.add(knToolchain)
-      vs.parameters.baseInstallDir.set(knToolchainsDir)
+      vs.parameters.knpDistSpecs.add(kotlinNativePrebuiltDistribution)
+      vs.parameters.baseInstallDir.set(baseInstallDir)
       vs.parameters.checksumsDir.set(checksumsDir)
+    }.map { installs ->
+      if (installs.size > 1) {
+        logger.warn(
+          "Expected a single toolchain installation, but found ${installs.size}: ${installs.joinToString { it.toString() }}\n" +
+              "\t${kotlinNativePrebuiltDistribution.debugString()}\n" +
+              "\tknToolchainsDir:${baseInstallDir.orNull?.asFile?.invariantSeparatorsPath}\n" +
+              "\tchecksumsDir:${checksumsDir.orNull?.asFile?.invariantSeparatorsPath}"
+        )
+      } else if (installs.isEmpty()) {
+        logger.warn(
+          "Expected a single toolchain installation, but found none" +
+              "\t${kotlinNativePrebuiltDistribution.debugString()}\n" +
+              "\tknToolchainsDir:${baseInstallDir.orNull?.asFile?.invariantSeparatorsPath}\n" +
+              "\tchecksumsDir:${checksumsDir.orNull?.asFile?.invariantSeparatorsPath}"
+        )
+      }
+      installs.singleOrNull()
+    }
+  }
+
+  fun runKonan(
+    pathToRunKonan: Provider<String> = kotlinNativePrebuiltDistribution.osFamily.map { os ->
+      if (os is OsFamily.Windows) "bin/run_konan.bat" else "bin/run_konan"
+    },
+  ): Provider<Path> {
+    return providers.zip(
+      provisionInstallation(),
+      pathToRunKonan,
+    ) { knpDir, path ->
+      val actual = knpDir.resolve(path)
+      require(actual.startsWith(knpDir)) {
+        "Path '$actual' is not within the installation directory '$knpDir'"
+      }
+      actual
     }
   }
 
@@ -99,6 +108,7 @@ internal constructor(
     get() = (this as ExtensionAware).extensions
 
   companion object {
+    private val logger: Logger = Logging.getLogger(KnToolchainProjectExtension::class.java)
     const val EXTENSION_NAME = "knToolchain"
   }
 }

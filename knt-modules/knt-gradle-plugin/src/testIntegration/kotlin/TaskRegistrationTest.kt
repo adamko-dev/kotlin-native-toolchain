@@ -1,6 +1,7 @@
 package dev.adamko.kntoolchain
 
 import dev.adamko.kntoolchain.test_utils.GradleTestContext
+import dev.adamko.kntoolchain.test_utils.kntGradlePluginProjectVersion
 import io.kotest.matchers.string.shouldContain
 import io.kotest.matchers.string.shouldNotContain
 import java.nio.file.Path
@@ -16,7 +17,7 @@ class TaskRegistrationTest {
     with(GradleTestContext(tmpDir)) {
       settingsGradleKts += """
         |plugins {
-        |  id("dev.adamko.kotlin-native-toolchain") version "+"
+        |  id("dev.adamko.kotlin-native-toolchain") version "$kntGradlePluginProjectVersion"
         |}
         |""".trimMargin()
 
@@ -40,7 +41,7 @@ class TaskRegistrationTest {
     with(GradleTestContext(tmpDir)) {
       buildGradleKts += """
         |plugins {
-        |  id("dev.adamko.kotlin-native-toolchain") version "+"
+        |  id("dev.adamko.kotlin-native-toolchain") version "$kntGradlePluginProjectVersion"
         |}
         |""".trimMargin()
 

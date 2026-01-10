@@ -4,7 +4,7 @@ import dev.adamko.kntoolchain.internal.CACHE_DIR_TAG_FILENAME
 import dev.adamko.kntoolchain.internal.checksumFilesMetadata
 import dev.adamko.kntoolchain.internal.nameWithoutArchiveExtension
 import dev.adamko.kntoolchain.internal.walkFiltered
-import dev.adamko.kntoolchain.model.KnToolchainSpec
+import dev.adamko.kntoolchain.model.KotlinNativePrebuiltDistributionSpec
 import java.nio.file.Path
 import kotlin.io.path.*
 import kotlin.time.measureTimedValue
@@ -21,7 +21,7 @@ internal sealed class BaseKnToolchainsOperation<R : Any> : ValueSource<R, BaseKn
   interface Parameters : ValueSourceParameters {
     val baseInstallDir: DirectoryProperty
     val checksumsDir: DirectoryProperty
-    val installSpecs: ListProperty<KnToolchainSpec>
+    val knpDistSpecs: ListProperty<KotlinNativePrebuiltDistributionSpec>
   }
 
   protected val baseInstallDir: Path by lazy { parameters.baseInstallDir.get().asFile.toPath() }
@@ -31,7 +31,7 @@ internal sealed class BaseKnToolchainsOperation<R : Any> : ValueSource<R, BaseKn
    * Get all installation specs for all install specs.
    */
   protected fun getInstallSpecs(): Set<DependencyInstallSpec> =
-    parameters.installSpecs.get()
+    parameters.knpDistSpecs.get()
       .flatMap { it.getInstallSpecs() }
       .distinctBy { it.archive }
       .toSet()
@@ -42,17 +42,18 @@ internal sealed class BaseKnToolchainsOperation<R : Any> : ValueSource<R, BaseKn
    * There will be one spec for the actual distribution
    * and multiple for each dependency that the distribution depends on.
    */
-  protected fun KnToolchainSpec.getInstallSpecs(): List<DependencyInstallSpec> {
+  protected fun KotlinNativePrebuiltDistributionSpec.getInstallSpecs(): List<DependencyInstallSpec> {
     val knpDistArchive: Path = knpDistArchive()
     val knpDependencyDists: FileCollection = knpDependencyDists()
 
-    val konanDependenciesDir = this@BaseKnToolchainsOperation.baseInstallDir.resolve("dependencies")
+    val konanDependenciesDir = baseInstallDir.resolve("dependencies")
 
     return buildList {
       add(
         DependencyInstallSpec.from(
           archive = knpDistArchive,
-          installDir = this@BaseKnToolchainsOperation.baseInstallDir.resolve(knpDistArchive.nameWithoutArchiveExtension()),
+          installDir = baseInstallDir.resolve(knpDistArchive.nameWithoutArchiveExtension()),
+          type = DependencyInstallSpec.Type.KnpDist,
         )
       )
 
@@ -62,7 +63,8 @@ internal sealed class BaseKnToolchainsOperation<R : Any> : ValueSource<R, BaseKn
           .map { archive ->
             DependencyInstallSpec.from(
               archive = archive,
-              installDir = konanDependenciesDir.resolve(archive.nameWithoutArchiveExtension())
+              installDir = konanDependenciesDir.resolve(archive.nameWithoutArchiveExtension()),
+              type = DependencyInstallSpec.Type.Dependency,
             )
           }
       )
@@ -123,7 +125,15 @@ internal sealed class BaseKnToolchainsOperation<R : Any> : ValueSource<R, BaseKn
     val installDirChecksumFile: Path,
 
     val installFileExcludes: Set<String>,
+
+    val type: Type,
   ) {
+    enum class Type {
+      /** A main kotlin-native-prebuilt distribution. */
+      KnpDist,
+      /** A 'secondary' dependency of the 'main' kotlin-native-prebuilt distribution. */
+      Dependency,
+    }
     /**
      * Cache directory tag file.
      *
@@ -140,6 +150,7 @@ internal sealed class BaseKnToolchainsOperation<R : Any> : ValueSource<R, BaseKn
       fun from(
         archive: Path,
         installDir: Path,
+        type: Type,
       ): DependencyInstallSpec {
 
         val archiveChecksumFileName = "${archive.name}.hash"
@@ -153,7 +164,8 @@ internal sealed class BaseKnToolchainsOperation<R : Any> : ValueSource<R, BaseKn
             base.checksumsDir.resolve(archiveChecksumFileName),
           installDirChecksumFile =
             base.checksumsDir.resolve(installDirChecksumFileName),
-          installFileExcludes = base.parameters.installSpecs.get().first().installFileExcludes(),
+          installFileExcludes = base.parameters.knpDistSpecs.get().first().installFileExcludes(),
+          type = type,
         )
       }
     }
@@ -162,13 +174,13 @@ internal sealed class BaseKnToolchainsOperation<R : Any> : ValueSource<R, BaseKn
   companion object {
     private val logger: Logger = Logging.getLogger(BaseKnToolchainsOperation::class.java)
 
-    internal fun KnToolchainSpec.knpDistArchive(): Path =
+    internal fun KotlinNativePrebuiltDistributionSpec.knpDistArchive(): Path =
       sourceArchive.get().asFile.toPath()
 
-    internal fun KnToolchainSpec.knpDependencyDists(): FileCollection =
+    internal fun KotlinNativePrebuiltDistributionSpec.knpDependencyDists(): FileCollection =
       sourceDependencies
 
-    internal fun KnToolchainSpec.installFileExcludes(): Set<String> =
+    internal fun KotlinNativePrebuiltDistributionSpec.installFileExcludes(): Set<String> =
       installFileExcludes.get()
   }
 }
