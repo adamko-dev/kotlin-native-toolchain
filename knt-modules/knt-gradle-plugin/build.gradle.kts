@@ -70,7 +70,11 @@ kotlin.sourceSets.main {
 }
 
 dependencies {
-  devPublication("dev.adamko.kotlin-native-toolchain:knp-dependencies-data-model:1.0.0")
+  devPublication(
+    gitVersion.map { version ->
+      "dev.adamko.kotlin-native-toolchain:knp-dependencies-data-model:$version"
+    }
+  )
 }
 
 testing {

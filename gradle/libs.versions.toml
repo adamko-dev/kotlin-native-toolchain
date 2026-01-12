@@ -28,9 +28,9 @@ kotlinxSerialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serializat
 apache-commonsCompress = { module = "org.apache.commons:commons-compress", version.ref = "apache-commonsCompress" }
 
 
-junit-bom = {module =  "org.junit:junit-bom"  , version.ref = "junit"}
-junit-jupiter = { module = "org.junit.jupiter:junit-jupiter"  }
-junit-platformLauncher = { module = "org.junit.platform:junit-platform-launcher"  }
+junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
+junit-platformLauncher = { module = "org.junit.platform:junit-platform-launcher" }
 
 kotest-assertions = { module = "io.kotest:kotest-assertions-core-jvm", version.ref = "kotest" }
 
@@ -44,3 +44,4 @@ gradlePlugin-nmcp = { module = "com.gradleup.nmcp:nmcp", version.ref = "gradlePl
 [plugins]
 
 #kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+nmcp-aggregation = { id = "com.gradleup.nmcp.aggregation", version.ref = "gradlePlugin-nmcp" }
