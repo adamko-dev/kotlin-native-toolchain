@@ -28,5 +28,3 @@ this project extracts the dependencies and stores them in a JSON file.
 
 The consuming project must add an Ivy repo for resolving the dependencies:
 `https://download.jetbrains.com/kotlin/native`
-
-[DependencyDownloader.kt]: https://github.com/JetBrains/kotlin/blob/v2.1.21/native/utils/src/org/jetbrains/kotlin/konan/util/DependencyDownloader.kt
