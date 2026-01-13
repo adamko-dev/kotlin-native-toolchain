@@ -102,7 +102,7 @@ jobs:
           if-no-files-found: ignore
 
       - name: Upload knp-dependencies-data
-        #if: failure()
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: knp-dependencies-data-${{ runner.os }}${{ github.action }}
