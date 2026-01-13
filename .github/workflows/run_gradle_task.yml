@@ -107,7 +107,7 @@ jobs:
         with:
           name: knp-dependencies-data-${{ runner.os }}${{ github.action }}
           path: |
-            **/**
+            knt-tools/knp-dependencies-data/data/**
           if-no-files-found: ignore
 
       - name: Publish Test Reports
