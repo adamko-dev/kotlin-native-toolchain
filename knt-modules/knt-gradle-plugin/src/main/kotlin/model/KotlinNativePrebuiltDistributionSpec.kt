@@ -32,6 +32,8 @@ internal constructor() : Serializable, Describable {
    * The architecture of the kotlin-native-prebuilt distribution.
    *
    * Used to determine which Kotlin/Native toolchain variant to download.
+   *
+   * @see org.jetbrains.kotlin.konan.target.HostManager.Companion.hostArch
    */
   abstract val architecture: Property<Architecture>
 
@@ -42,6 +44,16 @@ internal constructor() : Serializable, Describable {
    * This property should only be overridden if modifying
    * the other properties isn't enough to correctly describe the distribution
    * (for example, in the future the archive extension may change).
+   *
+   * ### Format
+   *
+   * The string must use Gradle's dependency notation format,
+   * [described here](https://docs.gradle.org/current/userguide/declaring_dependencies_basics.html#sec:module-dependencies).
+   *
+   * ```
+   * group:name:version:classifier@ext
+   * ```
+   * `classifier` and `ext` are optional.
    */
   abstract val coordinates: Property<String>
 
