@@ -1,14 +1,6 @@
 package dev.adamko.kntoolchain.tools.internal
 
 import dev.adamko.kntoolchain.tools.utils.md5ChecksumOrNull
-import org.gradle.api.file.DirectoryProperty
-import org.gradle.api.logging.Logger
-import org.gradle.api.logging.Logging
-import org.gradle.api.provider.Property
-import org.gradle.api.provider.ValueSource
-import org.gradle.api.provider.ValueSourceParameters
-import org.jetbrains.kotlin.tooling.core.KotlinToolingVersion
-import org.jetbrains.kotlin.tooling.core.KotlinToolingVersion.Maturity.STABLE
 import java.net.URI
 import java.net.http.HttpClient
 import java.net.http.HttpRequest
@@ -19,6 +11,14 @@ import kotlin.io.path.createDirectories
 import kotlin.io.path.exists
 import kotlin.io.path.name
 import kotlin.io.path.readText
+import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.logging.Logger
+import org.gradle.api.logging.Logging
+import org.gradle.api.provider.Property
+import org.gradle.api.provider.ValueSource
+import org.gradle.api.provider.ValueSourceParameters
+import org.jetbrains.kotlin.tooling.core.KotlinToolingVersion
+import org.jetbrains.kotlin.tooling.core.KotlinToolingVersion.Maturity.STABLE
 
 /**
  * Downloads all Kotlin Versions from Maven Central.
@@ -115,7 +115,7 @@ internal constructor() : ValueSource<Set<KotlinToolingVersion>, KotlinVersionsDa
           }
         }.build()
 
-      val response = HttpClient.newHttpClient().use { httpClient ->
+      val response = HttpClient.newHttpClient().let { httpClient ->
         httpClient
           .send(request, HttpResponse.BodyHandlers.ofFile(destination))
       }
