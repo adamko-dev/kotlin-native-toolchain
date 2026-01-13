@@ -49,6 +49,7 @@ internal constructor(
    * Packaged kotlin-native-prebuilt distributions.
    *
    * The available versions are discovered by
+   * [dev.adamko.kntoolchain.tools.internal.KotlinNativePrebuiltVariantsSource].
    */
   @get:InputFiles
   @get:PathSensitive(NONE)

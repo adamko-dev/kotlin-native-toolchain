@@ -300,7 +300,7 @@ private fun waitForHttpOkResponse(
 
   HttpClient.newBuilder()
     .connectTimeout(Duration.ofMillis(250))
-    .build().use { client ->
+    .build().let { client ->
 
       var attempt = 0
       while (attempt++ <= retries) {
@@ -319,14 +319,4 @@ private fun waitForHttpOkResponse(
 
       return false
     }
-}
-
-@OptIn(ExperimentalContracts::class)
-internal inline fun <T> HttpClient.use(block: (HttpClient) -> T): T {
-  contract { callsInPlace(block, InvocationKind.EXACTLY_ONCE) }
-  return  block(this)
-//  try {
-//  } finally {
-//    //close()
-//  }
 }

@@ -43,14 +43,14 @@ internal abstract class ExtractKonanPropertiesWorker @Inject internal constructo
       ArchiveType.TarGz -> { f -> archives.tarTree(archives.gzip(f)) }
     }
 
-    fs.sync {
-      it.into(outputDir)
-      it.from(archiveExtractor(knpDist))
-      it.include("**/konan/konan.properties")
-      it.eachFile {
+    fs.sync { spec ->
+      spec.into(outputDir)
+      spec.from(archiveExtractor(knpDist))
+      spec.include("**/konan/konan.properties")
+      spec.eachFile {
         it.relativePath = RelativePath(true, it.sourceName)
       }
-      it.includeEmptyDirs = false
+      spec.includeEmptyDirs = false
     }
 
     require(konanProperties.exists()) {

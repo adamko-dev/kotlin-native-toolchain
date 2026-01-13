@@ -2,9 +2,19 @@
 
 package dev.adamko.kntoolchain.tools.internal
 
-import groovy.json.JsonSlurper
 import dev.adamko.kntoolchain.tools.datamodel.KotlinNativePrebuiltData
 import dev.adamko.kntoolchain.tools.datamodel.KotlinNativePrebuiltData.ArchiveType
+import groovy.json.JsonSlurper
+import java.net.URI
+import java.net.http.HttpClient
+import java.net.http.HttpRequest
+import java.net.http.HttpResponse
+import java.nio.file.Path
+import java.time.Duration
+import kotlin.io.path.createDirectories
+import kotlin.io.path.exists
+import kotlin.io.path.inputStream
+import kotlin.io.path.outputStream
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
@@ -17,16 +27,6 @@ import org.gradle.api.provider.SetProperty
 import org.gradle.api.provider.ValueSource
 import org.gradle.api.provider.ValueSourceParameters
 import org.jetbrains.kotlin.tooling.core.KotlinToolingVersion
-import java.net.URI
-import java.net.http.HttpClient
-import java.net.http.HttpRequest
-import java.net.http.HttpResponse
-import java.nio.file.Path
-import java.time.Duration
-import kotlin.io.path.createDirectories
-import kotlin.io.path.exists
-import kotlin.io.path.inputStream
-import kotlin.io.path.outputStream
 
 /**
  * Downloads [KotlinNativePrebuiltData].
@@ -211,7 +211,7 @@ internal constructor() : ValueSource<KotlinNativePrebuiltData, KotlinNativePrebu
           GET()
         }.build()
 
-      HttpClient.newHttpClient().use { httpClient ->
+      HttpClient.newHttpClient().let { httpClient ->
         return httpClient
           .send(request, HttpResponse.BodyHandlers.ofString())
           .body()
@@ -228,7 +228,7 @@ internal constructor() : ValueSource<KotlinNativePrebuiltData, KotlinNativePrebu
           GET()
         }.build()
 
-      HttpClient.newHttpClient().use { httpClient ->
+      HttpClient.newHttpClient().let { httpClient ->
         return httpClient
           .send(request, HttpResponse.BodyHandlers.ofString())
           .body()
