@@ -135,8 +135,8 @@ internal constructor() :
       knpSpec: KotlinNativePrebuiltDistributionSpec,
     ): Provider<Set<Coordinates>> {
       return of(KnpDependenciesCoordsSpec::class) { spec ->
-        spec.parameters.osName.set(knpSpec.osFamily.map { it.name })
-        spec.parameters.archName.set(knpSpec.architecture.map { it.name })
+        spec.parameters.osName.set(knpSpec.osFamily.map { it.id })
+        spec.parameters.archName.set(knpSpec.architecture.map { it.id })
         spec.parameters.kotlinVersion.set(knpSpec.version)
       }
     }

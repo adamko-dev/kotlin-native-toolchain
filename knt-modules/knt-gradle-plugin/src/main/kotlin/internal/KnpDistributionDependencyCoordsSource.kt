@@ -65,8 +65,8 @@ internal constructor() :
       return of(KnpDistributionDependencyCoordsSource::class) { spec ->
         spec.parameters.group.set(group)
         spec.parameters.module.set(module)
-        spec.parameters.osName.set(osFamily.map { it.name })
-        spec.parameters.archName.set(architecture.map { it.name })
+        spec.parameters.osName.set(osFamily.map { it.id })
+        spec.parameters.archName.set(architecture.map { it.id })
         spec.parameters.kotlinVersion.set(version)
         spec.parameters.archiveExtension.set(archiveExtension)
       }

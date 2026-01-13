@@ -7,27 +7,28 @@ import java.io.Serializable
  *
  * @see KotlinNativePrebuiltDistributionSpec.osFamily
  */
-sealed interface OsFamily : Serializable {
-  val name: String
+sealed class OsFamily : Serializable {
+  abstract val name: String
+  val id: String get() = name.lowercase()
 
-  data object Linux : OsFamily, Serializable {
-    override val name: String = "linux"
+  data object Linux : OsFamily(), Serializable {
+    override val name: String = "Linux"
 
     /** Required for configuration cache support. */
     @Suppress("unused")
     private fun readResolve(): Any = Linux
   }
 
-  data object MacOs : OsFamily, Serializable {
-    override val name: String = "macos"
+  data object MacOs : OsFamily(), Serializable {
+    override val name: String = "MacOs"
 
     /** Required for configuration cache support. */
     @Suppress("unused")
     private fun readResolve(): Any = MacOs
   }
 
-  data object Windows : OsFamily, Serializable {
-    override val name: String = "windows"
+  data object Windows : OsFamily(), Serializable {
+    override val name: String = "Windows"
 
     /** Required for configuration cache support. */
     @Suppress("unused")

@@ -7,12 +7,13 @@ import java.io.Serializable
  *
  * @see KotlinNativePrebuiltDistributionSpec.architecture
  */
-sealed interface Architecture : Serializable {
+sealed class Architecture : Serializable {
 
-  val name: String
+  abstract val name: String
+  val id: String get() = name.lowercase()
 
-  data object AArch64 : Architecture, Serializable {
-    override val name: String = "aarch64"
+  data object AArch64 : Architecture(), Serializable {
+    override val name: String = "AArch64"
 
     /** Required for configuration cache support. */
     @Suppress("unused")
@@ -20,8 +21,8 @@ sealed interface Architecture : Serializable {
   }
 
   @Suppress("ClassName")
-  data object X86_64 : Architecture, Serializable {
-    override val name: String = "x86_64"
+  data object X86_64 : Architecture(), Serializable {
+    override val name: String = "X86_64"
 
     /** Required for configuration cache support. */
     @Suppress("unused")
