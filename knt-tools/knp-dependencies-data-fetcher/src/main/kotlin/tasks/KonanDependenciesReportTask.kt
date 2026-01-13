@@ -148,6 +148,7 @@ internal constructor(
       KonanDependenciesReport(allData),
     )
     reportFile.get().asFile.writeText(allDataEncoded)
+    println("allDataEncoded: $allDataEncoded")
   }
 
   /**
