@@ -114,27 +114,26 @@ internal constructor(
     val knpPrebuiltDependencies: Provider<List<Dependency>> =
       providers.knpDependenciesCoordsSpec(
         knpSpec = knpToolchainExtension.kotlinNativePrebuiltDistribution,
-      )
-        .map { coords ->
-          coords.map { coord ->
-            project.dependencies.create(coord.asDependencyNotation()) {
-              val coordArtifact = coord.artifact
-              if (coordArtifact != null) {
-                // If `coord.artifact` is present, it indicates module != artifact.
-                // We must specify the artifact; otherwise Gradle assumes the
-                // artifact name is the same as the module name.
-                // Must clear artifacts first https://github.com/gradle/gradle/issues/33781
-                artifacts.clear()
-                artifact { artifact ->
-                  artifact.name = coordArtifact
-                  artifact.extension = coord.extension
-                  artifact.type = coord.extension
-                  artifact.classifier = coord.classifier
-                }
+      ).map { coords ->
+        coords.map { coord ->
+          project.dependencies.create(coord.asDependencyNotation()) {
+            val coordArtifact = coord.artifact
+            if (coordArtifact != null) {
+              // If `coord.artifact` is present, it indicates module != artifact.
+              // We must specify the artifact; otherwise Gradle assumes the
+              // artifact name is the same as the module name.
+              // Must clear artifacts first https://github.com/gradle/gradle/issues/33781
+              artifacts.clear()
+              artifact { artifact ->
+                artifact.name = coordArtifact
+                artifact.extension = coord.extension
+                artifact.type = coord.extension
+                artifact.classifier = coord.classifier
               }
             }
           }
         }
+      }
 
     knpConfigurations.knpDistributionDependencies.configure { c ->
       c.defaultDependencies { dependencies ->
