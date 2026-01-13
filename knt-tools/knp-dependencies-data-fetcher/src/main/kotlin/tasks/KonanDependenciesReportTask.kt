@@ -9,11 +9,11 @@ import dev.adamko.kntoolchain.tools.utils.sha512Checksum
 import dev.adamko.kntoolchain.tools.utils.takeIfExists
 import java.nio.file.Path
 import javax.inject.Inject
-import kotlin.io.path.createDirectories
-import kotlin.io.path.name
-import kotlin.io.path.readText
-import kotlin.io.path.writeText
+import kotlin.io.path.*
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.decodeFromStream
+import kotlinx.serialization.json.encodeToStream
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.RegularFileProperty
@@ -143,12 +143,28 @@ internal constructor(
     logger.lifecycle("[$path] Aggregated ${allData.size} reports")
     logger.debug("[$path] Aggregated ${allData.size} reports : $allData")
 
-    val allDataEncoded = json.encodeToString(
-      KonanDependenciesReport.serializer(),
-      KonanDependenciesReport(allData),
-    )
-    reportFile.get().asFile.writeText(allDataEncoded)
-    println("allDataEncoded: $allDataEncoded")
+    val report = KonanDependenciesReport(allData)
+
+    val reportFile = reportFile.get().asFile.toPath()
+
+    if (reportFile.exists()) {
+      val existingReport = try {
+        reportFile.inputStream().use { source ->
+          json.decodeFromStream(KonanDependenciesReport.serializer(), source)
+        }
+      } catch (ex: SerializationException) {
+        logger.debug("[$path] failed to decode KonanDependenciesReport from $reportFile: $ex")
+        null
+      }
+
+      if (existingReport != null && report != existingReport) {
+        logger.warn("[$path] Existing report $reportFile differs from computed one")
+      }
+    }
+
+    reportFile.outputStream().use { sink ->
+      json.encodeToStream(KonanDependenciesReport.serializer(), report, sink)
+    }
   }
 
   /**

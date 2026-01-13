@@ -101,7 +101,7 @@ internal constructor() :
     hostFamily: String,
     hostArch: String,
   ): Set<KotlinVersionTargetDependencies.Coordinates> {
-    val data = konanDependenciesReport
+    val data = konanDependenciesReport.data
       .firstOrNull {
         it.dist.version == kotlinVersion
             && it.dist.hostFamily == hostFamily
