@@ -101,6 +101,15 @@ jobs:
             **/*.log
           if-no-files-found: ignore
 
+      - name: Upload knp-dependencies-data
+        #if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: knp-dependencies-data-${{ runner.os }}${{ github.action }}
+          path: |
+            **/**
+          if-no-files-found: ignore
+
       - name: Publish Test Reports
         uses: mikepenz/action-junit-report@v5
         if: always()
