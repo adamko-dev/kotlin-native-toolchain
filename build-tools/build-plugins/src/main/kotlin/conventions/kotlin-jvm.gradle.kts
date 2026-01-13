@@ -8,7 +8,9 @@ plugins {
 }
 
 kotlin {
-  jvmToolchain(21)
+  jvmToolchain {
+    languageVersion.set(compilerOptions.jvmTarget.map { JavaLanguageVersion.of(it.target) })
+  }
 
   compilerOptions {
     jvmTarget = JvmTarget.JVM_17

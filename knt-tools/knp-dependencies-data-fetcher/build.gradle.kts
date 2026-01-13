@@ -1,4 +1,5 @@
 import org.gradle.kotlin.dsl.support.serviceOf
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
   id("conventions.kotlin-gradle-plugin")
@@ -17,6 +18,7 @@ dependencies {
 
 kotlin {
   compilerOptions {
+    jvmTarget = JvmTarget.JVM_21 // required for HttpClient.use {}
     optIn.add("kotlinx.serialization.ExperimentalSerializationApi")
   }
 }

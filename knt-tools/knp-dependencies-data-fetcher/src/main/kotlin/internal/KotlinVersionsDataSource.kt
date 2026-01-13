@@ -115,7 +115,7 @@ internal constructor() : ValueSource<Set<KotlinToolingVersion>, KotlinVersionsDa
           }
         }.build()
 
-      val response = HttpClient.newHttpClient().let { httpClient ->
+      val response = HttpClient.newHttpClient().use { httpClient ->
         httpClient
           .send(request, HttpResponse.BodyHandlers.ofFile(destination))
       }

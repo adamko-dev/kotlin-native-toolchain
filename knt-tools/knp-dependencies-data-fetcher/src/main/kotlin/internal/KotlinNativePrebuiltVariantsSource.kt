@@ -211,7 +211,7 @@ internal constructor() : ValueSource<KotlinNativePrebuiltData, KotlinNativePrebu
           GET()
         }.build()
 
-      HttpClient.newHttpClient().let { httpClient ->
+      HttpClient.newHttpClient().use { httpClient ->
         return httpClient
           .send(request, HttpResponse.BodyHandlers.ofString())
           .body()
@@ -228,7 +228,7 @@ internal constructor() : ValueSource<KotlinNativePrebuiltData, KotlinNativePrebu
           GET()
         }.build()
 
-      HttpClient.newHttpClient().let { httpClient ->
+      HttpClient.newHttpClient().use { httpClient ->
         return httpClient
           .send(request, HttpResponse.BodyHandlers.ofString())
           .body()

@@ -5,22 +5,6 @@ import com.sun.net.httpserver.HttpServer
 import dev.adamko.kntoolchain.tools.datamodel.KonanDist
 import dev.adamko.kntoolchain.tools.datamodel.KotlinVersionTargetDependencies
 import dev.adamko.kntoolchain.tools.datamodel.internal.KonanTargetTriplet
-import kotlinx.serialization.json.Json
-import org.gradle.api.file.RegularFileProperty
-import org.gradle.api.logging.Logger
-import org.gradle.api.logging.Logging
-import org.gradle.api.provider.Property
-import org.gradle.internal.extensions.core.debug
-import org.gradle.workers.WorkAction
-import org.gradle.workers.WorkParameters
-import org.jetbrains.kotlin.konan.properties.KonanPropertiesLoader
-import org.jetbrains.kotlin.konan.properties.loadProperties
-import org.jetbrains.kotlin.konan.target.HostManager
-import org.jetbrains.kotlin.konan.target.KonanTarget
-import org.jetbrains.kotlin.konan.target.loadConfigurables
-import org.jetbrains.kotlin.konan.util.ArchiveExtractor
-import org.jetbrains.kotlin.konan.util.ArchiveType
-import org.jetbrains.kotlin.util.prefixIfNot
 import java.io.File
 import java.io.OutputStream
 import java.io.OutputStream.nullOutputStream
@@ -39,6 +23,22 @@ import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 import kotlin.io.path.createTempDirectory
 import kotlin.io.path.invariantSeparatorsPathString
+import kotlinx.serialization.json.Json
+import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.logging.Logger
+import org.gradle.api.logging.Logging
+import org.gradle.api.provider.Property
+import org.gradle.internal.extensions.core.debug
+import org.gradle.workers.WorkAction
+import org.gradle.workers.WorkParameters
+import org.jetbrains.kotlin.konan.properties.KonanPropertiesLoader
+import org.jetbrains.kotlin.konan.properties.loadProperties
+import org.jetbrains.kotlin.konan.target.HostManager
+import org.jetbrains.kotlin.konan.target.KonanTarget
+import org.jetbrains.kotlin.konan.target.loadConfigurables
+import org.jetbrains.kotlin.konan.util.ArchiveExtractor
+import org.jetbrains.kotlin.konan.util.ArchiveType
+import org.jetbrains.kotlin.util.prefixIfNot
 
 /**
  * Determine the Konan dependencies required for each Kotlin Native target.
@@ -300,7 +300,7 @@ private fun waitForHttpOkResponse(
 
   HttpClient.newBuilder()
     .connectTimeout(Duration.ofMillis(250))
-    .build().let { client ->
+    .build().use { client ->
 
       var attempt = 0
       while (attempt++ <= retries) {
