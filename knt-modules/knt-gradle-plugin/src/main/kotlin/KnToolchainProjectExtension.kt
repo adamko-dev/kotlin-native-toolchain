@@ -1,11 +1,11 @@
 package dev.adamko.kntoolchain
 
-import dev.adamko.kntoolchain.internal.adding
 import dev.adamko.kntoolchain.model.KotlinNativePrebuiltDistributionSpec
 import dev.adamko.kntoolchain.model.OsFamily
 import dev.adamko.kntoolchain.operations.InstallKnToolchains
 import java.nio.file.Path
 import javax.inject.Inject
+import org.gradle.api.Action
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.logging.Logger
 import org.gradle.api.logging.Logging
@@ -44,13 +44,22 @@ internal constructor(
    * The properties can be configured to specify the desired Kotlin/Native toolchain
    * distribution to install.
    *
-   * Use [provisionInstallation] to obtain a [Provider] for the installed distribution.
+   * Use [provisionInstallation] to obtain a [Provider] of the distribution.
    */
   val kotlinNativePrebuiltDistribution: KotlinNativePrebuiltDistributionSpec =
-    extensions.adding(
-      "kotlinNativePrebuiltDistribution",
-      objects.newInstance()
-    )
+    objects.newInstance()
+
+  /**
+   * The specification of the Kotlin/Native toolchain distribution to install.
+   *
+   * The properties can be configured to specify the desired Kotlin/Native toolchain
+   * distribution to install.
+   *
+   * Use [provisionInstallation] to obtain a [Provider] of the distribution.
+   */
+  fun kotlinNativePrebuiltDistribution(configure: Action<KotlinNativePrebuiltDistributionSpec>) {
+    configure.execute(kotlinNativePrebuiltDistribution)
+  }
 
   /**
    * Returns a [Provider] for the installed kotlin-native-prebuilt distribution,
