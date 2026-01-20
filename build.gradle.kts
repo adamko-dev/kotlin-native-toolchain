@@ -31,7 +31,7 @@ nmcpAggregation {
 
 dependencies {
   nmcpAggregation(projects.kntModules.kntGradlePlugin)
-  nmcpAggregation("dev.adamko.kotlin-native-toolchain:knp-dependencies-data-model")
+  nmcpAggregation(projects.kntModules.kntDependencyData)
 }
 
 val isReleaseVersion: Provider<Boolean> =

@@ -1,14 +1,6 @@
 @file:Suppress("UnstableApiUsage")
-@file:OptIn(ExperimentalPathApi::class)
 
 import ext.addKotlinGradlePluginOptions
-import groovy.json.JsonSlurper
-import java.util.*
-import kotlin.io.path.ExperimentalPathApi
-import kotlin.io.path.createDirectories
-import kotlin.io.path.deleteRecursively
-import kotlin.io.path.writeText
-import org.gradle.api.attributes.Usage.USAGE_ATTRIBUTE
 
 plugins {
   id("conventions.kotlin-gradle-plugin")
@@ -56,33 +48,9 @@ gradlePlugin {
   }
 }
 
-val konanDependenciesReportDependencies: NamedDomainObjectProvider<DependencyScopeConfiguration> =
-  configurations.dependencyScope("konanDependenciesReport") {
-    defaultDependencies {
-      add(project.dependencies.create("dev.adamko.kotlin-native-toolchain:knp-dependencies-data"))
-    }
-  }
-
-val konanDependenciesReportResolver: NamedDomainObjectProvider<ResolvableConfiguration> =
-  configurations.resolvable(konanDependenciesReportDependencies.name + "Resolver") {
-    extendsFrom(konanDependenciesReportDependencies.get())
-    attributes {
-      attribute(USAGE_ATTRIBUTE, objects.named("konan-dependencies-report"))
-    }
-  }
-
-
 dependencies {
-//  devPublication(knpDependenciesDataModelCoords)
-  //devPublication("dev.adamko.kotlin-native-toolchain:knp-dependencies-data")
   devPublication(projects.kntModules.kntDependencyData)
 }
-
-//kotlin {
-//  sourceSets.main {
-//    kotlin.srcDir(tasks.knpDataGen)
-//  }
-//}
 
 testing {
   suites {

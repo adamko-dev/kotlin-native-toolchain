@@ -1,4 +1,4 @@
-rootProject.name = "knp-dependencies-data"
+rootProject.name = "knp-dependencies-data-generator"
 
 pluginManagement {
   includeBuild("../../build-tools/build-plugins/")
