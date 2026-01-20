@@ -8,6 +8,9 @@ dependencies {
 
   implementation(libs.gradlePlugin.pluginPublishPlugin)
   implementation(libs.gradlePlugin.nmcp)
+
+  implementation(platform(libs.kotlinxSerialization.bom))
+  implementation(libs.kotlinxSerialization.core)
 }
 
 kotlin {

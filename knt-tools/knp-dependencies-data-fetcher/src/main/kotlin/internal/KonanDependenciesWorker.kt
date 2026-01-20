@@ -2,9 +2,10 @@ package dev.adamko.kntoolchain.tools.internal
 
 import com.sun.net.httpserver.HttpHandler
 import com.sun.net.httpserver.HttpServer
-import dev.adamko.kntoolchain.tools.datamodel.KonanDist
+import dev.adamko.kntoolchain.tools.datamodel.KonanDependenciesReport
 import dev.adamko.kntoolchain.tools.datamodel.KotlinVersionTargetDependencies
-import dev.adamko.kntoolchain.tools.datamodel.internal.KonanTargetTriplet
+import dev.adamko.kntoolchain.tools.datamodel.Platform
+import dev.adamko.kntoolchain.tools.datamodel.internal.KonanTargetData
 import java.io.File
 import java.io.OutputStream
 import java.io.OutputStream.nullOutputStream
@@ -58,25 +59,31 @@ internal constructor() : WorkAction<KonanDependenciesWorker.Parameters> {
     val targetDependenciesReportFile: RegularFileProperty
 
     val distVersion: Property<String>
-    val hostFamily: Property<String>
-    val hostArch: Property<String>
+
+    /** The platform on which the compilation tools are executed. */
+    val buildPlatform: Property<Platform>
+
+    ///** The platform on which the code will eventually run. */
+    //val hostPlatform: Property<Platform>
 
     /** `konan.properties` file, extracted from a konan-native-prebuilt dist. */
     val konanPropertiesFile: RegularFileProperty
   }
 
   override fun execute() {
+    checkHostOsArch()
+
     val konanPropertiesFile = parameters.konanPropertiesFile.get().asFile.toPath()
 
     logger.lifecycle("Computing dependencies from ${konanPropertiesFile.invariantSeparatorsPathString}")
 
     val targetToUrls: Map<KonanTarget, Set<String>> = try {
       val konanProperties: Properties = loadKonanProperties(konanPropertiesFile.toFile())
-      KonanTarget.predefinedTargets.values
-        .filter { konanTarget ->
-          // cannot compute dependencies if the current host does not this target
-          HostManager().isEnabled(konanTarget)
-        }
+
+      val enabledKnTargets = HostManager().enabled
+      println("Current host ${System.getProperty("os.name")}-${System.getProperty("os.arch")} has ${enabledKnTargets.size} targets: $enabledKnTargets")
+
+      enabledKnTargets
         .associateWith { konanTarget ->
           try {
             computeDependencyUrls(konanTarget, konanProperties)
@@ -88,27 +95,52 @@ internal constructor() : WorkAction<KonanDependenciesWorker.Parameters> {
       throw RuntimeException("Error processing $konanPropertiesFile", ex)
     }
 
-    val data = KotlinVersionTargetDependencies(
-      dist = KonanDist(
-        version = parameters.distVersion.get(),
-        hostFamily = parameters.hostFamily.get(),
-        hostArch = parameters.hostArch.get(),
-      ),
-      dependencyCoords = targetToUrls
-        .mapKeys { (target, _) ->
-          KonanTargetTriplet.encode(target)
-        }
-        .mapValues { (_, urls) ->
-          convertToDependencyCoords(urls)
-        }
-    )
+    val data: List<KotlinVersionTargetDependencies> =
+      targetToUrls.map { (target, urls) ->
+        KotlinVersionTargetDependencies(
+          version = parameters.distVersion.get(),
+          buildPlatform = parameters.buildPlatform.get(),
+          targetPlatform = KonanTargetData.encode(target),
+          dependencies = convertToDependencyCoords(urls),
+        )
+      }
 
-    val jsonDataString = json.encodeToString(KotlinVersionTargetDependencies.serializer(), data)
+//    val data = KotlinVersionTargetDependencies(
+//      version = parameters.distVersion.get(),
+//      buildPlatform = parameters.buildPlatform.get(),
+//      dependencies = targetToUrls
+//        .mapKeys { (target, _) ->
+//          KonanTargetData.encode(target)
+//        }
+//        .mapValues { (_, urls) ->
+//          convertToDependencyCoords(urls)
+//        }
+//    )
+
+    val report = KonanDependenciesReport(data)
+
+    val jsonDataString = json.encodeToString(KonanDependenciesReport.serializer(), report)
 
     logger.debug { ("[KotlinVersionTargetDependenciesWorker] ${jsonDataString.replace('\n', ' ')}") }
-    parameters.targetDependenciesReportFile.get().asFile.writeText(jsonDataString)
+    val reportFile = parameters.targetDependenciesReportFile.get().asFile
+    reportFile.parentFile.mkdirs()
+    reportFile.writeText(jsonDataString)
+//    parameters.targetDependenciesReportFile.get().asFile.writeText(jsonDataString)
   }
 
+  private fun checkHostOsArch() {
+    val systemOsName = System.getProperty("os.name").lowercase()
+    val systemOsArch = System.getProperty("os.arch").lowercase()
+    val expectedOsName = parameters.buildPlatform.get().osNameForJavaSystemProperty.lowercase()
+    val expectedOsArch = parameters.buildPlatform.get().osArch.lowercase()
+    require(
+      systemOsName == expectedOsName
+          &&
+          systemOsArch == expectedOsArch
+    ) {
+      "The build platform does not match the current host platform. Expected: ${expectedOsName}/${expectedOsArch}, Actual: ${systemOsName}/${systemOsArch}"
+    }
+  }
 
   private fun loadKonanProperties(konanPropFile: File): Properties {
     val konanPropertiesFile = konanPropFile.invariantSeparatorsPath
@@ -187,50 +219,64 @@ internal constructor() : WorkAction<KonanDependenciesWorker.Parameters> {
   private fun convertToDependencyCoords(
     urls: Set<String>,
   ): Set<KotlinVersionTargetDependencies.Coordinates> {
+    return urls.map { url ->
+      convertToDependencyNotation(url)
+    }.toSet()
+  }
+
+  private fun convertToDependencyNotation(
+    url: String,
+  ): KotlinVersionTargetDependencies.Coordinates {
+    val uri = URI(url)
+
     val fileNameElementsRegex =
       Regex("""(?<fileId>.+)-(?<version>[\d.]+)(?:-(?<classifier>.+?))?\.(?<extension>[a-zA-Z0-9.]+)""")
 
-    return urls.map { url ->
-      val uri = URI(url)
+    val fileName = uri.path.substringAfterLast("/", "")
+    val match = fileNameElementsRegex.matchEntire(fileName)
+    check(match != null) { "Invalid dependency file name: $fileName" }
 
-      val fileName = uri.path.substringAfterLast("/", "")
-      val match = fileNameElementsRegex.matchEntire(fileName)
-      check(match != null) { "Invalid dependency file name: $fileName" }
+    val fileId = match.groups["fileId"]?.value
+    val version = match.groups["version"]?.value
+    val classifier = match.groups["classifier"]?.value // classifier is optional
+    val extension = match.groups["extension"]?.value
 
-      val fileId = match.groups["fileId"]?.value ?: error("artifact missing from $fileName")
-      val version = match.groups["version"]?.value ?: error("version missing from $fileName")
-      val classifier = match.groups["classifier"]?.value
-      val extension = match.groups["extension"]?.value ?: error("extension missing from $fileName")
-
-      val groupPath = uri.path.removePrefix("/")
-        .substringBeforeLast("/", "")
-
-      val groupPathElements = groupPath.split("/")
-
-      val group: String
-      val module: String
-      val artifact: String?
-      if ("." in groupPathElements.lastOrNull().orEmpty()) {
-        group = groupPathElements.dropLast(1).joinToString(".")
-        module = groupPathElements.last()
-        artifact = fileId
-      } else {
-        group = groupPathElements.joinToString(".")
-        module = fileId
-        artifact = null
+    if (fileId == null || version == null || extension == null) {
+      val missingElements = buildList {
+        if (fileId == null) add("fileId")
+        if (version == null) add("version")
+        if (extension == null) add("extension")
       }
-
-      KotlinVersionTargetDependencies.Coordinates(
-        group = group,
-        module = module,
-        version = version,
-        extension = extension,
-        classifier = classifier,
-        artifact = artifact,
-        originalUrl = url,
-      )
+      error("$missingElements missing from $fileName")
     }
-      .toSet()
+
+    val groupPath = uri.path.removePrefix("/")
+      .substringBeforeLast("/", "")
+
+    val groupPathElements = groupPath.split("/")
+
+    val group: String
+    val module: String
+    val artifact: String?
+    if ("." in groupPathElements.lastOrNull().orEmpty()) {
+      group = groupPathElements.dropLast(1).joinToString(".")
+      module = groupPathElements.last()
+      artifact = fileId
+    } else {
+      group = groupPathElements.joinToString(".")
+      module = fileId
+      artifact = null
+    }
+
+    return KotlinVersionTargetDependencies.Coordinates(
+      group = group,
+      module = module,
+      version = version,
+      extension = extension,
+      classifier = classifier,
+      artifact = artifact,
+//      url = url,
+    )
   }
 
   companion object {

@@ -1,5 +1,7 @@
 package dev.adamko.kntoolchain
 
+import dev.adamko.kntoolchain.internal.adding
+import dev.adamko.kntoolchain.model.KnTargetContainer
 import dev.adamko.kntoolchain.model.KotlinNativePrebuiltDistributionSpec
 import dev.adamko.kntoolchain.model.OsFamily
 import dev.adamko.kntoolchain.operations.InstallKnToolchains
@@ -61,6 +63,9 @@ internal constructor(
     configure.execute(kotlinNativePrebuiltDistribution)
   }
 
+  val knTargets: KnTargetContainer =
+    extensions.adding("knTargets", objects.newInstance<KnTargetContainer>())
+
   /**
    * Returns a [Provider] for the installed kotlin-native-prebuilt distribution,
    * a.k.a. `KONAN_DATA_DIR`.
@@ -97,8 +102,13 @@ internal constructor(
   }
 
   fun runKonan(
-    pathToRunKonan: Provider<String> = kotlinNativePrebuiltDistribution.osFamily.map { os ->
-      if (os is OsFamily.Windows) "bin/run_konan.bat" else "bin/run_konan"
+    pathToRunKonan: Provider<String> = kotlinNativePrebuiltDistribution.buildPlatform.map { platform ->
+      if (platform.family == dev.adamko.kntoolchain.tools.data.KnBuildPlatform.OsFamily.Windows) {
+        "bin/run_konan.bat"
+      } else {
+        "bin/run_konan"
+      }
+//      if (os is OsFamily.Windows) "bin/run_konan.bat" else "bin/run_konan"
     },
   ): Provider<Path> {
     return providers.zip(

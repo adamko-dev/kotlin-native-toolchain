@@ -1,8 +1,8 @@
 package dev.adamko.kntoolchain.internal
 
 import dev.adamko.kntoolchain.internal.KnpDistributionDependencyCoordsSource.Companion.kotlinNativePrebuiltToolchainDependencySpec
-import dev.adamko.kntoolchain.model.Architecture
-import dev.adamko.kntoolchain.model.OsFamily
+import dev.adamko.kntoolchain.tools.data.KnBuildPlatform
+import dev.adamko.kntoolchain.tools.data.KnpVersion
 import kotlin.properties.PropertyDelegateProvider
 import kotlin.properties.ReadOnlyProperty
 import kotlin.reflect.KProperty
@@ -52,22 +52,25 @@ internal constructor() :
      * See [KnpDistributionDependencyCoordsSource].
      */
     internal fun ProviderFactory.kotlinNativePrebuiltToolchainDependencySpec(
-      osFamily: Provider<OsFamily>,
-      architecture: Provider<Architecture>,
-      version: Provider<String>,
+//      osFamily: Provider<OsFamily>,
+//      architecture: Provider<Architecture>,
+      buildPlatform: Provider<KnBuildPlatform>,
+      version: Provider<KnpVersion>,
       group: Provider<String> = provider { "org.jetbrains.kotlin" },
       module: Provider<String> = provider { "kotlin-native-prebuilt" },
       archiveExtension: Provider<String> =
-        osFamily.map { os ->
-          if (os is OsFamily.Windows) "zip" else "tar.gz"
+        buildPlatform.map { platform ->
+          if (platform.family == KnBuildPlatform.OsFamily.Windows)
+            "zip" else "tar.gz"
         }
     ): Provider<String> {
       return of(KnpDistributionDependencyCoordsSource::class) { spec ->
         spec.parameters.group.set(group)
         spec.parameters.module.set(module)
-        spec.parameters.osName.set(osFamily.map { it.id })
-        spec.parameters.archName.set(architecture.map { it.id })
-        spec.parameters.kotlinVersion.set(version)
+        spec.parameters.osName.set(buildPlatform.map { it.family.value })
+        spec.parameters.archName.set(buildPlatform.map { it.arch.value })
+//        spec.parameters.archName.set(architecture.map { it.id })
+        spec.parameters.kotlinVersion.set(version.map { it.value })
         spec.parameters.archiveExtension.set(archiveExtension)
       }
     }

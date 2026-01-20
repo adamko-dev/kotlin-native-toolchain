@@ -1,5 +1,8 @@
 package dev.adamko.kntoolchain.model
 
+import dev.adamko.kntoolchain.tools.data.KnBuildPlatform
+import dev.adamko.kntoolchain.tools.data.KnCompileTarget
+import dev.adamko.kntoolchain.tools.data.KnpVersion
 import java.io.Serializable
 import javax.inject.Inject
 import org.gradle.api.Describable
@@ -19,23 +22,28 @@ abstract class KotlinNativePrebuiltDistributionSpec
 @Inject
 internal constructor() : Serializable, Describable {
 
-  /**
-   * The operating system family of the current machine.
-   *
-   * Used to determine which Kotlin/Native toolchain variant to download.
-   *
-   * @see org.jetbrains.kotlin.konan.target.HostManager.Companion.simpleOsName
-   */
-  abstract val osFamily: Property<OsFamily>
+  abstract val compileTargets: SetProperty<KnCompileTarget>
 
-  /**
-   * The architecture of the kotlin-native-prebuilt distribution.
-   *
-   * Used to determine which Kotlin/Native toolchain variant to download.
-   *
-   * @see org.jetbrains.kotlin.konan.target.HostManager.Companion.hostArch
-   */
-  abstract val architecture: Property<Architecture>
+  abstract val buildPlatform: Property<KnBuildPlatform>
+
+//  /**
+//   * The operating system family of the current machine.
+//   *
+//   * Used to determine which Kotlin/Native toolchain variant to download.
+//   *
+//   * @see org.jetbrains.kotlin.konan.target.HostManager.Companion.simpleOsName
+//   */
+//  abstract val osFamily: Property<OsFamily>
+
+
+//  /**
+//   * The architecture of the kotlin-native-prebuilt distribution.
+//   *
+//   * Used to determine which Kotlin/Native toolchain variant to download.
+//   *
+//   * @see org.jetbrains.kotlin.konan.target.HostManager.Companion.hostArch
+//   */
+//  abstract val architecture: Property<Architecture>
 
   /**
    * The GAV Maven coordinates of the kotlin-native-prebuilt distribution.
@@ -62,7 +70,7 @@ internal constructor() : Serializable, Describable {
    *
    * Used to determine which Kotlin/Native toolchain variant to download.
    */
-  abstract val version: Property<String>
+  abstract val version: Property<KnpVersion>
 
   /**
    * The actual kotlin-native-prebuilt distribution archive.

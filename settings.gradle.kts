@@ -5,6 +5,7 @@ rootProject.name = "kotlin-native-toolchain"
 pluginManagement {
   includeBuild("./build-tools/build-plugins/")
   includeBuild("./build-tools/settings-plugins/")
+  includeBuild("./knt-tools/knp-dependencies-data/")
   repositories {
     mavenCentral()
     gradlePluginPortal()
@@ -27,6 +28,7 @@ plugins {
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 includeBuild("./knt-tools/knp-dependencies-data/")
-includeBuild("./knt-tools/knp-dependencies-data-model/")
+//includeBuild("./knt-tools/knp-dependencies-data-model/")
 
 include(":knt-modules:knt-gradle-plugin")
+include(":knt-modules:knt-dependency-data")

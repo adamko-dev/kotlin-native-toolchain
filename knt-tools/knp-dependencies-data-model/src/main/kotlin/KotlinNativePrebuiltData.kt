@@ -1,14 +1,15 @@
 package dev.adamko.kntoolchain.tools.datamodel
 
 import dev.adamko.kntoolchain.tools.datamodel.internal.KotlinToolingVersionEnc
-import kotlinx.serialization.Serializable
 import java.nio.file.Path
 import kotlin.io.path.name
+import kotlinx.serialization.Serializable
 
 @Serializable
 data class KotlinNativePrebuiltData(
   val data: Map<KotlinToolingVersionEnc, Set<PrebuiltVariant>>,
 ) {
+
   @Serializable
   data class PrebuiltVariant(
     /**
@@ -52,19 +53,3 @@ data class KotlinNativePrebuiltData(
     }
   }
 }
-
-//@Serializable
-//data class KnpDependenciesData(
-////  val kotlinVersion: KotlinToolingVersionEnc,
-//  val dependencyUrls: Map<KonanDist, Map<KonanTargetEnc, Set<String>>>,
-//)
-
-//@Serializable(with = KonanTargetSerializer::class)
-//data class KonanTarget(
-//  val name: String,
-//  val family: String,
-//  val architecture: String,
-//)
-//@Serializable
-//@JvmInline
-//value class KotlinVersion(val version: String)

@@ -2,14 +2,11 @@ package dev.adamko.kntoolchain.internal
 
 import dev.adamko.kntoolchain.internal.KnpDependenciesCoordsSpec.Companion.knpDependenciesCoordsSpec
 import dev.adamko.kntoolchain.model.KotlinNativePrebuiltDistributionSpec
-import dev.adamko.kntoolchain.tools.datamodel.KonanDependenciesReport
-import dev.adamko.kntoolchain.tools.datamodel.KotlinVersionTargetDependencies
-import kotlinx.serialization.json.Json
+import dev.adamko.kntoolchain.tools.data.*
 import org.gradle.api.logging.Logger
 import org.gradle.api.logging.Logging
 import org.gradle.api.provider.*
 import org.gradle.kotlin.dsl.of
-import org.gradle.kotlin.dsl.provideDelegate
 
 /**
  * Get all KNP dependencies for the given properties.
@@ -24,69 +21,65 @@ import org.gradle.kotlin.dsl.provideDelegate
  */
 internal abstract class KnpDependenciesCoordsSpec
 internal constructor() :
-  ValueSource<Set<KnpDependenciesCoordsSpec.Coordinates>, KnpDependenciesCoordsSpec.Parameters> {
+  ValueSource<Set<KnpDependency>, KnpDependenciesCoordsSpec.Parameters> {
 
   internal interface Parameters : ValueSourceParameters {
-    val osName: Property<String>
-    val archName: Property<String>
-    val kotlinVersion: Property<String>
+    /** The platform on which the compilation tools are executed. */
+    val buildPlatform: Property<KnBuildPlatform>
+    /** This is the platform that the compiler will generate code for. */
+    val compileTargets: SetProperty<KnCompileTarget>
+    val kotlinVersion: Property<KnpVersion>
   }
 
-  internal data class Coordinates(
-    val group: String,
-    val module: String,
-    val version: String,
-    val extension: String,
-    val classifier: String?,
-    val artifact: String?,
-  ) {
-    override fun toString(): String = buildString {
-      append(group)
-      append(":")
-      append(module)
-      append(":")
-      append(version)
-      if (classifier != null) {
-        append(":$classifier")
-      }
-      if (artifact != null) {
-        append("[$artifact]")
-      }
-    }
+//  internal data class Coordinates(
+//    val group: String,
+//    val module: String,
+//    val version: String,
+//    val extension: String,
+//    val classifier: String?,
+////    val coords: String,
+//    val artifact: String?,
+//  ) {
+//    override fun toString(): String = buildString {
+//      append(group)
+//      append(":")
+//      append(module)
+//      append(":")
+//      append(version)
+//      if (classifier != null) {
+//        append(":$classifier")
+//      }
+//      if (artifact != null) {
+//        append("[$artifact]")
+//      }
+//    }
+//
+//    fun asDependencyNotation(): String =
+//      createDependencyNotation(
+//        group = group,
+//        name = module,
+//        version = version,
+//        classifier = classifier,
+//        extension = extension,
+//      )
+//  }
 
-    fun asDependencyNotation(): String =
-      createDependencyNotation(
-        group = group,
-        name = module,
-        version = version,
-        classifier = classifier,
-        extension = extension,
-      )
-  }
+  override fun obtain(): Set<KnpDependency> {
 
-  override fun obtain(): Set<Coordinates> {
-    val osName = parameters.osName.get()
-    val archName = parameters.archName.get()
-    val kotlinVersion = parameters.kotlinVersion.get()
+    val coords = dependenciesCoordinates()
 
-    val coords = dependenciesCoordinates(
-      kotlinVersion = kotlinVersion,
-      hostFamily = osName,
-      hostArch = archName,
-    )
+//    val result = coords.map { coord ->
+//      Coordinates(
+//        group = coord.group,
+//        module = coord.module,
+//        version = coord.version,
+//        extension = coord.extension,
+//        classifier = coord.classifier,
+//        artifact = coord.artifact,
+//      )
+//    }
 
-    val result = coords.map { coord ->
-      Coordinates(
-        group = coord.group,
-        module = coord.module,
-        version = coord.version,
-        extension = coord.extension,
-        classifier = coord.classifier,
-        artifact = coord.artifact,
-      )
-    }
-
-    val groupedResult = result.groupingBy { it }.eachCount()
+    val groupedResult = coords.groupingBy { it }.eachCount()
 
     val duplicates = groupedResult.filterValues { it > 1 }.keys
     if (duplicates.isNotEmpty()) {
@@ -96,48 +89,65 @@ internal constructor() :
     return groupedResult.keys
   }
 
-  internal fun dependenciesCoordinates(
-    kotlinVersion: String,
-    hostFamily: String,
-    hostArch: String,
-  ): Set<KotlinVersionTargetDependencies.Coordinates> {
-    val data = konanDependenciesReport.data
-      .firstOrNull {
-        it.dist.version == kotlinVersion
-            && it.dist.hostFamily == hostFamily
-            && it.dist.hostArch == hostArch
-      }
-      ?: error("No dependencies found for Kotlin version kotlinVersion:$kotlinVersion, hostFamily:$hostFamily, hostArch:$hostArch")
+  internal fun dependenciesCoordinates(): Set<KnpDependency> {
+    val requestedTargets = parameters.compileTargets.get()
 
-    return data.dependencyCoords.values.flatten().toSet()
+    val data = knDependencyData.filter { data ->
+      data.version == parameters.kotlinVersion.get()
+          && data.compileTarget in requestedTargets
+          && data.buildPlatform == parameters.buildPlatform.get()
+    }
+
+    require(data.isNotEmpty()) {
+      "No dependency data found for Kotlin version:${parameters.kotlinVersion.get()} and targets:${requestedTargets} and buildPlatform:${parameters.buildPlatform.get()}"
+    }
+
+    return data.flatMap { it.dependencies }.toSet()
+
+//    val version: String = parameters.kotlinVersion.get()
+//    //val targetPlatform = parameters.targetPlatform.get()
+//    val buildPlatform = parameters.buildPlatform.get()
+//
+//    val data = konanDependenciesReport.data
+//      .firstOrNull { deps ->
+//        deps.version == version
+////            && it.dist.hostFamily == hostFamily
+//            && deps.buildPlatform == buildPlatform
+//      }
+////    val data = konanDependenciesReport(version).data
+////      .firstOrNull { deps ->
+////        deps.version == version
+//////            && deps.targetPlatform == targetPlatform
+////            && deps.buildPlatform == buildPlatform
+////      }
+//      ?: error("No dependencies found for Kotlin version:$version, buildPlatform:$buildPlatform")
+//
+//    return data.dependencies.values.flatten().toSet()
   }
 
   companion object {
 
     private val logger: Logger = Logging.getLogger(KnpDependenciesCoordsSpec::class.java)
 
-    private val konanDependenciesReportJson: String by lazy {
-      Companion::class.java.getResourceAsStream("/dev/adamko/kn-toolchains/KonanDependenciesReport.json")!!
-        .use { it.readAllBytes().decodeToString() }
-    }
-
-    private val konanDependenciesReport: KonanDependenciesReport by lazy {
-      Json.decodeFromString(
-        KonanDependenciesReport.serializer(),
-        konanDependenciesReportJson,
-      )
-    }
-
     /**
      * See [KnpDependenciesCoordsSpec].
      */
     internal fun ProviderFactory.knpDependenciesCoordsSpec(
       knpSpec: KotlinNativePrebuiltDistributionSpec,
-    ): Provider<Set<Coordinates>> {
+    ): Provider<Set<KnpDependency>> {
       return of(KnpDependenciesCoordsSpec::class) { spec ->
-        spec.parameters.osName.set(knpSpec.osFamily.map { it.id })
-        spec.parameters.archName.set(knpSpec.architecture.map { it.id })
+        spec.parameters.buildPlatform.set(knpSpec.buildPlatform)
+        spec.parameters.compileTargets.set(knpSpec.compileTargets)
         spec.parameters.kotlinVersion.set(knpSpec.version)
+//        spec.parameters.buildPlatform.set(
+//          knpSpec.osFamily.zip(knpSpec.architecture) { osFamily, arch -> Platform(osFamily.id, arch.id) }
+//        )
+//        spec.parameters.targetPlatform.set(
+//          knpSpec.osFamily.zip(knpSpec.architecture) { osFamily, arch -> Platform(osFamily.id, arch.id) }
+//        )
+////        spec.parameters.osName.set(knpSpec.osFamily.map { it.id })
+////        spec.parameters.archName.set(knpSpec.architecture.map { it.id })
+//        spec.parameters.kotlinVersion.set(knpSpec.version)
       }
     }
   }

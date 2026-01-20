@@ -7,6 +7,7 @@ import java.io.Serializable
  *
  * @see KotlinNativePrebuiltDistributionSpec.architecture
  */
+@Deprecated("moved to data")
 sealed class Architecture : Serializable {
 
   abstract val name: String

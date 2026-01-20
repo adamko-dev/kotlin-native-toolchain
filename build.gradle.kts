@@ -9,6 +9,7 @@ plugins {
 idea {
   module {
     excludeProjectConfigurationDirs(layout, providers)
+    generatedSourceDirs.add(file("knt-modules/knt-dependency-data/src/mainGenerated/kotlin"))
   }
 }
 

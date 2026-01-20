@@ -6,8 +6,8 @@ import dev.adamko.kntoolchain.internal.KnToolchainsDirSource.Companion.knToolcha
 import dev.adamko.kntoolchain.internal.KnpDependenciesCoordsSpec.Companion.knpDependenciesCoordsSpec
 import dev.adamko.kntoolchain.internal.KnpDistributionConfigurations
 import dev.adamko.kntoolchain.internal.KnpDistributionDependencyCoordsSource.Companion.kotlinNativePrebuiltToolchainDependencySpec
-import dev.adamko.kntoolchain.model.Architecture
-import dev.adamko.kntoolchain.model.OsFamily
+import dev.adamko.kntoolchain.tools.data.KnBuildPlatform
+import dev.adamko.kntoolchain.tools.data.KnpVersion
 import java.io.File
 import java.nio.file.Path
 import java.util.*
@@ -63,14 +63,44 @@ internal constructor(
           .orElse(baseInstallDir.dir("checksums"))
       )
 
-      kotlinNativePrebuiltDistribution.osFamily.convention(OsFamily.current())
-      kotlinNativePrebuiltDistribution.architecture.convention(Architecture.current())
-      kotlinNativePrebuiltDistribution.version.convention(providers.provider { kotlinGradlePluginVersion })
+      val currentOs = providers.systemProperty("os.name").map { osName ->
+        when {
+          osName.startsWith("Win")   -> KnBuildPlatform.OsFamily.Windows
+          osName.startsWith("Linux") -> KnBuildPlatform.OsFamily.Linux
+          osName.startsWith("Mac")   -> KnBuildPlatform.OsFamily.MacOs
+          else                       -> error("Unknown OS: $osName")
+        }
+      }
+
+      val currentArch = providers.systemProperty("os.arch").map { arch ->
+        when (arch) {
+          "x86_64"  -> KnBuildPlatform.OsArch.X86_64
+          "aarch64" -> KnBuildPlatform.OsArch.AArch64
+          else      -> error("Unknown arch: $arch")
+        }
+      }
+
+      kotlinNativePrebuiltDistribution.buildPlatform.convention(
+        providers.zip(currentOs, currentArch) { os, arch ->
+          KnBuildPlatform.allPlatforms.firstOrNull { platform ->
+            platform.family == os && platform.arch == arch
+          } ?: error("Unknown platform: $os/$arch")
+        }
+      )
+//      kotlinNativePrebuiltDistribution.osFamily.convention(OsFamily.current())
+//      kotlinNativePrebuiltDistribution.architecture.convention(Architecture.current())
+      kotlinNativePrebuiltDistribution.version.convention(
+        providers.provider {
+          KnpVersion.entries.firstOrNull {
+            it.value == kotlinGradlePluginVersion
+          }
+        }
+      )
 
       kotlinNativePrebuiltDistribution.coordinates.convention(
         providers.kotlinNativePrebuiltToolchainDependencySpec(
-          osFamily = kotlinNativePrebuiltDistribution.osFamily,
-          architecture = kotlinNativePrebuiltDistribution.architecture,
+          buildPlatform = kotlinNativePrebuiltDistribution.buildPlatform,
+//          architecture = kotlinNativePrebuiltDistribution.architecture,
           version = kotlinNativePrebuiltDistribution.version,
         )
       )
@@ -116,7 +146,7 @@ internal constructor(
         knpSpec = knpToolchainExtension.kotlinNativePrebuiltDistribution,
       ).map { coords ->
         coords.map { coord ->
-          project.dependencies.create(coord.asDependencyNotation()) {
+          project.dependencies.create(coord.coord) {
             val coordArtifact = coord.artifact
             if (coordArtifact != null) {
               // If `coord.artifact` is present, it indicates module != artifact.

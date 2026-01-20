@@ -3,8 +3,7 @@ package dev.adamko.kntoolchain.tools.datamodel
 //import kotlinx.serialization.Serializable
 //
 //@Serializable
-//data class KonanDist(
-//  val version: String,
-//  val targetFamily: String,
-//  val targetArch: String,
+//data class HostOs(
+//  val family: String,
+//  val arch: String,
 //)

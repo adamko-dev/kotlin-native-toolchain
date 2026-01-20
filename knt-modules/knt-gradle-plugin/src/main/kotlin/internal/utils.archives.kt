@@ -6,6 +6,7 @@ import java.nio.file.Path
 import java.nio.file.PathMatcher
 import java.nio.file.attribute.BasicFileAttributeView
 import java.nio.file.attribute.FileTime
+import java.nio.file.attribute.PosixFileAttributeView
 import java.nio.file.attribute.PosixFilePermission
 import java.time.LocalDateTime
 import java.time.ZoneOffset
@@ -161,7 +162,12 @@ private fun extractTarGz(
               entryDestination.outputStream().use { sink ->
                 tarInputStream.transferTo(sink)
               }
-              entryDestination.setPosixFilePermissions(entry.getPosixFilePermissions())
+
+              if (entryDestination.fileAttributesViewOrNull<PosixFileAttributeView>() != null) {
+                entryDestination.setPosixFilePermissions(entry.getPosixFilePermissions())
+              } else {
+                // Not supported on this filesystem (e.g on Windows)
+              }
 
               entryDestination.fileAttributesView<BasicFileAttributeView>().setTimes(
                 fileTime,

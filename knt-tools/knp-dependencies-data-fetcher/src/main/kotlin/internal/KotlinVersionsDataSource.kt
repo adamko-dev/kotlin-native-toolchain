@@ -18,7 +18,6 @@ import org.gradle.api.provider.Property
 import org.gradle.api.provider.ValueSource
 import org.gradle.api.provider.ValueSourceParameters
 import org.jetbrains.kotlin.tooling.core.KotlinToolingVersion
-import org.jetbrains.kotlin.tooling.core.KotlinToolingVersion.Maturity.STABLE
 
 /**
  * Downloads all Kotlin Versions from Maven Central.
@@ -54,7 +53,14 @@ internal constructor() : ValueSource<Set<KotlinToolingVersion>, KotlinVersionsDa
     return pomVersions
       // Versions prio to 2.0.0 did not host Konan on Maven Central, skip for simplicity of downloading.
       .filter { it >= KotlinToolingVersion("2.0.0") }
-      .filter { it.maturity == STABLE }
+
+      // Max by version, so Beta/RC releases are only considered if there's no subsequent release.
+      .groupingBy { v -> v.run { "$major:$minor:$patch" } }
+      .reduce { _, v1, v2 ->
+        maxOf(v1, v2)
+      }
+      .values
+
       .toSet()
   }
 

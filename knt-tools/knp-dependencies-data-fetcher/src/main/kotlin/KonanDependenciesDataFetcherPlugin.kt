@@ -22,7 +22,10 @@ import org.gradle.api.logging.Logging
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.Provider
 import org.gradle.api.provider.ProviderFactory
-import org.gradle.kotlin.dsl.*
+import org.gradle.kotlin.dsl.named
+import org.gradle.kotlin.dsl.of
+import org.gradle.kotlin.dsl.register
+import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.tooling.core.KotlinToolingVersion
 
 
@@ -83,13 +86,16 @@ internal constructor(
     project.tasks.withType<KonanDependenciesReportTask>().configureEach { task ->
       task.group = project.name
       task.workerClasspath.from(konanDependenciesReportTaskClasspathResolver)
-      task.reportFile.set(task.temporaryDir.resolve("report.txt"))
+//      task.reportFile.set(task.temporaryDir.resolve("report.txt"))
+//      task.reportsDir.convention(layout.buildDirectory.dir("kntoolchain/konanDependenciesReports"))
+//      task.reportFile.convention(layout.buildDirectory.file("kntoolchain/konanDependenciesReports/KonanDependenciesReport.json"))
+//      task.outputDir.convention(layout.buildDirectory.dir("kntoolchain/konanDependenciesReports/"))
     }
 
-    val konanDependenciesReport by project.tasks.registering(KonanDependenciesReportTask::class) {
-      konanDistributions.from(allKonanDistributions)
-      reportFile.set(layout.projectDirectory.dir("data").file("KonanDependenciesReport.json"))
-      kotlinVersions.set(kotlinVersionsData)
+    project.tasks.register("konanDependenciesReport", KonanDependenciesReportTask::class) { task ->
+      task.konanDistributions.from(allKonanDistributions)
+      task.reportFile.set(layout.projectDirectory.dir("data").file("KonanDependenciesReport.json"))
+//      task.kotlinVersions.set(kotlinVersionsData)
     }
   }
 

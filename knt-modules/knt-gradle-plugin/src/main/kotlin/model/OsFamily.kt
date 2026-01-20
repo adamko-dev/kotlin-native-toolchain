@@ -7,6 +7,7 @@ import java.io.Serializable
  *
  * @see KotlinNativePrebuiltDistributionSpec.osFamily
  */
+@Deprecated("moved to data")
 sealed class OsFamily : Serializable {
   abstract val name: String
   val id: String get() = name.lowercase()

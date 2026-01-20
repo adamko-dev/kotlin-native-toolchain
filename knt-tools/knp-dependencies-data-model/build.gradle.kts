@@ -14,7 +14,7 @@ dependencies {
   implementation(platform(libs.kotlinxSerialization.bom))
   implementation(libs.kotlinxSerialization.core)
 
-  compileOnly(kotlin("reflect")) // required for KonanTarget::class.sealedSubclasses
+  //compileOnly(kotlin("reflect")) // required for KonanTarget::class.sealedSubclasses
 
   compileOnly("org.jetbrains.kotlin:kotlin-gradle-plugin:${embeddedKotlinVersion}")
 }
