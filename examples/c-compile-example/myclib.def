@@ -1,0 +1,11 @@
+headers=myclib.h
+package=myclib
+staticLibraries=libmyclib.a
+#libraryPaths=staticlibs/
+compilerOpts=-Imyclib/include/
+
+libraryPaths.macos_arm64=staticlibs/macos_arm64/
+
+libraryPaths.macos_x64=staticlibs/macos_x64/
+
+libraryPaths.linux_x64=staticlibs/linux_x64/
