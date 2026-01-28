@@ -3,7 +3,7 @@
 kotlin = "2.3.0"
 
 kotlinxCoroutines = "1.10.2"
-kotlinxSerialization = "1.9.0"
+kotlinxSerialization = "1.10.0"
 
 apache-commonsCompress = "1.28.0"
 
