@@ -66,6 +66,7 @@ internal constructor(
 
       val currentArch = providers.systemProperty("os.arch").map { arch ->
         when (arch) {
+          "amd64"   -> KnBuildPlatform.OsArch.X86_64
           "x86_64"  -> KnBuildPlatform.OsArch.X86_64
           "aarch64" -> KnBuildPlatform.OsArch.AArch64
           else      -> error("Unknown arch: $arch")
