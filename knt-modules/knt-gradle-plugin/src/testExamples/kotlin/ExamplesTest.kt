@@ -15,6 +15,27 @@ class ExamplesTest {
   fun `c-compile-example`(
     @TempDir tmpDir: Path,
   ): Unit = with(GradleTestContext(tmpDir, projectName = "c-compile-example")) {
+    copyProject()
+
+    val runDebugExecutableTask = runDebugExecutableTaskName()
+
+    runner
+      .withArguments(runDebugExecutableTask)
+      .forwardOutput()
+      .build()
+      .apply {
+        output.lines().shouldContainAll(
+          "Hello, world!",
+          "isEven(0) true",
+          "isEven(1) false",
+          "isEven(2) true",
+          "isEven(3) false",
+          "isEven(4) true",
+        )
+      }
+  }
+
+  private fun GradleTestContext.copyProject() {
     examplesDir.resolve("c-compile-example").also { srcDir ->
       srcDir.walk()
         .filter { it.isRegularFile() }
@@ -26,6 +47,13 @@ class ExamplesTest {
         }
     }
 
+    updateGradleProperties()
+    updateRepositories()
+    updateKntBaseInstallDir()
+    updateKntPluginVersion()
+  }
+
+  private fun GradleTestContext.updateGradleProperties() {
     projectDir.resolve("gradle.properties").apply {
       writeText(
         buildString {
@@ -34,7 +62,9 @@ class ExamplesTest {
         }
       )
     }
+  }
 
+  private fun GradleTestContext.updateRepositories() {
     projectDir.walk()
       .filter { it.name == "settings.gradle.kts" }
       .forEach { file ->
@@ -67,7 +97,9 @@ class ExamplesTest {
           }
         )
       }
+  }
 
+  private fun GradleTestContext.updateKntBaseInstallDir() {
     projectDir.walk()
       .filter { it.name == "build.gradle.kts" }
       .filter { it.readText().contains("""id("dev.adamko.kotlin-native-toolchain")""") }
@@ -85,21 +117,23 @@ class ExamplesTest {
           }
         )
       }
+  }
 
-    val runDebugExecutableTask = runDebugExecutableTaskName()
-
-    runner
-      .withArguments(runDebugExecutableTask)
-      .forwardOutput()
-      .build()
-      .apply {
-        output.lines().shouldContainAll(
-          "Hello, world!",
-          "isEven(0) true",
-          "isEven(1) false",
-          "isEven(2) true",
-          "isEven(3) false",
-          "isEven(4) true",
+  private fun GradleTestContext.updateKntPluginVersion() {
+    val kntPluginId = """id("dev.adamko.kotlin-native-toolchain")"""
+    projectDir.walk()
+      .filter { it.name == "build.gradle.kts" }
+      .filter { it.readText().contains("""$kntPluginId version""") }
+      .forEach { file ->
+        file.writeText(
+          file.readLines()
+            .joinToString("\n") { line ->
+              if (line.trim().startsWith("""$kntPluginId version""")) {
+                """$kntPluginId version "$kntGradlePluginProjectVersion""""
+              } else {
+                line
+              }
+            }
         )
       }
   }
@@ -127,5 +161,6 @@ class ExamplesTest {
 
   companion object {
     private val examplesDir: Path by systemProperty(::Path)
+    private val kntGradlePluginProjectVersion: String by systemProperty()
   }
 }
