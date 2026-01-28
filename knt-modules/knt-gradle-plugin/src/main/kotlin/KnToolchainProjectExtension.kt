@@ -37,9 +37,6 @@ internal constructor(
    */
   abstract val checksumsDir: DirectoryProperty
 
-  internal abstract val baseInstallDirFromSettings: DirectoryProperty
-  internal abstract val checksumsDirFromSettings: DirectoryProperty
-
   /**
    * The specification of the Kotlin/Native toolchain distribution to install.
    *

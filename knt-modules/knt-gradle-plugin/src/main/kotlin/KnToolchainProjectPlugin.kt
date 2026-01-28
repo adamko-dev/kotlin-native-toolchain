@@ -47,21 +47,13 @@ internal constructor(
       knpToolchainExtension = extension,
       knpConfigurations = knpConfigurations,
     )
-
-//    configureRepositories()
   }
 
   internal fun createKnToolchainExtension(project: Project): KnToolchainProjectExtension {
     return project.extensions.create<KnToolchainProjectExtension>(EXTENSION_NAME).apply {
 
-      baseInstallDir.convention(
-        baseInstallDirFromSettings
-          .orElse(layout.dir(providers.knToolchainsDir().map(Path::toFile)))
-      )
-      checksumsDir.convention(
-        checksumsDirFromSettings
-          .orElse(baseInstallDir.dir("checksums"))
-      )
+      baseInstallDir.convention(layout.dir(providers.knToolchainsDir().map(Path::toFile)))
+      checksumsDir.convention(baseInstallDir.dir("checksums"))
 
       val currentOs = providers.systemProperty("os.name").map { osName ->
         when {
@@ -87,8 +79,6 @@ internal constructor(
           } ?: error("Unknown platform: $os/$arch")
         }
       )
-//      kotlinNativePrebuiltDistribution.osFamily.convention(OsFamily.current())
-//      kotlinNativePrebuiltDistribution.architecture.convention(Architecture.current())
       kotlinNativePrebuiltDistribution.version.convention(
         providers.provider {
           KnpVersion.entries.firstOrNull {
@@ -100,7 +90,6 @@ internal constructor(
       kotlinNativePrebuiltDistribution.coordinates.convention(
         providers.kotlinNativePrebuiltToolchainDependencySpec(
           buildPlatform = kotlinNativePrebuiltDistribution.buildPlatform,
-//          architecture = kotlinNativePrebuiltDistribution.architecture,
           version = kotlinNativePrebuiltDistribution.version,
         )
       )

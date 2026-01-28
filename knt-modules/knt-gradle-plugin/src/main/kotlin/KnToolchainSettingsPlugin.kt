@@ -14,14 +14,11 @@ import org.gradle.language.base.plugins.LifecycleBasePlugin
 
 abstract class KnToolchainSettingsPlugin
 @Inject
-internal constructor(
-//  private val providers: ProviderFactory,
-//  private val objects: ObjectFactory,
-//  private val layout: BuildLayout,
-) : Plugin<Settings> {
+internal constructor() : Plugin<Settings> {
   override fun apply(settings: Settings) {
 
-    val settingsExtension = createExtension(settings)
+//    val settingsExtension =
+    createExtension(settings)
 
     val kntService = registerKnToolchainService(settings)
 
@@ -30,7 +27,6 @@ internal constructor(
     settings.gradle.rootProject { rootProject ->
       configureRootProject(
         rootProject = rootProject,
-        kntExtension = settingsExtension,
         kntService = kntService,
       )
     }
@@ -39,9 +35,6 @@ internal constructor(
       project.plugins.withType<KnToolchainProjectPlugin>().configureEach { _ ->
         val projectExt = project.extensions.getByType<KnToolchainProjectExtension>()
         kntService.get().requestedKnpDists.add(projectExt.kotlinNativePrebuiltDistribution)
-
-        projectExt.baseInstallDirFromSettings.convention(settingsExtension.baseInstallDir)
-        projectExt.checksumsDirFromSettings.convention(settingsExtension.checksumsDir)
       }
     }
   }
@@ -49,7 +42,6 @@ internal constructor(
 
   private fun createExtension(settings: Settings): KnToolchainSettingsExtension {
     return settings.extensions.create<KnToolchainSettingsExtension>(KnToolchainSettingsExtension.EXTENSION_NAME).apply {
-      checksumsDir.convention(baseInstallDir.map { it.dir("checksums") })
     }
   }
 
@@ -63,27 +55,16 @@ internal constructor(
   private fun configureKnpRepository(settings: Settings): Unit = context(settings) {
     settings.dependencyResolutionManagement.repositories { repositories ->
       repositories.kotlinNativePrebuiltDependencies()
-
-//      if (repositories !is ExtensionAware) return@repositories
-//
-//      repositories.extra.set(
-//        KN_PREBUILT_DEPS_URL_PROPERTY,
-//        providers.gradleProperty(KN_PREBUILT_DEPS_URL_PROPERTY).orNull
-//      )
-//
-//      repositories.extensions.add("objectFactory", objects)
     }
   }
 
 
   private fun configureRootProject(
     rootProject: Project,
-    kntExtension: KnToolchainSettingsExtension,
     kntService: Provider<KnToolchainService>,
   ) {
     val checkKnToolchainTask = registerCheckKonanDataIntegrityTask(
       project = rootProject,
-      kntSettingsExtension = kntExtension,
       kntService = kntService,
     )
 
@@ -99,7 +80,6 @@ internal constructor(
    */
   private fun registerCheckKonanDataIntegrityTask(
     project: Project,
-    kntSettingsExtension: KnToolchainSettingsExtension,
     kntService: Provider<KnToolchainService>,
   ): TaskProvider<CheckKnToolchainIntegrityTask> {
     require(project.isRootProject()) {
@@ -113,11 +93,6 @@ internal constructor(
       task.description = "Checks that the Kotlin/Native prebuilt toolchain installation is valid."
 
       task.knpDists.convention(kntService.flatMap { it.requestedKnpDists })
-
-      task.baseInstallDir.convention(kntSettingsExtension.baseInstallDir)
-      task.checksumsDir.convention(kntSettingsExtension.checksumsDir)
-//        kntExtension.knToolchainsDir)
-//      task.checksumsDir.convention(kntExtension.checksumsDir)
 
       task.binaryResultsDirectory.convention(
         layout.buildDirectory.dir("test-results/${CheckKnToolchainIntegrityTask.TEST_EVENT_ROOT_GROUP_NAME}")
