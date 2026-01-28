@@ -63,7 +63,7 @@ class GradleTestContext(
       |""".trimMargin()
 
     gradleProperties = """
-      |org.gradle.jvmargs=-Dfile.encoding=UTF-8 -Xmx4g -XX:MaxMetaspaceSize=2g
+      |org.gradle.jvmargs=-Dfile.encoding=UTF-8
       |org.gradle.caching=true
       |org.gradle.configuration-cache=true
       |org.gradle.logging.stacktrace=all
