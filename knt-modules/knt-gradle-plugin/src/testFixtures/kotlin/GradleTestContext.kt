@@ -21,6 +21,9 @@ class GradleTestContext(
   var buildGradleKts: String by buildGradleKtsFile.text()
   var gradleProperties: String by gradlePropertiesFile.text()
 
+  val konanDataDir: Path
+    get() = projectDir.resolve("konan-data")
+
   init {
     projectDir.createDirectories()
 
@@ -81,7 +84,7 @@ class GradleTestContext(
   override fun close() {}
 
   companion object {
-    private val devMavenRepo: Path by systemProperty { Path(it) }
+    val devMavenRepo: Path by systemProperty(::Path)
   }
 }
 

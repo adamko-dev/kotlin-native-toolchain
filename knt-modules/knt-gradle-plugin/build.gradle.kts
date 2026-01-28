@@ -70,7 +70,6 @@ testing {
       dependencies {
         implementation(gradleTestKit())
 
-
         implementation(projects.kntModules.kntDependencyData)
 
         implementation(libs.apache.commonsCompress)
@@ -78,15 +77,44 @@ testing {
       targets.configureEach {
         testTask.configure {
           val devMavenRepo = devPublish.devMavenRepo
-//          inputs.dir(devMavenRepo)
-//            .withPropertyName("devMavenRepo")
-//            .withPathSensitivity(PathSensitivity.RELATIVE)
-//            .withNormalizer(ClasspathNormalizer::class)
-//            .ignoreEmptyDirectories()
           dependsOn(tasks.updateDevRepo)
           jvmArgumentProviders.add {
             listOf(
               "-DdevMavenRepo=${devMavenRepo.get().asFile.invariantSeparatorsPath}"
+            )
+          }
+
+          val projectVersion = providers.provider { project.version.toString() }
+          jvmArgumentProviders.add {
+            listOf("-DkntGradlePluginProjectVersion=${projectVersion.get()}")
+          }
+        }
+      }
+    }
+
+    val testExamples by registering(JvmTestSuite::class) {
+
+      dependencies {
+        implementation(gradleTestKit())
+      }
+
+      targets.configureEach {
+        testTask.configure {
+          val devMavenRepo = devPublish.devMavenRepo
+          dependsOn(tasks.updateDevRepo)
+          jvmArgumentProviders.add {
+            listOf(
+              "-DdevMavenRepo=${devMavenRepo.get().asFile.invariantSeparatorsPath}"
+            )
+          }
+
+          val examplesDir = layout.settingsDirectory.dir("examples")
+          inputs.dir(examplesDir)
+            .withPathSensitivity(PathSensitivity.RELATIVE)
+            .ignoreEmptyDirectories()
+          jvmArgumentProviders.add {
+            listOf(
+              "-DexamplesDir=${examplesDir.asFile.invariantSeparatorsPath}"
             )
           }
 

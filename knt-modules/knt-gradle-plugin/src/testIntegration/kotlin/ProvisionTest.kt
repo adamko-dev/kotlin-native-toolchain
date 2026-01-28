@@ -178,7 +178,7 @@ class ProvisionTest {
         |    compileTargets = setOf(KnCompileTarget.LinuxX64)
         |  }
         |}
-    """.trimMargin()
+        """.trimMargin()
 
     runner
       .withArguments(
@@ -588,8 +588,6 @@ private object ExpectedDirectory {
   }
 }
 
-private val GradleTestContext.konanDataDir: Path
-  get() = projectDir.resolve("konan-data")
 
 private fun GradleTestContext.setupProject(
   knpVersion: KnpVersion = KnpVersion.V2_3_0,
@@ -615,16 +613,15 @@ private fun GradleTestContext.setupProject(
     .replace(
       "mavenCentral()",
       """
-      mavenCentral {
-        content {
-          excludeModule("org.jetbrains.kotlin", "kotlin-native-prebuilt")
+      val dummyRepo =
+        maven(file("${dummyRepo.invariantSeparatorsPathString}")) {
+          name = "DummyKnpRepo"
         }
+      exclusiveContent {
+        forRepositories(dummyRepo)
+        filter { includeModule("org.jetbrains.kotlin", "kotlin-native-prebuilt") }
       }
-      maven(file("${dummyRepo.invariantSeparatorsPathString}")) {
-        content { 
-          includeModule("org.jetbrains.kotlin", "kotlin-native-prebuilt") 
-        }
-      }
+      mavenCentral()
       """.trimIndent()
     )
 
