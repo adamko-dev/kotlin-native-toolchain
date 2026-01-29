@@ -91,7 +91,7 @@ internal constructor(
       .filter { it.listDirectoryEntries().isNotEmpty() }
 
     val clangArgs = buildList {
-      add("clang")
+//      add("clang")
       add("clang")
       add(konanTargetName)
       cHeaderDirs.forEach {
@@ -106,7 +106,7 @@ internal constructor(
 
     logger.lifecycle("$path clangArgs: $clangArgs")
 
-    execRunKonan(clangArgs)
+    execRunKonan("clang", clangArgs)
   }
 
   private fun runAr() {
@@ -115,7 +115,7 @@ internal constructor(
       .filter { it.extension == "o" }
 
     val arArgs = buildList {
-      add("llvm")
+      //add("llvm")
       add("llvm-ar")
       add("-r")
       add("lib${libName}.a")
@@ -126,12 +126,15 @@ internal constructor(
 
     logger.lifecycle("$path arArgs: $arArgs")
 
-    execRunKonan(arArgs)
+    execRunKonan("llvm", arArgs)
   }
 
   private fun execRunKonan(
+    util: String,
     args: List<String>,
   ) {
+    val runKonan = runKonan.get()
+    logger.lifecycle("$path execRunKonan $runKonan (exists:${runKonan.exists()}, $util, $args)")
     exec.exec { spec ->
       spec.workingDir(workDir)
       spec.commandLine(
@@ -140,7 +143,9 @@ internal constructor(
             add("cmd.exe")
             add("/c")
           }
-          add(runKonan.get().invariantSeparatorsPathString)
+          add(runKonan.invariantSeparatorsPathString)
+          add(util)
+          add("-D" + "konan.home=" + runKonan.parent.parent.invariantSeparatorsPathString)
           addAll(args)
         }
       )
