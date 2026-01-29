@@ -1,6 +1,7 @@
 import java.nio.file.Path
 import javax.inject.Inject
 import kotlin.io.path.*
+import org.apache.tools.ant.taskdefs.condition.Os
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.DirectoryProperty
@@ -89,7 +90,7 @@ internal constructor(
       .filter { it.isDirectory() }
       .filter { it.listDirectoryEntries().isNotEmpty() }
 
-    val args = buildList {
+    val clangArgs = buildList {
       add("clang")
       add("clang")
       add(konanTargetName)
@@ -103,11 +104,9 @@ internal constructor(
       }
     }
 
-    exec.exec {
-      it.executable(runKonan.get())
-      it.args(args)
-      it.workingDir(workDir)
-    }
+    logger.lifecycle("$path clangArgs: $clangArgs")
+
+    execRunKonan(clangArgs)
   }
 
   private fun runAr() {
@@ -125,12 +124,26 @@ internal constructor(
       }
     }
 
-    println("$path arArgs: $arArgs")
+    logger.lifecycle("$path arArgs: $arArgs")
 
-    exec.exec {
-      it.executable(runKonan.get())
-      it.args(arArgs)
-      it.workingDir(workDir)
+    execRunKonan(arArgs)
+  }
+
+  private fun execRunKonan(
+    args: List<String>,
+  ) {
+    exec.exec { spec ->
+      spec.workingDir(workDir)
+      spec.commandLine(
+        buildList {
+          if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+            add("cmd.exe")
+            add("/c")
+          }
+          add(runKonan.get().invariantSeparatorsPathString)
+          addAll(args)
+        }
+      )
     }
   }
 }
