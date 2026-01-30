@@ -108,4 +108,4 @@ jobs:
           report_paths: |
             **/build/test-results/**/TEST-*.xml
           require_tests: false
-          check_name: JUnit Test Report ${{ runner.os }}
+          check_name: JUnit Test Report | ${{ inputs.gradle-task }} @ ${{ runner.os }}
