@@ -70,6 +70,12 @@ jobs:
           java-version: |
             21
 
+      - name: Fix Windows TempDir
+        if: runner.os == 'Windows'
+        run: |
+          set TMP=%USERPROFILE%\AppData\Local\Temp
+          set TEMP=%USERPROFILE%\AppData\Local\Temp
+
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
