@@ -72,11 +72,13 @@ jobs:
 
       - name: Fix Windows TempDir
         # https://github.com/actions/runner-images/issues/712#issuecomment-613004302
+        # https://ichard26.github.io/blog/2025/03/faster-pip-ci-on-windows-d-drive/#moving-temp-to-the-d-drive
         if: runner.os == 'Windows'
         shell: pwsh
         run: |
-          echo "TMP=%USERPROFILE%\AppData\Local\Temp" >> $Env:GITHUB_ENV
-          echo "TEMP=%USERPROFILE%\AppData\Local\Temp" >> $Env:GITHUB_ENV
+          mkdir "D:\\Temp"
+          echo "TMP=D:\\Temp" >> $env:GITHUB_ENV
+          echo "TEMP=D:\\Temp" >> $env:GITHUB_ENV
 
       - name: Fix Windows TempDir 2
         if: runner.os == 'Windows'
