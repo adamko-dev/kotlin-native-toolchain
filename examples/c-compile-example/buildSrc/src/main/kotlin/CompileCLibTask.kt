@@ -138,13 +138,17 @@ internal constructor(
     val konanDataDir = runKonan.parent.parent.parent
     val isWindows = Os.isFamily(Os.FAMILY_WINDOWS)
 
+    println("$path runKonan $runKonan ${runKonan.exists()}")
+    println("$path kotlinNativeHomeDir entries ${kotlinNativeHomeDir.listDirectoryEntries().toList().map { it.name }}")
+    println("$path bin entries ${runKonan.parent.listDirectoryEntries().toList().map { it.name }}")
+
     val commandLine = buildList {
       if (isWindows) {
-        add("cmd")
+        add("cmd.exe")
         add("/c")
         add(
           buildList {
-            add(runKonan.pathString)
+            add("\"${runKonan.pathString}\"")
             addAll(args)
           }.joinToString(" ")
         )
