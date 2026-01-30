@@ -134,21 +134,20 @@ internal constructor(
     args: List<String>,
   ) {
     val runKonan = runKonan.get()
-    logger.lifecycle("$path execRunKonan $runKonan (exists:${runKonan.exists()}, $util, $args)")
+    val commandLine = buildList {
+      if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+        add("cmd.exe")
+        add("/c")
+      }
+      add(runKonan.invariantSeparatorsPathString)
+      add(util)
+      add("-D" + "konan.home=" + runKonan.parent.parent.invariantSeparatorsPathString)
+      addAll(args)
+    }
+    logger.lifecycle("$path execRunKonan $commandLine (runKonan exists:${runKonan.exists()})")
     exec.exec { spec ->
       spec.workingDir(workDir)
-      spec.commandLine(
-        buildList {
-          if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-            add("cmd.exe")
-            add("/c")
-          }
-          add(runKonan.invariantSeparatorsPathString)
-          add(util)
-          add("-D" + "konan.home=" + runKonan.parent.parent.invariantSeparatorsPathString)
-          addAll(args)
-        }
-      )
+      spec.commandLine(commandLine)
     }
   }
 }
