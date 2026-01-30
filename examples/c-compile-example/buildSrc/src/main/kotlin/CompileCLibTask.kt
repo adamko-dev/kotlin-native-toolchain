@@ -1,3 +1,4 @@
+import java.io.ByteArrayOutputStream
 import java.nio.file.Path
 import javax.inject.Inject
 import kotlin.io.path.*
@@ -137,20 +138,29 @@ internal constructor(
     val kotlinNativeHomeDir = runKonan.parent.parent
     val konanDataDir = runKonan.parent.parent.parent
     val commandLine = buildList {
-//      if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-//        add("cmd.exe")
-//        add("/c")
-//      }
+      if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+        add("cmd.exe")
+        add("/c")
+      }
       add(runKonan.invariantSeparatorsPathString)
       add(util)
       add("-D" + "kotlin.native.home=" + kotlinNativeHomeDir.invariantSeparatorsPathString)
       addAll(args)
     }
-    logger.lifecycle("$path execRunKonan $commandLine (runKonan exists:${runKonan.exists()})")
-    exec.exec { spec ->
-      spec.workingDir(workDir)
-      spec.commandLine(commandLine)
-      spec.environment("KONAN_DATA_DIR", konanDataDir.invariantSeparatorsPathString)
+
+    ByteArrayOutputStream().use { execOutput ->
+      try {
+        exec.exec { spec ->
+          spec.workingDir(workDir)
+          spec.commandLine(commandLine)
+          spec.environment("KONAN_DATA_DIR", konanDataDir.invariantSeparatorsPathString)
+          spec.standardOutput = execOutput
+          spec.errorOutput = execOutput
+        }
+      } catch (failure: Throwable) {
+        logger.error("execOutput:\n${execOutput.toString()}")
+        throw failure
+      }
     }
   }
 }
