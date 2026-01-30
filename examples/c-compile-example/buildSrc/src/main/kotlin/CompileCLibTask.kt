@@ -140,13 +140,14 @@ internal constructor(
     val commandLine = buildList {
       if (Os.isFamily(Os.FAMILY_WINDOWS)) {
         add("cmd.exe")
+        add("/d")
         add("/c")
         add(runKonan.pathString)
       } else {
         add(runKonan.invariantSeparatorsPathString)
       }
       add(util)
-      add("-D" + "kotlin.native.home=" + kotlinNativeHomeDir.invariantSeparatorsPathString)
+      //add("-D" + "kotlin.native.home=" + kotlinNativeHomeDir.invariantSeparatorsPathString)
       addAll(args)
     }
 
