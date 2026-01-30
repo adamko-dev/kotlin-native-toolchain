@@ -268,27 +268,22 @@ class ProvisionTest {
             │   └── x86_64-unknown-linux-gnu-gcc-8.3.0-glibc-2.19-kernel-4.9-2.zip.hash
             ├── dependencies/
             │   ├── libffi-3.3-windows-x64-1/
-            │   │   ├── libffi-3.3-windows-x64-1/
-            │   │   │   └── demo-content.txt
-            │   │   └── CACHEDIR.TAG
+            │   │   ├── CACHEDIR.TAG
+            │   │   └── demo-content.txt
             │   ├── llvm-19-x86_64-windows-essentials-134/
-            │   │   ├── llvm-19-x86_64-windows-essentials-134/
-            │   │   │   └── demo-content.txt
-            │   │   └── CACHEDIR.TAG
+            │   │   ├── CACHEDIR.TAG
+            │   │   └── demo-content.txt
             │   ├── msys2-mingw-w64-x86_64-2/
-            │   │   ├── msys2-mingw-w64-x86_64-2/
-            │   │   │   └── demo-content.txt
-            │   │   └── CACHEDIR.TAG
+            │   │   ├── CACHEDIR.TAG
+            │   │   └── demo-content.txt
             │   └── x86_64-unknown-linux-gnu-gcc-8.3.0-glibc-2.19-kernel-4.9-2/
-            │       ├── x86_64-unknown-linux-gnu-gcc-8.3.0-glibc-2.19-kernel-4.9-2/
-            │       │   └── demo-content.txt
-            │       └── CACHEDIR.TAG
+            │       ├── CACHEDIR.TAG
+            │       └── demo-content.txt
             └── kotlin-native-prebuilt-2.3.0-windows-x86_64/
-                ├── kotlin-native-prebuilt-2.3.0-windows-x86_64/
-                │   ├── bin/
-                │   │   └── run_konan.bat
-                │   └── demo-content.txt
-                └── CACHEDIR.TAG
+                ├── bin/
+                │   └── run_konan.bat
+                ├── CACHEDIR.TAG
+                └── demo-content.txt
             """.trimIndent()
 
           KnBuildPlatform.OsFamily.Linux   ->
@@ -473,47 +468,37 @@ private object ExpectedDirectory {
       │   └── x86_64-unknown-linux-gnu-gcc-8.3.0-glibc-2.19-kernel-4.9-2.zip.hash
       ├── dependencies/
       │   ├── aarch64-unknown-linux-gnu-gcc-8.3.0-glibc-2.25-kernel-4.9-2/
-      │   │   ├── aarch64-unknown-linux-gnu-gcc-8.3.0-glibc-2.25-kernel-4.9-2/
-      │   │   │   └── demo-content.txt
-      │   │   └── CACHEDIR.TAG
+      │   │   ├── CACHEDIR.TAG
+      │   │   └── demo-content.txt
       │   ├── arm-unknown-linux-gnueabihf-gcc-8.3.0-glibc-2.12.1-kernel-4.9-1/
-      │   │   ├── arm-unknown-linux-gnueabihf-gcc-8.3.0-glibc-2.12.1-kernel-4.9-1/
-      │   │   │   └── demo-content.txt
-      │   │   └── CACHEDIR.TAG
+      │   │   ├── CACHEDIR.TAG
+      │   │   └── demo-content.txt
       │   ├── libffi-3.3-windows-x64-1/
-      │   │   ├── libffi-3.3-windows-x64-1/
-      │   │   │   └── demo-content.txt
-      │   │   └── CACHEDIR.TAG
+      │   │   ├── CACHEDIR.TAG
+      │   │   └── demo-content.txt
       │   ├── lldb-2-windows/
-      │   │   ├── lldb-2-windows/
-      │   │   │   └── demo-content.txt
-      │   │   └── CACHEDIR.TAG
+      │   │   ├── CACHEDIR.TAG
+      │   │   └── demo-content.txt
       │   ├── llvm-19-x86_64-windows-essentials-134/
-      │   │   ├── llvm-19-x86_64-windows-essentials-134/
-      │   │   │   └── demo-content.txt
-      │   │   └── CACHEDIR.TAG
+      │   │   ├── CACHEDIR.TAG
+      │   │   └── demo-content.txt
       │   ├── msys2-mingw-w64-x86_64-2/
-      │   │   ├── msys2-mingw-w64-x86_64-2/
-      │   │   │   └── demo-content.txt
-      │   │   └── CACHEDIR.TAG
+      │   │   ├── CACHEDIR.TAG
+      │   │   └── demo-content.txt
       │   ├── target-sysroot-1-android_ndk/
-      │   │   ├── target-sysroot-1-android_ndk/
-      │   │   │   └── demo-content.txt
-      │   │   └── CACHEDIR.TAG
+      │   │   ├── CACHEDIR.TAG
+      │   │   └── demo-content.txt
       │   ├── target-toolchain-2-windows-android_ndk/
-      │   │   ├── target-toolchain-2-windows-android_ndk/
-      │   │   │   └── demo-content.txt
-      │   │   └── CACHEDIR.TAG
+      │   │   ├── CACHEDIR.TAG
+      │   │   └── demo-content.txt
       │   └── x86_64-unknown-linux-gnu-gcc-8.3.0-glibc-2.19-kernel-4.9-2/
-      │       ├── x86_64-unknown-linux-gnu-gcc-8.3.0-glibc-2.19-kernel-4.9-2/
-      │       │   └── demo-content.txt
-      │       └── CACHEDIR.TAG
+      │       ├── CACHEDIR.TAG
+      │       └── demo-content.txt
       └── kotlin-native-prebuilt-2.3.0-windows-x86_64/
-          ├── kotlin-native-prebuilt-2.3.0-windows-x86_64/
-          │   ├── bin/
-          │   │   └── run_konan.bat
-          │   └── demo-content.txt
-          └── CACHEDIR.TAG
+          ├── bin/
+          │   └── run_konan.bat
+          ├── CACHEDIR.TAG
+          └── demo-content.txt
     """
   }
 

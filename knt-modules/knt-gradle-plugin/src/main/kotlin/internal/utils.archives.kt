@@ -1,5 +1,6 @@
 package dev.adamko.kntoolchain.internal
 
+import java.io.IOException
 import java.io.OutputStream
 import java.nio.file.FileSystems
 import java.nio.file.Path
@@ -103,7 +104,10 @@ private fun extractZip(
 
       // STEP 2: copy the contents to the destination
       zipEntries.forEach { entry: ZipArchiveEntry ->
-        val entryDestination = entry.resolveIn(destinationDir)
+        val entryDestination = destinationDir.resolve(entry.name.substringAfter('/'))
+        if (!entryDestination.startsWith(destinationDir)) {
+          throw IOException("Zip slip '$destinationDir' + '${entry.name}' -> '$entryDestination'");
+        }
         when {
           entry.isDirectory   -> entryDestination.createDirectories()
           entry.isUnixSymlink -> entryDestination.createSymbolicLinkPointingTo(Path(entry.name))
