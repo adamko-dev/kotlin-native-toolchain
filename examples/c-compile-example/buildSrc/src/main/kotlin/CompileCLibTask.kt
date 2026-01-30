@@ -141,8 +141,10 @@ internal constructor(
       if (Os.isFamily(Os.FAMILY_WINDOWS)) {
         add("cmd.exe")
         add("/c")
+        add(runKonan.pathString)
+      } else {
+        add(runKonan.invariantSeparatorsPathString)
       }
-      add(runKonan.invariantSeparatorsPathString)
       add(util)
       add("-D" + "kotlin.native.home=" + kotlinNativeHomeDir.invariantSeparatorsPathString)
       addAll(args)
