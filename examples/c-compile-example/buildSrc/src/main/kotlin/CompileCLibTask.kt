@@ -136,18 +136,28 @@ internal constructor(
     val runKonan = runKonan.get().absolute().normalize()
     val kotlinNativeHomeDir = runKonan.parent.parent
     val konanDataDir = runKonan.parent.parent.parent
-    //val isWindows = Os.isFamily(Os.FAMILY_WINDOWS)
+    val isWindows = Os.isFamily(Os.FAMILY_WINDOWS)
 
-//    val commandLine = buildList {
-//      add(runKonan.invariantSeparatorsPathString)
-//      addAll(args)
-//    }
+    val commandLine = buildList {
+      if (isWindows) {
+        add("cmd")
+        add("/c")
+        add(
+          buildList {
+            add(runKonan.pathString)
+            addAll(args)
+          }.joinToString(" ")
+        )
+      } else {
+        add(runKonan.pathString)
+        addAll(args)
+      }
+    }
 
     ByteArrayOutputStream().use { execOutput ->
       val execResult = exec.exec { spec ->
         spec.workingDir(workDir)
-        spec.executable(runKonan.pathString)
-        spec.args(args)
+        spec.commandLine(commandLine)
         spec.environment("KONAN_DATA_DIR", konanDataDir.pathString)
         spec.standardOutput = execOutput
         spec.errorOutput = execOutput
