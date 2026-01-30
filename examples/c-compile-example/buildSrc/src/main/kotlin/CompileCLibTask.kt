@@ -137,15 +137,10 @@ internal constructor(
     val runKonan = runKonan.get()
     val kotlinNativeHomeDir = runKonan.parent.parent
     val konanDataDir = runKonan.parent.parent.parent
+    val isWindows = Os.isFamily(Os.FAMILY_WINDOWS)
+
     val commandLine = buildList {
-      if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-        add("cmd.exe")
-        add("/d")
-        add("/c")
-        add(runKonan.pathString)
-      } else {
-        add(runKonan.invariantSeparatorsPathString)
-      }
+      add(runKonan.invariantSeparatorsPathString)
       add(util)
       //add("-D" + "kotlin.native.home=" + kotlinNativeHomeDir.invariantSeparatorsPathString)
       addAll(args)
@@ -155,7 +150,11 @@ internal constructor(
       try {
         exec.exec { spec ->
           spec.workingDir(workDir)
-          spec.commandLine(commandLine)
+          if (isWindows) {
+            spec.commandLine("cmd.exe", "/c", commandLine.joinToString(" "))
+          } else {
+            spec.commandLine(commandLine)
+          }
           spec.environment("KONAN_DATA_DIR", konanDataDir.invariantSeparatorsPathString)
           spec.standardOutput = execOutput
           spec.errorOutput = execOutput
