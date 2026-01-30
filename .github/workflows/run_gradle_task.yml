@@ -73,10 +73,17 @@ jobs:
       - name: Fix Windows TempDir
         # https://github.com/actions/runner-images/issues/712#issuecomment-613004302
         if: runner.os == 'Windows'
-        shell: cmd
+        shell: pwsh
         run: |
-          set TMP=%USERPROFILE%\AppData\Local\Temp
-          set TEMP=%USERPROFILE%\AppData\Local\Temp
+          echo "TMP=%USERPROFILE%\AppData\Local\Temp" >> $Env:GITHUB_ENV
+          echo "TEMP=%USERPROFILE%\AppData\Local\Temp" >> $Env:GITHUB_ENV
+
+      - name: Fix Windows TempDir 2
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          echo $Env:TEMP
+          echo $Env:TMP
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
