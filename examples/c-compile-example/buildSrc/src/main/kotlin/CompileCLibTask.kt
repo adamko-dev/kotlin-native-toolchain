@@ -92,7 +92,7 @@ internal constructor(
       .filter { it.listDirectoryEntries().isNotEmpty() }
 
     val clangArgs = buildList {
-//      add("clang")
+      add("clang")
       add("clang")
       add(konanTargetName)
       cHeaderDirs.forEach {
@@ -107,7 +107,7 @@ internal constructor(
 
     logger.lifecycle("$path clangArgs: $clangArgs")
 
-    execRunKonan("clang", clangArgs)
+    execRunKonan(clangArgs)
   }
 
   private fun runAr() {
@@ -116,7 +116,7 @@ internal constructor(
       .filter { it.extension == "o" }
 
     val arArgs = buildList {
-      //add("llvm")
+      add("llvm")
       add("llvm-ar")
       add("-r")
       add("lib${libName}.a")
@@ -127,41 +127,39 @@ internal constructor(
 
     logger.lifecycle("$path arArgs: $arArgs")
 
-    execRunKonan("llvm", arArgs)
+    execRunKonan(arArgs)
   }
 
   private fun execRunKonan(
-    util: String,
     args: List<String>,
   ) {
-    val runKonan = runKonan.get()
+    val runKonan = runKonan.get().absolute().normalize()
     val kotlinNativeHomeDir = runKonan.parent.parent
     val konanDataDir = runKonan.parent.parent.parent
-    val isWindows = Os.isFamily(Os.FAMILY_WINDOWS)
+    //val isWindows = Os.isFamily(Os.FAMILY_WINDOWS)
 
-    val commandLine = buildList {
-      add(runKonan.invariantSeparatorsPathString)
-      add(util)
-      //add("-D" + "kotlin.native.home=" + kotlinNativeHomeDir.invariantSeparatorsPathString)
-      addAll(args)
-    }
+//    val commandLine = buildList {
+//      add(runKonan.invariantSeparatorsPathString)
+//      addAll(args)
+//    }
 
     ByteArrayOutputStream().use { execOutput ->
-      try {
-        exec.exec { spec ->
-          spec.workingDir(workDir)
-          if (isWindows) {
-            spec.commandLine("cmd.exe", "/c", commandLine.joinToString(" "))
-          } else {
-            spec.commandLine(commandLine)
-          }
-          spec.environment("KONAN_DATA_DIR", konanDataDir.invariantSeparatorsPathString)
-          spec.standardOutput = execOutput
-          spec.errorOutput = execOutput
-        }
-      } catch (failure: Throwable) {
-        logger.error("execOutput:\n${execOutput.toString()}")
-        throw failure
+      val execResult = exec.exec { spec ->
+        spec.workingDir(workDir)
+        spec.executable(runKonan.pathString)
+        spec.args(args)
+        spec.environment("KONAN_DATA_DIR", konanDataDir.pathString)
+        spec.standardOutput = execOutput
+        spec.errorOutput = execOutput
+        spec.isIgnoreExitValue = true
+      }
+      check(execResult.exitValue == 0) {
+        """
+        ${runKonan.name} failed ${execResult.exitValue}
+        ---
+        ${execOutput.toString()}
+        ---
+        """.trimIndent()
       }
     }
   }
