@@ -166,6 +166,7 @@ internal constructor(
       check(execResult.exitValue == 0) {
         """
         ${runKonan.name} failed ${execResult.exitValue}
+        commandLine: ${commandLine}
         ---
         ${execOutput.toString()}
         ---
