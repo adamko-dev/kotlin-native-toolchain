@@ -137,10 +137,10 @@ internal constructor(
     val kotlinNativeHomeDir = runKonan.parent.parent
     val konanDataDir = runKonan.parent.parent.parent
     val commandLine = buildList {
-      if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-        add("cmd.exe")
-        add("/c")
-      }
+//      if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+//        add("cmd.exe")
+//        add("/c")
+//      }
       add(runKonan.invariantSeparatorsPathString)
       add(util)
       add("-D" + "kotlin.native.home=" + kotlinNativeHomeDir.invariantSeparatorsPathString)
