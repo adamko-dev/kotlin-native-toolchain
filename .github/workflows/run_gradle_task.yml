@@ -76,9 +76,9 @@ jobs:
         if: runner.os == 'Windows'
         shell: pwsh
         run: |
-          mkdir "D:\\Temp"
-          echo "TMP=D:\\Temp" >> $env:GITHUB_ENV
-          echo "TEMP=D:\\Temp" >> $env:GITHUB_ENV
+          mkdir "D:\Temp"
+          echo "TMP=D:\Temp" >> $env:GITHUB_ENV
+          echo "TEMP=D:\Temp" >> $env:GITHUB_ENV
 
       - name: Fix Windows TempDir 2
         if: runner.os == 'Windows'

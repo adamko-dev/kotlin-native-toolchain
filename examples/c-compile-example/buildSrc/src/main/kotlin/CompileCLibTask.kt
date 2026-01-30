@@ -133,7 +133,7 @@ internal constructor(
   private fun execRunKonan(
     args: List<String>,
   ) {
-    val runKonan = runKonan.get().absolute().normalize().toRealPath()
+    val runKonan = runKonan.get().absolute().normalize()
     val kotlinNativeHomeDir = runKonan.parent.parent
     val konanDataDir = runKonan.parent.parent.parent
     val isWindows = Os.isFamily(Os.FAMILY_WINDOWS)
