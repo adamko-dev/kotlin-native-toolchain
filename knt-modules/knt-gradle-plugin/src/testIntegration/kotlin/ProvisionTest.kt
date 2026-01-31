@@ -1,8 +1,6 @@
 package dev.adamko.kntoolchain
 
-import dev.adamko.kntoolchain.test_utils.GradleTestContext
-import dev.adamko.kntoolchain.test_utils.kntGradlePluginProjectVersion
-import dev.adamko.kntoolchain.test_utils.toTreeString
+import dev.adamko.kntoolchain.test_utils.*
 import dev.adamko.kntoolchain.tools.data.KnBuildPlatform
 import dev.adamko.kntoolchain.tools.data.KnpVersion
 import io.kotest.matchers.shouldBe
@@ -10,12 +8,11 @@ import io.kotest.matchers.string.shouldContain
 import io.kotest.matchers.string.shouldNotContain
 import java.nio.file.Path
 import java.util.stream.Stream
-import kotlin.io.path.*
+import kotlin.io.path.createDirectories
+import kotlin.io.path.invariantSeparatorsPathString
+import kotlin.io.path.writeText
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry
-import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry
-import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream
-import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream
 import org.junit.jupiter.api.Assumptions.assumeTrue
 import org.junit.jupiter.api.condition.DisabledOnOs
 import org.junit.jupiter.api.extension.ExtensionContext
@@ -758,62 +755,4 @@ private fun setupDummyRepo(dummyRepo: Path) {
       }
     }
   }
-}
-
-private fun Path.createModuleTarGz(
-  name: String,
-  content: (name: String, sink: TarArchiveOutputStream) -> Unit = { _, _ -> },
-) {
-  require(this.isDirectory())
-
-  val out: Path = resolve("$name.tar.gz")
-  val entryName = "$name/demo-content.txt"
-  val content = "dummy module $name\n".toByteArray(Charsets.UTF_8)
-
-  out.outputStream()
-    .let(::GzipCompressorOutputStream)
-    .let(::TarArchiveOutputStream)
-    .use { sink ->
-      val entry = TarArchiveEntry(entryName).apply {
-        size = content.size.toLong()
-      }
-      sink.putArchiveEntry(entry)
-      sink.write(content)
-      sink.closeArchiveEntry()
-
-      content(name, sink)
-
-      sink.finish()
-    }
-}
-
-private fun Path.createModuleZip(
-  name: String,
-  content: (name: String, sink: ZipArchiveOutputStream) -> Unit = { _, _ -> },
-) {
-  require(this.isDirectory())
-
-  val out: Path = resolve("$name.zip")
-  val entryName = "$name/demo-content.txt"
-  val content = "dummy module $name\n".toByteArray(Charsets.UTF_8)
-
-  out.outputStream()
-    .let(::ZipArchiveOutputStream)
-    .use { sink ->
-
-      // ensure root dir exists in zip
-      sink.putArchiveEntry(ZipArchiveEntry("$name/"))
-      sink.closeArchiveEntry()
-
-      val entry = ZipArchiveEntry(entryName).apply {
-        size = content.size.toLong()
-      }
-      sink.putArchiveEntry(entry)
-      sink.write(content)
-      sink.closeArchiveEntry()
-
-      content(name, sink)
-
-      sink.finish()
-    }
 }

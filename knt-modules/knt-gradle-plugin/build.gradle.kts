@@ -33,6 +33,7 @@ dependencies {
   compileOnly("org.jetbrains.kotlin:kotlin-gradle-plugin:${embeddedKotlinVersion}")
 
   testFixturesCompileOnly(gradleTestKit())
+  testFixturesCompileOnly(libs.apache.commonsCompress)
 }
 
 kotlin {
@@ -63,6 +64,12 @@ testing {
         implementation(libs.kotest.assertions)
 
         implementation(testFixtures(project(project.path)))
+      }
+    }
+
+    val test by getting(JvmTestSuite::class) {
+      dependencies {
+        implementation(libs.apache.commonsCompress)
       }
     }
 
