@@ -137,9 +137,9 @@ private fun extractZip(
     ?.takeIf { it.isDirectory() }
 
   if (rootOutputDir != null) {
-    rootOutputDir.moveTo(destinationDir)
+    rootOutputDir.moveTo(destinationDir, overwrite = true)
   } else {
-    tempDest.moveTo(destinationDir)
+    tempDest.moveTo(destinationDir, overwrite = true)
   }
 }
 
@@ -217,9 +217,9 @@ private fun extractTarGz(
     ?.takeIf { it.isDirectory() }
 
   if (rootOutputDir != null) {
-    rootOutputDir.moveTo(destinationDir)
+    rootOutputDir.moveTo(destinationDir, overwrite = true)
   } else {
-    tempDest.moveTo(destinationDir)
+    tempDest.moveTo(destinationDir, overwrite = true)
   }
 }
 
