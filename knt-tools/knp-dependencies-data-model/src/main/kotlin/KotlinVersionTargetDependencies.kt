@@ -13,8 +13,6 @@ data class KotlinVersionTargetDependencies(
   val version: String,
   /** The platform on which the compilation tools are executed. */
   val buildPlatform: Platform,
-//  /** The platform on which the code will eventually run. */
-//  val hostPlatform: Platform,
   /** The platform that the compiler will generate code for. */
   val targetPlatform: KonanTargetData,
   val dependencies: Set<Coordinates>,
@@ -27,7 +25,6 @@ data class KotlinVersionTargetDependencies(
     val extension: String,
     val classifier: String?,
     val artifact: String? = null,
-//    val url: String,
   ) {
     fun coords(): String {
       return buildString {
@@ -48,18 +45,18 @@ data class KotlinVersionTargetDependencies(
 }
 
 
-object CoordinatesSerializer : KSerializer<KotlinVersionTargetDependencies.Coordinates> {
+private object CoordinatesSerializer : KSerializer<KotlinVersionTargetDependencies.Coordinates> {
 
   override val descriptor: SerialDescriptor
     get() = String.serializer().descriptor
+
+  private val regex: Regex =
+    Regex("""(?<group>[^:]+):(?<module>[^:]+):(?<version>[^:@]+)(?::(?<classifier>[^@]+))?@(?<extension>[.a-z]+)""")
 
   override fun deserialize(decoder: Decoder): KotlinVersionTargetDependencies.Coordinates {
     val content = decoder.decodeString()
     val coords = content.substringBefore(ARTIFACT_SEPARATOR)
     val artifact = content.substringAfter(ARTIFACT_SEPARATOR, "").takeIf { it.isNotBlank() }
-
-    val regex =
-      Regex("""(?<group>[^:]+):(?<module>[^:]+):(?<version>[^:@]+)(?::(?<classifier>[^@]+))?@(?<extension>[.a-z]+)""")
 
     val match = regex.matchEntire(coords)
       ?: error("Invalid dependency notation: $coords")

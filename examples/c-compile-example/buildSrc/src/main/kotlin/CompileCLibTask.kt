@@ -75,6 +75,8 @@ internal constructor(
       it.into(outputDir)
       it.include("*.a")
     }
+
+    logger.lifecycle("$path created ${outputDir.listDirectoryEntries().map { it.relativeTo(outputDir) }.toList()}")
   }
 
   private fun runClang() {

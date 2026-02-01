@@ -194,7 +194,7 @@ private fun extractTarGz(
             if (entryDestination.fileAttributesViewOrNull<PosixFileAttributeView>() != null) {
               entryDestination.setPosixFilePermissions(entry.getPosixFilePermissions())
             } else {
-              // Not supported on this filesystem (e.g on Windows)
+              // Not supported on this filesystem (e.g. on Windows)
             }
 
             entryDestination.fileAttributesView<BasicFileAttributeView>().setTimes(

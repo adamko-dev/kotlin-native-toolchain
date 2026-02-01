@@ -24,7 +24,6 @@ fun Path.createModuleTarGz(
     .let(::TarArchiveOutputStream)
     .use { sink ->
       val entry = TarArchiveEntry(entryName).apply {
-        name
         size = content.size.toLong()
       }
       sink.putArchiveEntry(entry)
