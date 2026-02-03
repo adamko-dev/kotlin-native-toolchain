@@ -1,4 +1,4 @@
-package dev.adamko.kntoolchain.internal
+package dev.adamko.kntoolchain.internal.utils
 
 import org.gradle.api.plugins.ExtensionContainer
 import org.gradle.kotlin.dsl.add

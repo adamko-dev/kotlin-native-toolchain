@@ -1,4 +1,4 @@
-package dev.adamko.kntoolchain.internal
+package dev.adamko.kntoolchain.internal.utils
 
 import org.gradle.api.logging.LogLevel
 import org.gradle.api.logging.Logger

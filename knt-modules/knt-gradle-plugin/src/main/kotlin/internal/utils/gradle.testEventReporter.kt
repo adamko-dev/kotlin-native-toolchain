@@ -1,4 +1,4 @@
-package dev.adamko.kntoolchain.internal
+package dev.adamko.kntoolchain.internal.utils
 
 import java.time.Clock
 import java.util.concurrent.atomic.AtomicInteger

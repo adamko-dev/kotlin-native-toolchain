@@ -1,4 +1,4 @@
-package dev.adamko.kntoolchain.internal
+package dev.adamko.kntoolchain.tools.internal.utils
 
 internal fun createDependencyNotation(
   group: String?,

@@ -1,6 +1,6 @@
 package dev.adamko.kntoolchain.operations
 
-import dev.adamko.kntoolchain.internal.listInstallDirPathsMetadata
+import dev.adamko.kntoolchain.internal.utils.listInstallDirPathsMetadata
 import dev.adamko.kntoolchain.model.DependencyInstallReport
 import dev.adamko.kntoolchain.model.KotlinNativePrebuiltDistributionSpec
 import java.nio.file.Files

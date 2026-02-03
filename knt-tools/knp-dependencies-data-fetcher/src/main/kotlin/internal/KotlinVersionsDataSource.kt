@@ -1,6 +1,6 @@
 package dev.adamko.kntoolchain.tools.internal
 
-import dev.adamko.kntoolchain.tools.utils.md5ChecksumOrNull
+import dev.adamko.kntoolchain.tools.internal.utils.md5ChecksumOrNull
 import java.net.URI
 import java.net.http.HttpClient
 import java.net.http.HttpRequest

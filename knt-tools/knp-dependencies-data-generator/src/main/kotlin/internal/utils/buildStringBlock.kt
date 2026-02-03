@@ -1,4 +1,4 @@
-package dev.adamko.knp.utils
+package dev.adamko.knp.internal.utils
 
 /**
  * Build a string with indentable blocks.

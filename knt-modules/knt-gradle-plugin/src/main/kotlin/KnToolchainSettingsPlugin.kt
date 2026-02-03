@@ -1,7 +1,7 @@
 package dev.adamko.kntoolchain
 
 import dev.adamko.kntoolchain.internal.KnToolchainService
-import dev.adamko.kntoolchain.internal.isRootProject
+import dev.adamko.kntoolchain.internal.utils.isRootProject
 import dev.adamko.kntoolchain.tasks.CheckKnToolchainIntegrityTask
 import javax.inject.Inject
 import org.gradle.api.Plugin

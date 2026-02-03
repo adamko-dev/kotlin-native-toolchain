@@ -1,6 +1,7 @@
 package dev.adamko.knp
 
-import dev.adamko.knp.utils.buildStringBlock
+import dev.adamko.knp.internal.utils.buildStringBlock
+import dev.adamko.knp.internal.utils.konanDependenciesReport
 import dev.adamko.kntoolchain.tools.datamodel.KonanDependenciesReport
 import dev.adamko.kntoolchain.tools.datamodel.KotlinVersionTargetDependencies
 import dev.adamko.kntoolchain.tools.datamodel.Platform
@@ -13,7 +14,6 @@ import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 import org.gradle.kotlin.dsl.support.uppercaseFirstChar
-import utils.konanDependenciesReport
 
 abstract class KnpDataGenTask
 internal constructor() : DefaultTask() {

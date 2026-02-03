@@ -34,11 +34,11 @@ internal constructor(
   private val workers: WorkerExecutor,
 ) : DefaultTask() {
 
-  //  /**
-//   * JSON data of Konan dependencies.
-//   *
-//   * This file should be committed to VCS to avoid unnecessary task execution.
-//   */
+  /**
+   * JSON data of Konan dependencies.
+   *
+   * See [KonanDependenciesReport].
+   */
   @get:OutputFile
   abstract val reportFile: RegularFileProperty
 
@@ -61,10 +61,6 @@ internal constructor(
   @LocalState
   protected val dataDir: Path =
     temporaryDir.resolve("data").toPath()
-
-//  @LocalState
-//  protected val checksumsDir: Path =
-//    temporaryDir.resolve("checksums").toPath()
 
   /**
    * Needs to contain

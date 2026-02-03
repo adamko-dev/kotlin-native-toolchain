@@ -1,7 +1,7 @@
 package dev.adamko.kntoolchain.tasks
 
-import dev.adamko.kntoolchain.internal.CACHE_DIR_TAG_FILENAME
-import dev.adamko.kntoolchain.internal.walk
+import dev.adamko.kntoolchain.internal.utils.CACHE_DIR_TAG_FILENAME
+import dev.adamko.kntoolchain.internal.utils.walk
 import dev.adamko.kntoolchain.model.DependencyInstallReport
 import java.nio.file.Path
 import java.time.Duration

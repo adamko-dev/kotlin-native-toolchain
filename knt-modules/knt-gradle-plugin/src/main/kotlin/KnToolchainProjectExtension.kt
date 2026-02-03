@@ -1,9 +1,8 @@
 package dev.adamko.kntoolchain
 
-import dev.adamko.kntoolchain.internal.adding
+import dev.adamko.kntoolchain.internal.utils.adding
 import dev.adamko.kntoolchain.model.KnTargetContainer
 import dev.adamko.kntoolchain.model.KotlinNativePrebuiltDistributionSpec
-import dev.adamko.kntoolchain.model.OsFamily
 import dev.adamko.kntoolchain.operations.InstallKnToolchains
 import java.nio.file.Path
 import javax.inject.Inject

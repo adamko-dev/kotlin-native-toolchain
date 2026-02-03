@@ -1,7 +1,7 @@
 package dev.adamko.kntoolchain
 
 import dev.adamko.kntoolchain.KnToolchainProjectExtension.Companion.EXTENSION_NAME
-import dev.adamko.kntoolchain.internal.CACHE_DIR_TAG_FILENAME
+import dev.adamko.kntoolchain.internal.utils.CACHE_DIR_TAG_FILENAME
 import dev.adamko.kntoolchain.internal.KnToolchainsDirSource.Companion.knToolchainsDir
 import dev.adamko.kntoolchain.internal.KnpDependenciesCoordsSpec.Companion.knpDependenciesCoordsSpec
 import dev.adamko.kntoolchain.internal.KnpDistributionConfigurations

@@ -2,8 +2,8 @@
 
 package dev.adamko.kntoolchain.tasks
 
-import dev.adamko.kntoolchain.internal.GroupTestEventReporterContext
-import dev.adamko.kntoolchain.internal.start
+import dev.adamko.kntoolchain.internal.utils.GroupTestEventReporterContext
+import dev.adamko.kntoolchain.internal.utils.start
 import dev.adamko.kntoolchain.model.DependencyInstallReport
 import dev.adamko.kntoolchain.model.KotlinNativePrebuiltDistributionSpec
 import dev.adamko.kntoolchain.operations.CreateKnToolchainsStatusReport.Companion.createKnToolchainsStatusReport

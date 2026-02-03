@@ -1,8 +1,8 @@
-package dev.adamko.kntoolchain.tools
+package dev.adamko.kntoolchain.tools.internal
 
 import dev.adamko.kntoolchain.tools.datamodel.KotlinNativePrebuiltData
-import dev.adamko.kntoolchain.tools.utils.createDependencyNotation
-import dev.adamko.kntoolchain.tools.utils.toEscapedString
+import dev.adamko.kntoolchain.tools.internal.utils.createDependencyNotation
+import dev.adamko.kntoolchain.tools.internal.utils.toEscapedString
 import org.gradle.api.NamedDomainObjectProvider
 import org.gradle.api.Project
 import org.gradle.api.artifacts.DependencyScopeConfiguration

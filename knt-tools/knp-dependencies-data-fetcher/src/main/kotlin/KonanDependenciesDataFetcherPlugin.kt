@@ -6,6 +6,7 @@ import dev.adamko.kntoolchain.tools.datamodel.KotlinNativePrebuiltData
 import dev.adamko.kntoolchain.tools.internal.BuildConstants
 import dev.adamko.kntoolchain.tools.internal.KotlinNativePrebuiltVariantsSource
 import dev.adamko.kntoolchain.tools.internal.KotlinVersionsDataSource
+import dev.adamko.kntoolchain.tools.internal.registerDependencyResolvers
 import dev.adamko.kntoolchain.tools.tasks.KonanDependenciesReportTask
 import javax.inject.Inject
 import org.gradle.api.NamedDomainObjectProvider

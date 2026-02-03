@@ -1,4 +1,4 @@
-package dev.adamko.kntoolchain.tools.utils
+package dev.adamko.kntoolchain.tools.internal.utils
 
 import org.jetbrains.kotlin.tooling.core.KotlinToolingVersion
 

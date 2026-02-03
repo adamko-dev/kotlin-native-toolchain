@@ -1,5 +1,6 @@
 package dev.adamko.kntoolchain.internal
 
+import dev.adamko.kntoolchain.internal.utils.extractArchive
 import dev.adamko.kntoolchain.test_utils.createModuleTarGz
 import dev.adamko.kntoolchain.test_utils.createModuleZip
 import dev.adamko.kntoolchain.test_utils.toTreeString

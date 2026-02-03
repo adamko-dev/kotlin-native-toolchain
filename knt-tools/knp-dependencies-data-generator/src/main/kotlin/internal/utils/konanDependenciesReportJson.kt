@@ -1,4 +1,4 @@
-package utils
+package dev.adamko.knp.internal.utils
 
 import dev.adamko.kntoolchain.tools.datamodel.KonanDependenciesReport
 import kotlinx.serialization.json.Json

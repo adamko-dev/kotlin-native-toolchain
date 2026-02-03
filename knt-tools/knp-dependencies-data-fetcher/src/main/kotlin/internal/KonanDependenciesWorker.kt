@@ -5,7 +5,7 @@ import com.sun.net.httpserver.HttpServer
 import dev.adamko.kntoolchain.tools.datamodel.KonanDependenciesReport
 import dev.adamko.kntoolchain.tools.datamodel.KotlinVersionTargetDependencies
 import dev.adamko.kntoolchain.tools.datamodel.Platform
-import dev.adamko.kntoolchain.tools.datamodel.internal.KonanTargetData
+import dev.adamko.kntoolchain.tools.datamodel.KonanTargetData
 import java.io.File
 import java.io.OutputStream
 import java.io.OutputStream.nullOutputStream

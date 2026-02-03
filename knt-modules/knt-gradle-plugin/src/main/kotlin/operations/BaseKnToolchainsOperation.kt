@@ -1,9 +1,9 @@
 package dev.adamko.kntoolchain.operations
 
-import dev.adamko.kntoolchain.internal.CACHE_DIR_TAG_FILENAME
-import dev.adamko.kntoolchain.internal.checksumFilesMetadata
-import dev.adamko.kntoolchain.internal.nameWithoutArchiveExtension
-import dev.adamko.kntoolchain.internal.walkFiltered
+import dev.adamko.kntoolchain.internal.utils.CACHE_DIR_TAG_FILENAME
+import dev.adamko.kntoolchain.internal.utils.checksumFilesMetadata
+import dev.adamko.kntoolchain.internal.utils.nameWithoutArchiveExtension
+import dev.adamko.kntoolchain.internal.utils.walkFiltered
 import dev.adamko.kntoolchain.model.KotlinNativePrebuiltDistributionSpec
 import java.nio.file.Path
 import kotlin.io.path.*

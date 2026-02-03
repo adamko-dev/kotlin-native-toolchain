@@ -1,6 +1,6 @@
 package dev.adamko.kntoolchain.tools.datamodel
 
-import dev.adamko.kntoolchain.tools.datamodel.internal.KonanTargetData
+import dev.adamko.kntoolchain.tools.datamodel.KonanTargetData
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.serializer

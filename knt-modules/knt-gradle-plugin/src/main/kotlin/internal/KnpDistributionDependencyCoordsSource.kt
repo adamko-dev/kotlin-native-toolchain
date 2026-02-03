@@ -1,6 +1,7 @@
 package dev.adamko.kntoolchain.internal
 
 import dev.adamko.kntoolchain.internal.KnpDistributionDependencyCoordsSource.Companion.kotlinNativePrebuiltToolchainDependencySpec
+import dev.adamko.kntoolchain.internal.utils.createDependencyNotation
 import dev.adamko.kntoolchain.tools.data.KnBuildPlatform
 import dev.adamko.kntoolchain.tools.data.KnpVersion
 import kotlin.properties.PropertyDelegateProvider

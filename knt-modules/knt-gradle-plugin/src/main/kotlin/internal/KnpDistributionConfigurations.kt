@@ -18,7 +18,6 @@ import org.gradle.kotlin.dsl.named
 internal class KnpDistributionConfigurations(
   project: Project,
 ) {
-//  private val objects: ObjectFactory = project.objects
 
   val knpDistribution: NamedDomainObjectProvider<DependencyScopeConfiguration> =
     project.configurations.dependencyScope("kotlinNativePrebuiltToolchain") { c ->
@@ -53,17 +52,5 @@ internal class KnpDistributionConfigurations(
       c.description =
         "Resolves all Kotlin/Native prebuilt distribution dependencies declared in ${knpDistributionDependencies.name}."
       c.extendsFrom(knpDistributionDependencies.get())
-      //c.attribute(USAGE_ATTRIBUTE, KNP_DIST_DEPENDENCY_USAGE)
     }
-
-//  private inline fun <reified T : Named> ResolvableConfiguration.attribute(
-//    attribute: Attribute<T>,
-//    value: String,
-//  ) {
-//    attributes.attribute(attribute, objects.named(value))
-//  }
-
-//  companion object {
-//    internal const val KNP_DIST_DEPENDENCY_USAGE = "dev.adamko.kntoolchain"
-//  }
 }

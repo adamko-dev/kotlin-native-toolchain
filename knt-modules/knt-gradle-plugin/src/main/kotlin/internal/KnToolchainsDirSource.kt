@@ -2,6 +2,7 @@ package dev.adamko.kntoolchain.internal
 
 import dev.adamko.kntoolchain.internal.KnToolchainsDirSource.Companion.KN_TOOLCHAINS_DIR
 import dev.adamko.kntoolchain.internal.KnToolchainsDirSource.Companion.knToolchainsDir
+import dev.adamko.kntoolchain.internal.utils.info
 import java.nio.file.Path
 import javax.inject.Inject
 import kotlin.io.path.Path
