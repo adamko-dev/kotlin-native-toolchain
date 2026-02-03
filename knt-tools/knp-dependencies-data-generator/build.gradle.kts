@@ -1,5 +1,3 @@
-import org.gradle.internal.declarativedsl.defaults.isDefaultsConfiguringCall
-
 plugins {
   id("dev.adamko.kntoolchain.tools.konan-dependencies-data-fetcher")
   id("conventions.kotlin-gradle-plugin")

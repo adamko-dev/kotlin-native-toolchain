@@ -5,8 +5,6 @@ import dev.adamko.kntoolchain.tools.datamodel.KotlinNativePrebuiltData.ArchiveTy
 import dev.adamko.kntoolchain.tools.datamodel.Platform
 import dev.adamko.kntoolchain.tools.internal.ExtractKonanPropertiesWorker
 import dev.adamko.kntoolchain.tools.internal.KonanDependenciesWorker
-import dev.adamko.kntoolchain.tools.utils.sha512Checksum
-import dev.adamko.kntoolchain.tools.utils.takeIfExists
 import java.nio.file.Path
 import javax.inject.Inject
 import kotlin.io.path.*
@@ -41,15 +39,8 @@ internal constructor(
 //   *
 //   * This file should be committed to VCS to avoid unnecessary task execution.
 //   */
-////  @get:OutputDirectory
-////  abstract val reportsDir: DirectoryProperty
   @get:OutputFile
   abstract val reportFile: RegularFileProperty
-//  /**
-//   * Output data
-//   */
-//  @get:OutputDirectory
-//  abstract val outputDir: DirectoryProperty
 
   /**
    * Packaged kotlin-native-prebuilt distributions.
@@ -71,9 +62,9 @@ internal constructor(
   protected val dataDir: Path =
     temporaryDir.resolve("data").toPath()
 
-  @LocalState
-  protected val checksumsDir: Path =
-    temporaryDir.resolve("checksums").toPath()
+//  @LocalState
+//  protected val checksumsDir: Path =
+//    temporaryDir.resolve("checksums").toPath()
 
   /**
    * Needs to contain
@@ -88,13 +79,13 @@ internal constructor(
    * Data for a specific kotlin-native-prebuilt distribution archive.
    */
   private data class KnpDist(
-    val archive: FileWithChecksum,
-    val konanProperties: FileWithChecksum,
-    val dependenciesData: FileWithChecksum,
+    val archive: Path,
+    val konanProperties: Path,
+    val dependenciesData: Path,
   ) {
-    private val archiveType: ArchiveType = ArchiveType.fromFile(archive.file)
+    private val archiveType: ArchiveType = ArchiveType.fromFile(archive)
     /** Archive file name, without the extension. */
-    private val name: String = archive.file.name.removeSuffix(archiveType.fileExtension)
+    private val name: String = archive.name.removeSuffix(archiveType.fileExtension)
 
     val version: KotlinToolingVersion
     val buildPlatform: Platform
@@ -115,28 +106,6 @@ internal constructor(
     }
   }
 
-  private data class FileWithChecksum(
-    val file: Path,
-    val storedChecksumFile: Path,
-  ) {
-    private fun storedChecksum(): String? = storedChecksumFile.takeIfExists()?.readText()
-    fun currentChecksum(): String? = file.takeIfExists()?.sha512Checksum()
-
-    fun hasChanged(): Boolean =
-      storedChecksum() == null || storedChecksum() != currentChecksum()
-  }
-
-  private data class DirWithChecksum(
-    val dir: Path,
-    val storedChecksumFile: Path,
-  ) {
-    private fun storedChecksum(): String? = storedChecksumFile.takeIfExists()?.readText()
-    fun currentChecksum(): String? = dir.takeIfExists()?.sha512Checksum()
-
-    fun hasChanged(): Boolean =
-      storedChecksum() == null || storedChecksum() != currentChecksum()
-  }
-
   @TaskAction
   protected fun action() {
     val knpDists = createKnpDists()
@@ -145,35 +114,20 @@ internal constructor(
 
     computeKonanDependencies(knpDists)
 
-    updateChecksums(knpDists)
-
-    // aggregate dependenciesData for each dist into single file
-//    val allReports: List<KonanDependenciesReport> =
-//      knpDists.flatMap { knpDist ->
-//        knpDist.dependenciesData.dir.listDirectoryEntries("dependencies-*.json").map { dataFile ->
-//          json.decodeFromString(
-//            KonanDependenciesReport.serializer(),
-//            dataFile.readText(),
-//          )
-//        }
-//      }
     val allReports: List<KonanDependenciesReport> =
       knpDists.map { knpDist ->
         json.decodeFromString(
           KonanDependenciesReport.serializer(),
-          knpDist.dependenciesData.file.readText(),
+          knpDist.dependenciesData.readText(),
         )
       }
 
-//    logger.lifecycle("[$path] Aggregated ${allData.size} reports")
-//    logger.debug("[$path] Aggregated ${allData.size} reports : $allData")
-
     val allData = allReports.flatMap { it.data }
 
+    // aggregate dependenciesData for each dist into single file
     val report = KonanDependenciesReport(allData)
 
     saveToJson(report)
-//    generateKotlinData(report)
   }
 
   private fun saveToJson(report: KonanDependenciesReport) {
@@ -200,50 +154,6 @@ internal constructor(
     }
   }
 
-//  private fun saveToSeparateJsons(
-//    knpDists: List<KnpDist>,
-//  ) {
-//    val reportFile = reportFile.get().asFile.toPath()
-//
-//    // aggregate dependenciesData for each version into separate files
-//    val allDataByVersion: Map<String, List<KotlinVersionTargetDependencies>> =
-//      knpDists.flatMap { knpDist ->
-//        knpDist.dependenciesData.dir.listDirectoryEntries("dependencies-*.json")
-//          .map { dataFile ->
-//            json.decodeFromString(
-//              KotlinVersionTargetDependencies.serializer(),
-//              dataFile.readText(),
-//            )
-//          }
-//      }
-//        .groupBy { it.version }
-//    logger.lifecycle("[$path] Aggregated ${allDataByVersion.values.sumOf { it.size }} reports")
-//
-//
-//    allDataByVersion.forEach { (version, data) ->
-//      val report = KonanDependenciesReport(data)
-//
-//      if (reportFile.exists()) {
-//        val existingReport = try {
-//          reportFile.inputStream().use { source ->
-//            json.decodeFromStream(KonanDependenciesReport.serializer(), source)
-//          }
-//        } catch (ex: SerializationException) {
-//          logger.debug("[$path] failed to decode KonanDependenciesReport from $reportFile: $ex")
-//          null
-//        }
-//
-//        if (existingReport != null && report != existingReport) {
-//          logger.warn("[$path] Existing report $reportFile differs from computed one")
-//        }
-//      }
-//
-//      reportFile.outputStream().use { sink ->
-//        json.encodeToStream(KonanDependenciesReport.serializer(), report, sink)
-//      }
-//    }
-//  }
-
   /**
    * Create a [KnpDist] for each archive file.
    */
@@ -254,25 +164,11 @@ internal constructor(
       val knpDist = knpDistFile.toPath()
       val archiveType: ArchiveType = ArchiveType.fromFile(knpDist)
       val distName: String = knpDist.name.removeSuffix(archiveType.fileExtension)
-      val distChecksumDir = checksumsDir.resolve(distName)
       val distDataDir = dataDir.resolve(distName)
       KnpDist(
-        archive = FileWithChecksum(
-          file = knpDist,
-          storedChecksumFile = distChecksumDir.resolve("${knpDist.name}.sha512"),
-        ),
-        konanProperties = FileWithChecksum(
-          file = distDataDir.resolve("konan/konan.properties"),
-          storedChecksumFile = distChecksumDir.resolve("konan.properties.sha512"),
-        ),
-        dependenciesData = FileWithChecksum(
-          file = distDataDir.resolve("dependencies.json"),
-          storedChecksumFile = distChecksumDir.resolve("dependencies.json.sha512"),
-        ),
-//        dependenciesData = DirWithChecksum(
-//          dir = distDataDir.resolve("dependencies"),
-//          storedChecksumFile = distChecksumDir.resolve("dependencies.sha512"),
-//        ),
+        archive = knpDist,
+        konanProperties = distDataDir.resolve("konan/konan.properties"),
+        dependenciesData = distDataDir.resolve("dependencies.json"),
       )
     }
   }
@@ -281,31 +177,20 @@ internal constructor(
    * Extract the `konan.properties` file from each [KnpDist].
    */
   private fun unpackKonanProperties(knpDists: List<KnpDist>) {
-    val knpDistsToUnpack = knpDists
-      .filter { knpDist -> knpDist.archive.hasChanged() || knpDist.konanProperties.hasChanged() }
-
     val unpackDistWorkQueue = workers.noIsolation()
-    knpDistsToUnpack.forEach { knpDist ->
+    knpDists.forEach { knpDist ->
       unpackDistWorkQueue.submit(ExtractKonanPropertiesWorker::class) {
-        it.knpDist.set(knpDist.archive.file.toFile())
-        it.outputDir.set(knpDist.konanProperties.file.parent.toFile())
+        it.knpDist.set(knpDist.archive.toFile())
+        it.outputDir.set(knpDist.konanProperties.parent.toFile())
       }
     }
     unpackDistWorkQueue.await()
 
-    logger.lifecycle("[$path] Unpacked ${knpDistsToUnpack.size} konan.properties files")
+    logger.lifecycle("[$path] Unpacked ${knpDists.size} konan.properties files")
   }
 
   private fun computeKonanDependencies(knpDists: List<KnpDist>) {
-    val knpDistsToCompute =
-      knpDists.filter { knpDist ->
-        knpDist.konanProperties.hasChanged() || knpDist.dependenciesData.hasChanged()
-        // TODO re-enable, disabled for easier testing
-        true
-      }
-
-
-    knpDistsToCompute.groupBy { it.buildPlatform }
+    knpDists.groupBy { it.buildPlatform }
       .map { (platform, knpDists) ->
 
         val konanDependenciesWorkQueue = workers.processIsolation { spec ->
@@ -318,8 +203,8 @@ internal constructor(
         knpDists.forEach { knpDist ->
 
           konanDependenciesWorkQueue.submit(KonanDependenciesWorker::class) {
-            it.targetDependenciesReportFile.set(knpDist.dependenciesData.file.toFile())
-            it.konanPropertiesFile.set(knpDist.konanProperties.file.toFile())
+            it.targetDependenciesReportFile.set(knpDist.dependenciesData.toFile())
+            it.konanPropertiesFile.set(knpDist.konanProperties.toFile())
             it.distVersion.set(knpDist.version.toString())
             it.buildPlatform.set(platform)
           }
@@ -330,24 +215,7 @@ internal constructor(
       .forEach { it.await() }
 
 
-    logger.lifecycle("[$path] Computed ${knpDistsToCompute.size} konan dependencies")
-  }
-
-  private fun updateChecksums(knpDists: List<KnpDist>) {
-    knpDists.forEach { knpDist ->
-      knpDist.archive.storedChecksumFile.apply {
-        parent.createDirectories()
-        writeText(knpDist.archive.currentChecksum() ?: error("could not compute checksum for $this"))
-      }
-      knpDist.konanProperties.storedChecksumFile.apply {
-        parent.createDirectories()
-        writeText(knpDist.konanProperties.currentChecksum() ?: error("could not compute checksum for $this"))
-      }
-      knpDist.dependenciesData.storedChecksumFile.apply {
-        parent.createDirectories()
-        writeText(knpDist.dependenciesData.currentChecksum() ?: error("could not compute checksum for $this"))
-      }
-    }
+    logger.lifecycle("[$path] Computed ${knpDists.size} konan dependencies")
   }
 
   companion object {

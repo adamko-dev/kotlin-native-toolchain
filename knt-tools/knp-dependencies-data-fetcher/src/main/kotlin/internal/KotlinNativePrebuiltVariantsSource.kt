@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalSerializationApi::class)
-
 package dev.adamko.kntoolchain.tools.internal
 
 import dev.adamko.kntoolchain.tools.datamodel.KotlinNativePrebuiltData
@@ -15,14 +13,12 @@ import kotlin.io.path.createDirectories
 import kotlin.io.path.exists
 import kotlin.io.path.inputStream
 import kotlin.io.path.outputStream
-import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
 import kotlinx.serialization.json.encodeToStream
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.logging.Logger
 import org.gradle.api.logging.Logging
-import org.gradle.api.provider.Property
 import org.gradle.api.provider.SetProperty
 import org.gradle.api.provider.ValueSource
 import org.gradle.api.provider.ValueSourceParameters
@@ -31,7 +27,7 @@ import org.jetbrains.kotlin.tooling.core.KotlinToolingVersion
 /**
  * Downloads [KotlinNativePrebuiltData].
  *
- * Caches the downloaded file. Does not download if Gradle is offline.
+ * Caches the downloaded file.
  */
 // This could probably be adapted to download other files,
 // but it makes an assumption about the etag.
@@ -41,9 +37,6 @@ internal constructor() : ValueSource<KotlinNativePrebuiltData, KotlinNativePrebu
   interface Parameters : ValueSourceParameters {
     /** Output file. */
     val stateDir: DirectoryProperty
-
-    /** The value of [org.gradle.StartParameter.isOffline]. */
-    val gradleOffline: Property<Boolean>
 
     val kotlinVersions: SetProperty<KotlinToolingVersion>
   }
@@ -57,9 +50,7 @@ internal constructor() : ValueSource<KotlinNativePrebuiltData, KotlinNativePrebu
     }
 
   override fun obtain(): KotlinNativePrebuiltData {
-    if (parameters.gradleOffline.orNull != true) {
-      updateData()
-    }
+    updateData()
     return loadData()
   }
 
@@ -83,8 +74,8 @@ internal constructor() : ValueSource<KotlinNativePrebuiltData, KotlinNativePrebu
     val kotlinVersions = parameters.kotlinVersions.get()
 
     check((data.data.keys subtract kotlinVersions).isEmpty()) {
-      // sanity check to make sure Kotlin versions were correctly downloaded,
-      // and make sure the data file doesn't have old versions that `getKotlinVersions()` filters out.
+      // Sanity check to make sure Kotlin versions were correctly downloaded.
+      // Also: make sure the data file doesn't have old versions that `getKotlinVersions()` filters out.
       "Unexpected Kotlin versions in stored data.\n\tkotlinVersions:$kotlinVersions\n\tdata:${data.data.keys}"
     }
 

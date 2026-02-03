@@ -1,7 +1,7 @@
 package dev.adamko.kntoolchain.tools.internal
 
-import javax.inject.Inject
 import dev.adamko.kntoolchain.tools.datamodel.KotlinNativePrebuiltData.ArchiveType
+import javax.inject.Inject
 import kotlin.io.path.exists
 import kotlin.io.path.name
 import org.gradle.api.file.*
@@ -16,7 +16,9 @@ import org.gradle.workers.WorkParameters
  * Fails if no file was found.
  */
 // NOTE: cannot be process isolated https://github.com/gradle/gradle/issues/33756
-internal abstract class ExtractKonanPropertiesWorker @Inject internal constructor(
+internal abstract class ExtractKonanPropertiesWorker
+@Inject
+internal constructor(
   private val fs: FileSystemOperations,
   private val archives: ArchiveOperations,
 ) : WorkAction<ExtractKonanPropertiesWorker.Parameters> {

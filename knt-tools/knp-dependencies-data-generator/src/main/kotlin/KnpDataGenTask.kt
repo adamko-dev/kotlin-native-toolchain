@@ -390,30 +390,6 @@ private fun createKnpDependency() {
 context(ctx: Context)
 private fun createKnpDepData() {
 
-//  ctx.outputDir.resolve("KnDependencyData.kt").writeText(
-//    buildStringBlock {
-//      line("package dev.adamko.kntoolchain.tools.data")
-//      line()
-//
-//      line("/**")
-//      line(" * Data for a K/N compile target.")
-//      line(" */")
-//      block("object KnDependencyData {", "}") {
-//
-//        ctx.report.data.groupBy { it.buildPlatform.osFamily }
-//          .forEach { (osFamily, _) ->
-//
-//            val osFamilyPretty = ctx.allOsFamilies[osFamily] ?: error("Unknown OS family: $osFamily")
-//
-//            block("object $osFamilyPretty {", "}") {
-//
-//            }
-//          }
-//
-//      }
-//    }
-//  )
-
   val dataDir = ctx.outputDir.resolve("data").createDirectories()
 
   dataDir.resolve("KnDependencyDataSpec.kt").writeText(

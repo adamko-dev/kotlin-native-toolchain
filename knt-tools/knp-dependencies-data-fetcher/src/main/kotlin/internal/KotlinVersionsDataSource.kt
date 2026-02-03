@@ -22,19 +22,14 @@ import org.jetbrains.kotlin.tooling.core.KotlinToolingVersion
 /**
  * Downloads all Kotlin Versions from Maven Central.
  *
- * Caches the downloaded file. Does not download if Gradle is offline.
+ * Caches the downloaded file.
  */
-// This could probably be adapted to download other files,
-// but it makes an assumption about the etag.
 internal abstract class KotlinVersionsDataSource
 internal constructor() : ValueSource<Set<KotlinToolingVersion>, KotlinVersionsDataSource.Parameters> {
 
   interface Parameters : ValueSourceParameters {
     /** Cache directory. */
     val stateDir: DirectoryProperty
-
-    /** The value of [org.gradle.StartParameter.isOffline]. */
-    val gradleOffline: Property<Boolean>
 
     val currentKotlinVersion: Property<String>
   }
@@ -67,11 +62,8 @@ internal constructor() : ValueSource<Set<KotlinToolingVersion>, KotlinVersionsDa
   private fun loadKotlinStdlibMavenMetadataFile(): Path {
     val metadataFile: Path = stateDir.resolve("kotlin-stdlib.maven-metadata.xml")
 
-    if (parameters.gradleOffline.orNull == true) {
-      require(metadataFile.exists()) {
-        "Offline mode is enabled, but $metadataFile does not exist"
-      }
-      return metadataFile
+    require(metadataFile.exists()) {
+      "Required metadata file $metadataFile does not exist"
     }
 
     val pomVersions = extractKotlinVersions(metadataFile)
@@ -91,8 +83,6 @@ internal constructor() : ValueSource<Set<KotlinToolingVersion>, KotlinVersionsDa
   }
 
   private fun extractKotlinVersions(file: Path): Sequence<KotlinToolingVersion> {
-    // TODO consider using XmlSlurper
-    //XmlSlurper().parse(kotlinStdlibMavenMetadataFile)
     return file
       .readText()
       .substringAfter("<versions>", "")
@@ -135,7 +125,8 @@ internal constructor() : ValueSource<Set<KotlinToolingVersion>, KotlinVersionsDa
         ?.removeSurrounding("\"")
 
       // This code assumes the etag of a maven-metadata.xml is the md5 checksum of the file.
-      // I want to verify that's true, just in case Sonatype changes the behaviour.
+      // Here it immediately verifies the etag matches the checksum,
+      // just in case Sonatype changes the behaviour in the future.
       check(responseEtag?.ifBlank { null } != null) {
         "Expected response to have an ETag header, but it was $responseEtag."
       }

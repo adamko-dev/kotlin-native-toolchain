@@ -20,49 +20,6 @@ internal fun buildStringBlock(
   builder.apply(block)
   return builder.render()
 }
-//
-///**
-// * Build a string of connected lines.
-// *
-// * The first line will be added to the current level.
-// * The other lines will be indented.
-// *
-// * All lines, except the last, will be suffixed with [lineSuffix].
-// *
-// * ###### Example: Create a multiline bash command.
-// *
-// * ```kotlin
-// * connectedLines(" \\") {
-// *   line("execute_command")
-// *   line("-a /path/to/file")
-// *   line("-b another_option")
-// *   line("-c third_option")
-// * }
-// * ```
-// *
-// * Result:
-// *
-// * ```text
-// * execute_command \
-// *     -a /path/to/file \
-// *     -b another_option \
-// *     -c third_option
-// * ```
-// */
-//@StringBlockBuilderDsl
-//internal fun StringBlockBuilder.connectedLines(
-//  lineSuffix: String,
-//  block: ConnectedLinesBuilder.() -> Unit,
-//) {
-//  check(this is StringBlockBuilderImpl)
-//  val builder = ConnectedLinesBuilderImpl(
-//    lineSuffix = lineSuffix,
-//    level = this.level,
-//  )
-//  builder.block()
-//  lines += builder.lines
-//}
-
 
 /**
  * @see buildStringBlock
@@ -87,25 +44,9 @@ internal sealed interface StringBlockBuilder {
   fun block(open: String, close: String, content: StringBlockBuilder.() -> Unit)
 }
 
-///**
-// * @see connectedLines
-// */
-//@StringBlockBuilderDsl
-//internal sealed interface ConnectedLinesBuilder {
-//  /**
-//   * Add a new line, continuing from any previously added lines.
-//   *
-//   * If this is the first line, it will not be indented.
-//   * Otherwise, it will be indented once.
-//   *
-//   * All lines, except the last, will be suffixed with the suffix set in [connectedLines].
-//   */
-//  fun line(content: String)
-//}
-
 private class StringBlockBuilderImpl(
   val level: Int = 0,
-  val defaultIndent: String ,
+  val defaultIndent: String,
 ) : StringBlockBuilder {
   val lines: ArrayDeque<CodeLine> = ArrayDeque()
 
@@ -141,24 +82,6 @@ private class StringBlockBuilderImpl(
   }
 }
 
-//private class ConnectedLinesBuilderImpl(
-//  private val lineSuffix: String,
-//  private val level: Int,
-//) : ConnectedLinesBuilder {
-//  val lines: ArrayDeque<CodeLine> = ArrayDeque()
-//
-//  override fun line(content: String) {
-//    if (lines.isEmpty()) {
-//      lines.addLast(CodeLine(content, level))
-//    } else {
-//      val lastLine = lines.last()
-//      lines.removeLast()
-//      lines.addLast(CodeLine(lastLine.content + lineSuffix, lastLine.level))
-//      lines.addLast(CodeLine(content, level + 1))
-//    }
-//  }
-//}
-
 private data class CodeLine(
   val content: String,
   val level: Int,
@@ -167,22 +90,3 @@ private data class CodeLine(
 @DslMarker
 @MustBeDocumented
 internal annotation class StringBlockBuilderDsl
-
-
-
-//internal fun StringBlockBuilder.classBlock(
-//  name: String,
-//  vararg args: Pair<String, String>,
-//  body: StringBlockBuilder.() -> Unit
-//) {
-//  val body = buildStringBlock(block = body)
-//  val constructorArgs = buildStringBlock {
-//    args.forEach { (name, value) ->
-//      line("val $name: $value,")
-//    }
-//  }
-//  if (body.isBlank()) {
-//    block(name, )
-//  }
-//  block(name, ") {")
-//}

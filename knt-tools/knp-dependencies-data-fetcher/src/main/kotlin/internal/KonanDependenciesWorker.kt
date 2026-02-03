@@ -63,9 +63,6 @@ internal constructor() : WorkAction<KonanDependenciesWorker.Parameters> {
     /** The platform on which the compilation tools are executed. */
     val buildPlatform: Property<Platform>
 
-    ///** The platform on which the code will eventually run. */
-    //val hostPlatform: Property<Platform>
-
     /** `konan.properties` file, extracted from a konan-native-prebuilt dist. */
     val konanPropertiesFile: RegularFileProperty
   }
@@ -105,18 +102,6 @@ internal constructor() : WorkAction<KonanDependenciesWorker.Parameters> {
         )
       }
 
-//    val data = KotlinVersionTargetDependencies(
-//      version = parameters.distVersion.get(),
-//      buildPlatform = parameters.buildPlatform.get(),
-//      dependencies = targetToUrls
-//        .mapKeys { (target, _) ->
-//          KonanTargetData.encode(target)
-//        }
-//        .mapValues { (_, urls) ->
-//          convertToDependencyCoords(urls)
-//        }
-//    )
-
     val report = KonanDependenciesReport(data)
 
     val jsonDataString = json.encodeToString(KonanDependenciesReport.serializer(), report)
@@ -125,7 +110,6 @@ internal constructor() : WorkAction<KonanDependenciesWorker.Parameters> {
     val reportFile = parameters.targetDependenciesReportFile.get().asFile
     reportFile.parentFile.mkdirs()
     reportFile.writeText(jsonDataString)
-//    parameters.targetDependenciesReportFile.get().asFile.writeText(jsonDataString)
   }
 
   private fun checkHostOsArch() {
@@ -275,7 +259,6 @@ internal constructor() : WorkAction<KonanDependenciesWorker.Parameters> {
       extension = extension,
       classifier = classifier,
       artifact = artifact,
-//      url = url,
     )
   }
 

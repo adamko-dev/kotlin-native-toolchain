@@ -25,6 +25,7 @@ internal fun Path.sha512Checksum(): String {
   return when {
     isRegularFile() || isDirectory() ->
       checksum(this, "SHA-512")
+
     else                             ->
       error("Cannot checksum $this: it is neither a file nor a directory")
   }
@@ -54,14 +55,3 @@ private fun checksum(path: Path, algorithm: String): String {
   return BigInteger(1, md.digest()).toString(16)
     .padStart(md.digestLength * 2, '0')
 }
-
-//private fun Path.checksum(algorithm: String): String {
-//  val md = MessageDigest.getInstance(algorithm)
-//  DigestOutputStream(nullOutputStream(), md).use { os ->
-//    inputStream().use {
-//      it.transferTo(os)
-//    }
-//  }
-//  return BigInteger(1, md.digest()).toString(16)
-//    .padStart(md.digestLength * 2, '0')
-//}
