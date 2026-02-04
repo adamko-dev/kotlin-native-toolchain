@@ -6,7 +6,7 @@ import org.gradle.api.file.RegularFile
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider
 
-abstract class KnpDataExtension
+abstract class KnpDatagenExtension
 @Inject
 internal constructor(
 ) {

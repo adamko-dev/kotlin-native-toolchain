@@ -26,7 +26,7 @@ import org.gradle.api.provider.ProviderFactory
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.kotlin.dsl.*
 
-abstract class KonanDependenciesDataFetcherPlugin
+abstract class KnpDatagenPlugin
 @Inject
 internal constructor(
   private val providers: ProviderFactory,
@@ -35,7 +35,7 @@ internal constructor(
 ) : Plugin<Project> {
 
   override fun apply(project: Project) {
-    val knpDataExt: KnpDataExtension =
+    val knpDataExt: KnpDatagenExtension =
       createExtension(
         project = project,
       )
@@ -78,8 +78,8 @@ internal constructor(
     )
   }
 
-  private fun createExtension(project: Project): KnpDataExtension {
-    return project.extensions.create("asd", KnpDataExtension::class).also { ext ->
+  private fun createExtension(project: Project): KnpDatagenExtension {
+    return project.extensions.create("asd", KnpDatagenExtension::class).also { ext ->
       ext.dataDir.convention(layout.projectDirectory.dir("knt-data"))
       ext.generatedKnpDependenciesDataDir.convention(
         layout.projectDirectory.dir("src/mainGenerated/kotlin/")
@@ -130,7 +130,7 @@ internal constructor(
 
   private fun registerKonanDependenciesReportTask(
     project: Project,
-    knpDataExt: KnpDataExtension,
+    knpDataExt: KnpDatagenExtension,
     allKonanDistributions: FileCollection,
   ): TaskProvider<KonanDependenciesReportTask> {
     return project.tasks.register("konanDependenciesReport", KonanDependenciesReportTask::class) { task ->
@@ -141,7 +141,7 @@ internal constructor(
 
   private fun registerKnpDataGenTask(
     project: Project,
-    knpDataExt: KnpDataExtension,
+    knpDataExt: KnpDatagenExtension,
     konanDependenciesReportTask: TaskProvider<KonanDependenciesReportTask>,
   ): TaskProvider<KnpDataGenTask> {
     return project.tasks.register("knpDataGen", KnpDataGenTask::class) { task ->
@@ -154,7 +154,7 @@ internal constructor(
 
   private fun configureTaskConventions(
     project: Project,
-    knpDataExt: KnpDataExtension,
+    knpDataExt: KnpDatagenExtension,
     konanDependenciesReportTaskClasspathResolver: NamedDomainObjectProvider<ResolvableConfiguration>,
   ) {
     project.tasks.withType<KonanDependenciesReportTask>().configureEach { task ->
@@ -174,6 +174,6 @@ internal constructor(
   //endregion
 
   companion object {
-    private val logger: Logger = Logging.getLogger(KonanDependenciesDataFetcherPlugin::class.java)
+    private val logger: Logger = Logging.getLogger(KnpDatagenPlugin::class.java)
   }
 }

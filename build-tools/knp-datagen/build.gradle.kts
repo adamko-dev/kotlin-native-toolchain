@@ -1,4 +1,3 @@
-import org.gradle.kotlin.dsl.invoke
 import org.gradle.kotlin.dsl.support.serviceOf
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -70,6 +69,6 @@ kotlin.sourceSets.main {
 gradlePlugin {
   plugins.register("knp-datagen") {
     id = "dev.adamko.kntoolchain.tools.konan-dependencies-generator"
-    implementationClass = "dev.adamko.kntoolchain.tools.KonanDependenciesDataFetcherPlugin"
+    implementationClass = "dev.adamko.kntoolchain.tools.KnpDatagenPlugin"
   }
 }
