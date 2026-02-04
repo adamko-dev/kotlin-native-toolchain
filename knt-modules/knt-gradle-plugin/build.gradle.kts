@@ -51,6 +51,7 @@ gradlePlugin {
 
 dependencies {
   devPublication(projects.kntModules.kntDependencyData)
+//  devPublication("dev.adamko.kotlin-native-toolchain:knp-dependencies-data-model")
 }
 
 testing {

@@ -2,10 +2,10 @@ package dev.adamko.kntoolchain.tools.internal
 
 import com.sun.net.httpserver.HttpHandler
 import com.sun.net.httpserver.HttpServer
-import dev.adamko.kntoolchain.tools.datamodel.KonanDependenciesReport
-import dev.adamko.kntoolchain.tools.datamodel.KotlinVersionTargetDependencies
-import dev.adamko.kntoolchain.tools.datamodel.Platform
-import dev.adamko.kntoolchain.tools.datamodel.KonanTargetData
+import dev.adamko.kntoolchain.tools.internal.datamodel.KonanDependenciesReport
+import dev.adamko.kntoolchain.tools.internal.datamodel.KonanTargetData
+import dev.adamko.kntoolchain.tools.internal.datamodel.KotlinVersionTargetDependencies
+import dev.adamko.kntoolchain.tools.internal.datamodel.Platform
 import java.io.File
 import java.io.OutputStream
 import java.io.OutputStream.nullOutputStream
@@ -24,7 +24,6 @@ import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 import kotlin.io.path.createTempDirectory
 import kotlin.io.path.invariantSeparatorsPathString
-import kotlinx.serialization.json.Json
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.logging.Logger
 import org.gradle.api.logging.Logging
@@ -264,11 +263,6 @@ internal constructor() : WorkAction<KonanDependenciesWorker.Parameters> {
 
   companion object {
     private val logger: Logger = Logging.getLogger(KonanDependenciesWorker::class.java)
-
-    private val json = Json {
-      prettyPrint = true
-      prettyPrintIndent = "  "
-    }
 
     @OptIn(ExperimentalContracts::class)
     private inline fun <T> withHttpServer(

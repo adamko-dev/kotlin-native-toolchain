@@ -7534,6 +7534,1164 @@
         "kotlin.native.resources.llvm.19-x86_64-windows:llvm-19-x86_64-windows-essentials:134@zip",
         "kotlin.native:libffi-3.3-windows-x64:1@zip"
       ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "linux:x86_64",
+      "targetPlatform": "linux_x64:LINUX:X64",
+      "dependencies": [
+        "kotlin.native:x86_64-unknown-linux-gnu-gcc-8.3.0-glibc-2.19-kernel-4.9:2@tar.gz",
+        "kotlin.native:lldb:4:linux@tar.gz",
+        "kotlin.native.resources.llvm.19-x86_64-linux:llvm-19-x86_64-linux-essentials:103@tar.gz",
+        "kotlin.native:libffi-3.2.1-2-linux-x86:64@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "linux:x86_64",
+      "targetPlatform": "linux_arm32_hfp:LINUX:ARM32",
+      "dependencies": [
+        "kotlin.native:arm-unknown-linux-gnueabihf-gcc-8.3.0-glibc-2.12.1-kernel-4.9:1@tar.gz",
+        "kotlin.native.resources.llvm.19-x86_64-linux:llvm-19-x86_64-linux-essentials:103@tar.gz",
+        "kotlin.native:libffi-3.2.1-2-linux-x86:64@tar.gz",
+        "kotlin.native:qemu-arm-static-5.1.0-linux:2@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "linux:x86_64",
+      "targetPlatform": "linux_arm64:LINUX:ARM64",
+      "dependencies": [
+        "kotlin.native:aarch64-unknown-linux-gnu-gcc-8.3.0-glibc-2.25-kernel-4.9:2@tar.gz",
+        "kotlin.native.resources.llvm.19-x86_64-linux:llvm-19-x86_64-linux-essentials:103@tar.gz",
+        "kotlin.native:libffi-3.2.1-2-linux-x86:64@tar.gz",
+        "kotlin.native:qemu-aarch64-static-5.1.0-linux:2@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "linux:x86_64",
+      "targetPlatform": "mingw_x64:MINGW:X64",
+      "dependencies": [
+        "kotlin.native:msys2-mingw-w64-x86_64:2@tar.gz",
+        "kotlin.native.resources.llvm.19-x86_64-linux:llvm-19-x86_64-linux-essentials:103@tar.gz",
+        "kotlin.native:libffi-3.2.1-2-linux-x86:64@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "linux:x86_64",
+      "targetPlatform": "android_x86:ANDROID:X86",
+      "dependencies": [
+        "kotlin.native:target-sysroot:1:android_ndk@tar.gz",
+        "kotlin.native:target-toolchain:2:linux-android_ndk@tar.gz",
+        "kotlin.native.resources.llvm.19-x86_64-linux:llvm-19-x86_64-linux-essentials:103@tar.gz",
+        "kotlin.native:libffi-3.2.1-2-linux-x86:64@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "linux:x86_64",
+      "targetPlatform": "android_x64:ANDROID:X64",
+      "dependencies": [
+        "kotlin.native:target-sysroot:1:android_ndk@tar.gz",
+        "kotlin.native:target-toolchain:2:linux-android_ndk@tar.gz",
+        "kotlin.native.resources.llvm.19-x86_64-linux:llvm-19-x86_64-linux-essentials:103@tar.gz",
+        "kotlin.native:libffi-3.2.1-2-linux-x86:64@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "linux:x86_64",
+      "targetPlatform": "android_arm32:ANDROID:ARM32",
+      "dependencies": [
+        "kotlin.native:target-sysroot:1:android_ndk@tar.gz",
+        "kotlin.native:target-toolchain:2:linux-android_ndk@tar.gz",
+        "kotlin.native.resources.llvm.19-x86_64-linux:llvm-19-x86_64-linux-essentials:103@tar.gz",
+        "kotlin.native:libffi-3.2.1-2-linux-x86:64@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "linux:x86_64",
+      "targetPlatform": "android_arm64:ANDROID:ARM64",
+      "dependencies": [
+        "kotlin.native:target-sysroot:1:android_ndk@tar.gz",
+        "kotlin.native:target-toolchain:2:linux-android_ndk@tar.gz",
+        "kotlin.native.resources.llvm.19-x86_64-linux:llvm-19-x86_64-linux-essentials:103@tar.gz",
+        "kotlin.native:libffi-3.2.1-2-linux-x86:64@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "macos:aarch64",
+      "targetPlatform": "linux_x64:LINUX:X64",
+      "dependencies": [
+        "kotlin.native:x86_64-unknown-linux-gnu-gcc-8.3.0-glibc-2.19-kernel-4.9:2@tar.gz",
+        "kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:79@tar.gz",
+        "kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "macos:aarch64",
+      "targetPlatform": "linux_arm32_hfp:LINUX:ARM32",
+      "dependencies": [
+        "kotlin.native:arm-unknown-linux-gnueabihf-gcc-8.3.0-glibc-2.12.1-kernel-4.9:1@tar.gz",
+        "kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:79@tar.gz",
+        "kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "macos:aarch64",
+      "targetPlatform": "linux_arm64:LINUX:ARM64",
+      "dependencies": [
+        "kotlin.native:aarch64-unknown-linux-gnu-gcc-8.3.0-glibc-2.25-kernel-4.9:2@tar.gz",
+        "kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:79@tar.gz",
+        "kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "macos:aarch64",
+      "targetPlatform": "mingw_x64:MINGW:X64",
+      "dependencies": [
+        "kotlin.native:msys2-mingw-w64-x86_64:2@tar.gz",
+        "kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:79@tar.gz",
+        "kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "macos:aarch64",
+      "targetPlatform": "android_x86:ANDROID:X86",
+      "dependencies": [
+        "kotlin.native:target-sysroot:1:android_ndk@tar.gz",
+        "kotlin.native:target-toolchain:2:osx-android_ndk@tar.gz",
+        "kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:79@tar.gz",
+        "kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "macos:aarch64",
+      "targetPlatform": "android_x64:ANDROID:X64",
+      "dependencies": [
+        "kotlin.native:target-sysroot:1:android_ndk@tar.gz",
+        "kotlin.native:target-toolchain:2:osx-android_ndk@tar.gz",
+        "kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:79@tar.gz",
+        "kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "macos:aarch64",
+      "targetPlatform": "android_arm32:ANDROID:ARM32",
+      "dependencies": [
+        "kotlin.native:target-sysroot:1:android_ndk@tar.gz",
+        "kotlin.native:target-toolchain:2:osx-android_ndk@tar.gz",
+        "kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:79@tar.gz",
+        "kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "macos:aarch64",
+      "targetPlatform": "android_arm64:ANDROID:ARM64",
+      "dependencies": [
+        "kotlin.native:target-sysroot:1:android_ndk@tar.gz",
+        "kotlin.native:target-toolchain:2:osx-android_ndk@tar.gz",
+        "kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:79@tar.gz",
+        "kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "macos:aarch64",
+      "targetPlatform": "macos_x64:OSX:X64",
+      "dependencies": [
+        "kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:79@tar.gz",
+        "kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "macos:aarch64",
+      "targetPlatform": "macos_arm64:OSX:ARM64",
+      "dependencies": [
+        "kotlin.native:lldb:4:macos@tar.gz",
+        "kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:79@tar.gz",
+        "kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "macos:aarch64",
+      "targetPlatform": "ios_arm64:IOS:ARM64",
+      "dependencies": [
+        "kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:79@tar.gz",
+        "kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "macos:aarch64",
+      "targetPlatform": "ios_x64:IOS:X64",
+      "dependencies": [
+        "kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:79@tar.gz",
+        "kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "macos:aarch64",
+      "targetPlatform": "ios_simulator_arm64:IOS:ARM64",
+      "dependencies": [
+        "kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:79@tar.gz",
+        "kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "macos:aarch64",
+      "targetPlatform": "watchos_arm32:WATCHOS:ARM32",
+      "dependencies": [
+        "kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:79@tar.gz",
+        "kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "macos:aarch64",
+      "targetPlatform": "watchos_arm64:WATCHOS:ARM64",
+      "dependencies": [
+        "kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:79@tar.gz",
+        "kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "macos:aarch64",
+      "targetPlatform": "watchos_x64:WATCHOS:X64",
+      "dependencies": [
+        "kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:79@tar.gz",
+        "kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "macos:aarch64",
+      "targetPlatform": "watchos_simulator_arm64:WATCHOS:ARM64",
+      "dependencies": [
+        "kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:79@tar.gz",
+        "kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "macos:aarch64",
+      "targetPlatform": "watchos_device_arm64:WATCHOS:ARM64",
+      "dependencies": [
+        "kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:79@tar.gz",
+        "kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "macos:aarch64",
+      "targetPlatform": "tvos_arm64:TVOS:ARM64",
+      "dependencies": [
+        "kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:79@tar.gz",
+        "kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "macos:aarch64",
+      "targetPlatform": "tvos_x64:TVOS:X64",
+      "dependencies": [
+        "kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:79@tar.gz",
+        "kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "macos:aarch64",
+      "targetPlatform": "tvos_simulator_arm64:TVOS:ARM64",
+      "dependencies": [
+        "kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:79@tar.gz",
+        "kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "macos:x86_64",
+      "targetPlatform": "linux_x64:LINUX:X64",
+      "dependencies": [
+        "kotlin.native:x86_64-unknown-linux-gnu-gcc-8.3.0-glibc-2.19-kernel-4.9:2@tar.gz",
+        "kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:75@tar.gz",
+        "kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "macos:x86_64",
+      "targetPlatform": "linux_arm32_hfp:LINUX:ARM32",
+      "dependencies": [
+        "kotlin.native:arm-unknown-linux-gnueabihf-gcc-8.3.0-glibc-2.12.1-kernel-4.9:1@tar.gz",
+        "kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:75@tar.gz",
+        "kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "macos:x86_64",
+      "targetPlatform": "linux_arm64:LINUX:ARM64",
+      "dependencies": [
+        "kotlin.native:aarch64-unknown-linux-gnu-gcc-8.3.0-glibc-2.25-kernel-4.9:2@tar.gz",
+        "kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:75@tar.gz",
+        "kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "macos:x86_64",
+      "targetPlatform": "mingw_x64:MINGW:X64",
+      "dependencies": [
+        "kotlin.native:msys2-mingw-w64-x86_64:2@tar.gz",
+        "kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:75@tar.gz",
+        "kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "macos:x86_64",
+      "targetPlatform": "android_x86:ANDROID:X86",
+      "dependencies": [
+        "kotlin.native:target-sysroot:1:android_ndk@tar.gz",
+        "kotlin.native:target-toolchain:2:osx-android_ndk@tar.gz",
+        "kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:75@tar.gz",
+        "kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "macos:x86_64",
+      "targetPlatform": "android_x64:ANDROID:X64",
+      "dependencies": [
+        "kotlin.native:target-sysroot:1:android_ndk@tar.gz",
+        "kotlin.native:target-toolchain:2:osx-android_ndk@tar.gz",
+        "kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:75@tar.gz",
+        "kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "macos:x86_64",
+      "targetPlatform": "android_arm32:ANDROID:ARM32",
+      "dependencies": [
+        "kotlin.native:target-sysroot:1:android_ndk@tar.gz",
+        "kotlin.native:target-toolchain:2:osx-android_ndk@tar.gz",
+        "kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:75@tar.gz",
+        "kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "macos:x86_64",
+      "targetPlatform": "android_arm64:ANDROID:ARM64",
+      "dependencies": [
+        "kotlin.native:target-sysroot:1:android_ndk@tar.gz",
+        "kotlin.native:target-toolchain:2:osx-android_ndk@tar.gz",
+        "kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:75@tar.gz",
+        "kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "macos:x86_64",
+      "targetPlatform": "macos_x64:OSX:X64",
+      "dependencies": [
+        "kotlin.native:lldb:4:macos@tar.gz",
+        "kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:75@tar.gz",
+        "kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "macos:x86_64",
+      "targetPlatform": "macos_arm64:OSX:ARM64",
+      "dependencies": [
+        "kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:75@tar.gz",
+        "kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "macos:x86_64",
+      "targetPlatform": "ios_arm64:IOS:ARM64",
+      "dependencies": [
+        "kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:75@tar.gz",
+        "kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "macos:x86_64",
+      "targetPlatform": "ios_x64:IOS:X64",
+      "dependencies": [
+        "kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:75@tar.gz",
+        "kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "macos:x86_64",
+      "targetPlatform": "ios_simulator_arm64:IOS:ARM64",
+      "dependencies": [
+        "kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:75@tar.gz",
+        "kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "macos:x86_64",
+      "targetPlatform": "watchos_arm32:WATCHOS:ARM32",
+      "dependencies": [
+        "kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:75@tar.gz",
+        "kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "macos:x86_64",
+      "targetPlatform": "watchos_arm64:WATCHOS:ARM64",
+      "dependencies": [
+        "kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:75@tar.gz",
+        "kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "macos:x86_64",
+      "targetPlatform": "watchos_x64:WATCHOS:X64",
+      "dependencies": [
+        "kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:75@tar.gz",
+        "kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "macos:x86_64",
+      "targetPlatform": "watchos_simulator_arm64:WATCHOS:ARM64",
+      "dependencies": [
+        "kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:75@tar.gz",
+        "kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "macos:x86_64",
+      "targetPlatform": "watchos_device_arm64:WATCHOS:ARM64",
+      "dependencies": [
+        "kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:75@tar.gz",
+        "kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "macos:x86_64",
+      "targetPlatform": "tvos_arm64:TVOS:ARM64",
+      "dependencies": [
+        "kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:75@tar.gz",
+        "kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "macos:x86_64",
+      "targetPlatform": "tvos_x64:TVOS:X64",
+      "dependencies": [
+        "kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:75@tar.gz",
+        "kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "macos:x86_64",
+      "targetPlatform": "tvos_simulator_arm64:TVOS:ARM64",
+      "dependencies": [
+        "kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:75@tar.gz",
+        "kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "windows:x86_64",
+      "targetPlatform": "linux_x64:LINUX:X64",
+      "dependencies": [
+        "kotlin.native:x86_64-unknown-linux-gnu-gcc-8.3.0-glibc-2.19-kernel-4.9:2@zip",
+        "kotlin.native:msys2-mingw-w64-x86_64:2@zip",
+        "kotlin.native.resources.llvm.19-x86_64-windows:llvm-19-x86_64-windows-essentials:134@zip",
+        "kotlin.native:libffi-3.3-windows-x64:1@zip"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "windows:x86_64",
+      "targetPlatform": "linux_arm32_hfp:LINUX:ARM32",
+      "dependencies": [
+        "kotlin.native:arm-unknown-linux-gnueabihf-gcc-8.3.0-glibc-2.12.1-kernel-4.9:1@zip",
+        "kotlin.native:msys2-mingw-w64-x86_64:2@zip",
+        "kotlin.native.resources.llvm.19-x86_64-windows:llvm-19-x86_64-windows-essentials:134@zip",
+        "kotlin.native:libffi-3.3-windows-x64:1@zip"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "windows:x86_64",
+      "targetPlatform": "linux_arm64:LINUX:ARM64",
+      "dependencies": [
+        "kotlin.native:aarch64-unknown-linux-gnu-gcc-8.3.0-glibc-2.25-kernel-4.9:2@zip",
+        "kotlin.native:msys2-mingw-w64-x86_64:2@zip",
+        "kotlin.native.resources.llvm.19-x86_64-windows:llvm-19-x86_64-windows-essentials:134@zip",
+        "kotlin.native:libffi-3.3-windows-x64:1@zip"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "windows:x86_64",
+      "targetPlatform": "mingw_x64:MINGW:X64",
+      "dependencies": [
+        "kotlin.native:lldb:2:windows@zip",
+        "kotlin.native:msys2-mingw-w64-x86_64:2@zip",
+        "kotlin.native.resources.llvm.19-x86_64-windows:llvm-19-x86_64-windows-essentials:134@zip",
+        "kotlin.native:libffi-3.3-windows-x64:1@zip"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "windows:x86_64",
+      "targetPlatform": "android_x86:ANDROID:X86",
+      "dependencies": [
+        "kotlin.native:target-sysroot:1:android_ndk@zip",
+        "kotlin.native:target-toolchain:2:windows-android_ndk@zip",
+        "kotlin.native.resources.llvm.19-x86_64-windows:llvm-19-x86_64-windows-essentials:134@zip",
+        "kotlin.native:libffi-3.3-windows-x64:1@zip"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "windows:x86_64",
+      "targetPlatform": "android_x64:ANDROID:X64",
+      "dependencies": [
+        "kotlin.native:target-sysroot:1:android_ndk@zip",
+        "kotlin.native:target-toolchain:2:windows-android_ndk@zip",
+        "kotlin.native.resources.llvm.19-x86_64-windows:llvm-19-x86_64-windows-essentials:134@zip",
+        "kotlin.native:libffi-3.3-windows-x64:1@zip"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "windows:x86_64",
+      "targetPlatform": "android_arm32:ANDROID:ARM32",
+      "dependencies": [
+        "kotlin.native:target-sysroot:1:android_ndk@zip",
+        "kotlin.native:target-toolchain:2:windows-android_ndk@zip",
+        "kotlin.native.resources.llvm.19-x86_64-windows:llvm-19-x86_64-windows-essentials:134@zip",
+        "kotlin.native:libffi-3.3-windows-x64:1@zip"
+      ]
+    },
+    {
+      "version": "2.3.10-RC2",
+      "buildPlatform": "windows:x86_64",
+      "targetPlatform": "android_arm64:ANDROID:ARM64",
+      "dependencies": [
+        "kotlin.native:target-sysroot:1:android_ndk@zip",
+        "kotlin.native:target-toolchain:2:windows-android_ndk@zip",
+        "kotlin.native.resources.llvm.19-x86_64-windows:llvm-19-x86_64-windows-essentials:134@zip",
+        "kotlin.native:libffi-3.3-windows-x64:1@zip"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "linux:x86_64",
+      "targetPlatform": "linux_x64:LINUX:X64",
+      "dependencies": [
+        "kotlin.native:x86_64-unknown-linux-gnu-gcc-8.3.0-glibc-2.19-kernel-4.9:2@tar.gz",
+        "kotlin.native:lldb:4:linux@tar.gz",
+        "kotlin.native.resources.llvm.19-x86_64-linux:llvm-19-x86_64-linux-essentials:109@tar.gz",
+        "kotlin.native:libffi-3.2.1-2-linux-x86:64@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "linux:x86_64",
+      "targetPlatform": "linux_arm32_hfp:LINUX:ARM32",
+      "dependencies": [
+        "kotlin.native:arm-unknown-linux-gnueabihf-gcc-8.3.0-glibc-2.12.1-kernel-4.9:1@tar.gz",
+        "kotlin.native.resources.llvm.19-x86_64-linux:llvm-19-x86_64-linux-essentials:109@tar.gz",
+        "kotlin.native:libffi-3.2.1-2-linux-x86:64@tar.gz",
+        "kotlin.native:qemu-arm-static-5.1.0-linux:2@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "linux:x86_64",
+      "targetPlatform": "linux_arm64:LINUX:ARM64",
+      "dependencies": [
+        "kotlin.native:aarch64-unknown-linux-gnu-gcc-8.3.0-glibc-2.25-kernel-4.9:2@tar.gz",
+        "kotlin.native.resources.llvm.19-x86_64-linux:llvm-19-x86_64-linux-essentials:109@tar.gz",
+        "kotlin.native:libffi-3.2.1-2-linux-x86:64@tar.gz",
+        "kotlin.native:qemu-aarch64-static-5.1.0-linux:2@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "linux:x86_64",
+      "targetPlatform": "mingw_x64:MINGW:X64",
+      "dependencies": [
+        "kotlin.native:msys2-mingw-w64-x86_64:2@tar.gz",
+        "kotlin.native.resources.llvm.19-x86_64-linux:llvm-19-x86_64-linux-essentials:109@tar.gz",
+        "kotlin.native:libffi-3.2.1-2-linux-x86:64@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "linux:x86_64",
+      "targetPlatform": "android_x86:ANDROID:X86",
+      "dependencies": [
+        "kotlin.native:target-sysroot:1:android_ndk@tar.gz",
+        "kotlin.native:target-toolchain:2:linux-android_ndk@tar.gz",
+        "kotlin.native.resources.llvm.19-x86_64-linux:llvm-19-x86_64-linux-essentials:109@tar.gz",
+        "kotlin.native:libffi-3.2.1-2-linux-x86:64@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "linux:x86_64",
+      "targetPlatform": "android_x64:ANDROID:X64",
+      "dependencies": [
+        "kotlin.native:target-sysroot:1:android_ndk@tar.gz",
+        "kotlin.native:target-toolchain:2:linux-android_ndk@tar.gz",
+        "kotlin.native.resources.llvm.19-x86_64-linux:llvm-19-x86_64-linux-essentials:109@tar.gz",
+        "kotlin.native:libffi-3.2.1-2-linux-x86:64@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "linux:x86_64",
+      "targetPlatform": "android_arm32:ANDROID:ARM32",
+      "dependencies": [
+        "kotlin.native:target-sysroot:1:android_ndk@tar.gz",
+        "kotlin.native:target-toolchain:2:linux-android_ndk@tar.gz",
+        "kotlin.native.resources.llvm.19-x86_64-linux:llvm-19-x86_64-linux-essentials:109@tar.gz",
+        "kotlin.native:libffi-3.2.1-2-linux-x86:64@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "linux:x86_64",
+      "targetPlatform": "android_arm64:ANDROID:ARM64",
+      "dependencies": [
+        "kotlin.native:target-sysroot:1:android_ndk@tar.gz",
+        "kotlin.native:target-toolchain:2:linux-android_ndk@tar.gz",
+        "kotlin.native.resources.llvm.19-x86_64-linux:llvm-19-x86_64-linux-essentials:109@tar.gz",
+        "kotlin.native:libffi-3.2.1-2-linux-x86:64@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "macos:aarch64",
+      "targetPlatform": "linux_x64:LINUX:X64",
+      "dependencies": [
+        "kotlin.native:x86_64-unknown-linux-gnu-gcc-8.3.0-glibc-2.19-kernel-4.9:2@tar.gz",
+        "kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:81@tar.gz",
+        "kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "macos:aarch64",
+      "targetPlatform": "linux_arm32_hfp:LINUX:ARM32",
+      "dependencies": [
+        "kotlin.native:arm-unknown-linux-gnueabihf-gcc-8.3.0-glibc-2.12.1-kernel-4.9:1@tar.gz",
+        "kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:81@tar.gz",
+        "kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "macos:aarch64",
+      "targetPlatform": "linux_arm64:LINUX:ARM64",
+      "dependencies": [
+        "kotlin.native:aarch64-unknown-linux-gnu-gcc-8.3.0-glibc-2.25-kernel-4.9:2@tar.gz",
+        "kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:81@tar.gz",
+        "kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "macos:aarch64",
+      "targetPlatform": "mingw_x64:MINGW:X64",
+      "dependencies": [
+        "kotlin.native:msys2-mingw-w64-x86_64:2@tar.gz",
+        "kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:81@tar.gz",
+        "kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "macos:aarch64",
+      "targetPlatform": "android_x86:ANDROID:X86",
+      "dependencies": [
+        "kotlin.native:target-sysroot:1:android_ndk@tar.gz",
+        "kotlin.native:target-toolchain:2:osx-android_ndk@tar.gz",
+        "kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:81@tar.gz",
+        "kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "macos:aarch64",
+      "targetPlatform": "android_x64:ANDROID:X64",
+      "dependencies": [
+        "kotlin.native:target-sysroot:1:android_ndk@tar.gz",
+        "kotlin.native:target-toolchain:2:osx-android_ndk@tar.gz",
+        "kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:81@tar.gz",
+        "kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "macos:aarch64",
+      "targetPlatform": "android_arm32:ANDROID:ARM32",
+      "dependencies": [
+        "kotlin.native:target-sysroot:1:android_ndk@tar.gz",
+        "kotlin.native:target-toolchain:2:osx-android_ndk@tar.gz",
+        "kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:81@tar.gz",
+        "kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "macos:aarch64",
+      "targetPlatform": "android_arm64:ANDROID:ARM64",
+      "dependencies": [
+        "kotlin.native:target-sysroot:1:android_ndk@tar.gz",
+        "kotlin.native:target-toolchain:2:osx-android_ndk@tar.gz",
+        "kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:81@tar.gz",
+        "kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "macos:aarch64",
+      "targetPlatform": "macos_x64:OSX:X64",
+      "dependencies": [
+        "kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:81@tar.gz",
+        "kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "macos:aarch64",
+      "targetPlatform": "macos_arm64:OSX:ARM64",
+      "dependencies": [
+        "kotlin.native:lldb:4:macos@tar.gz",
+        "kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:81@tar.gz",
+        "kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "macos:aarch64",
+      "targetPlatform": "ios_arm64:IOS:ARM64",
+      "dependencies": [
+        "kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:81@tar.gz",
+        "kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "macos:aarch64",
+      "targetPlatform": "ios_x64:IOS:X64",
+      "dependencies": [
+        "kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:81@tar.gz",
+        "kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "macos:aarch64",
+      "targetPlatform": "ios_simulator_arm64:IOS:ARM64",
+      "dependencies": [
+        "kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:81@tar.gz",
+        "kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "macos:aarch64",
+      "targetPlatform": "watchos_arm32:WATCHOS:ARM32",
+      "dependencies": [
+        "kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:81@tar.gz",
+        "kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "macos:aarch64",
+      "targetPlatform": "watchos_arm64:WATCHOS:ARM64",
+      "dependencies": [
+        "kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:81@tar.gz",
+        "kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "macos:aarch64",
+      "targetPlatform": "watchos_x64:WATCHOS:X64",
+      "dependencies": [
+        "kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:81@tar.gz",
+        "kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "macos:aarch64",
+      "targetPlatform": "watchos_simulator_arm64:WATCHOS:ARM64",
+      "dependencies": [
+        "kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:81@tar.gz",
+        "kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "macos:aarch64",
+      "targetPlatform": "watchos_device_arm64:WATCHOS:ARM64",
+      "dependencies": [
+        "kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:81@tar.gz",
+        "kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "macos:aarch64",
+      "targetPlatform": "tvos_arm64:TVOS:ARM64",
+      "dependencies": [
+        "kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:81@tar.gz",
+        "kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "macos:aarch64",
+      "targetPlatform": "tvos_x64:TVOS:X64",
+      "dependencies": [
+        "kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:81@tar.gz",
+        "kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "macos:aarch64",
+      "targetPlatform": "tvos_simulator_arm64:TVOS:ARM64",
+      "dependencies": [
+        "kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:81@tar.gz",
+        "kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "macos:x86_64",
+      "targetPlatform": "linux_x64:LINUX:X64",
+      "dependencies": [
+        "kotlin.native:x86_64-unknown-linux-gnu-gcc-8.3.0-glibc-2.19-kernel-4.9:2@tar.gz",
+        "kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:77@tar.gz",
+        "kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "macos:x86_64",
+      "targetPlatform": "linux_arm32_hfp:LINUX:ARM32",
+      "dependencies": [
+        "kotlin.native:arm-unknown-linux-gnueabihf-gcc-8.3.0-glibc-2.12.1-kernel-4.9:1@tar.gz",
+        "kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:77@tar.gz",
+        "kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "macos:x86_64",
+      "targetPlatform": "linux_arm64:LINUX:ARM64",
+      "dependencies": [
+        "kotlin.native:aarch64-unknown-linux-gnu-gcc-8.3.0-glibc-2.25-kernel-4.9:2@tar.gz",
+        "kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:77@tar.gz",
+        "kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "macos:x86_64",
+      "targetPlatform": "mingw_x64:MINGW:X64",
+      "dependencies": [
+        "kotlin.native:msys2-mingw-w64-x86_64:2@tar.gz",
+        "kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:77@tar.gz",
+        "kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "macos:x86_64",
+      "targetPlatform": "android_x86:ANDROID:X86",
+      "dependencies": [
+        "kotlin.native:target-sysroot:1:android_ndk@tar.gz",
+        "kotlin.native:target-toolchain:2:osx-android_ndk@tar.gz",
+        "kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:77@tar.gz",
+        "kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "macos:x86_64",
+      "targetPlatform": "android_x64:ANDROID:X64",
+      "dependencies": [
+        "kotlin.native:target-sysroot:1:android_ndk@tar.gz",
+        "kotlin.native:target-toolchain:2:osx-android_ndk@tar.gz",
+        "kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:77@tar.gz",
+        "kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "macos:x86_64",
+      "targetPlatform": "android_arm32:ANDROID:ARM32",
+      "dependencies": [
+        "kotlin.native:target-sysroot:1:android_ndk@tar.gz",
+        "kotlin.native:target-toolchain:2:osx-android_ndk@tar.gz",
+        "kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:77@tar.gz",
+        "kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "macos:x86_64",
+      "targetPlatform": "android_arm64:ANDROID:ARM64",
+      "dependencies": [
+        "kotlin.native:target-sysroot:1:android_ndk@tar.gz",
+        "kotlin.native:target-toolchain:2:osx-android_ndk@tar.gz",
+        "kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:77@tar.gz",
+        "kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "macos:x86_64",
+      "targetPlatform": "macos_x64:OSX:X64",
+      "dependencies": [
+        "kotlin.native:lldb:4:macos@tar.gz",
+        "kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:77@tar.gz",
+        "kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "macos:x86_64",
+      "targetPlatform": "macos_arm64:OSX:ARM64",
+      "dependencies": [
+        "kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:77@tar.gz",
+        "kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "macos:x86_64",
+      "targetPlatform": "ios_arm64:IOS:ARM64",
+      "dependencies": [
+        "kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:77@tar.gz",
+        "kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "macos:x86_64",
+      "targetPlatform": "ios_x64:IOS:X64",
+      "dependencies": [
+        "kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:77@tar.gz",
+        "kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "macos:x86_64",
+      "targetPlatform": "ios_simulator_arm64:IOS:ARM64",
+      "dependencies": [
+        "kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:77@tar.gz",
+        "kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "macos:x86_64",
+      "targetPlatform": "watchos_arm32:WATCHOS:ARM32",
+      "dependencies": [
+        "kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:77@tar.gz",
+        "kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "macos:x86_64",
+      "targetPlatform": "watchos_arm64:WATCHOS:ARM64",
+      "dependencies": [
+        "kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:77@tar.gz",
+        "kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "macos:x86_64",
+      "targetPlatform": "watchos_x64:WATCHOS:X64",
+      "dependencies": [
+        "kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:77@tar.gz",
+        "kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "macos:x86_64",
+      "targetPlatform": "watchos_simulator_arm64:WATCHOS:ARM64",
+      "dependencies": [
+        "kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:77@tar.gz",
+        "kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "macos:x86_64",
+      "targetPlatform": "watchos_device_arm64:WATCHOS:ARM64",
+      "dependencies": [
+        "kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:77@tar.gz",
+        "kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "macos:x86_64",
+      "targetPlatform": "tvos_arm64:TVOS:ARM64",
+      "dependencies": [
+        "kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:77@tar.gz",
+        "kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "macos:x86_64",
+      "targetPlatform": "tvos_x64:TVOS:X64",
+      "dependencies": [
+        "kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:77@tar.gz",
+        "kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "macos:x86_64",
+      "targetPlatform": "tvos_simulator_arm64:TVOS:ARM64",
+      "dependencies": [
+        "kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:77@tar.gz",
+        "kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "windows:x86_64",
+      "targetPlatform": "linux_x64:LINUX:X64",
+      "dependencies": [
+        "kotlin.native:x86_64-unknown-linux-gnu-gcc-8.3.0-glibc-2.19-kernel-4.9:2@zip",
+        "kotlin.native:msys2-mingw-w64-x86_64:2@zip",
+        "kotlin.native.resources.llvm.19-x86_64-windows:llvm-19-x86_64-windows-essentials:139@zip",
+        "kotlin.native:libffi-3.3-windows-x64:1@zip"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "windows:x86_64",
+      "targetPlatform": "linux_arm32_hfp:LINUX:ARM32",
+      "dependencies": [
+        "kotlin.native:arm-unknown-linux-gnueabihf-gcc-8.3.0-glibc-2.12.1-kernel-4.9:1@zip",
+        "kotlin.native:msys2-mingw-w64-x86_64:2@zip",
+        "kotlin.native.resources.llvm.19-x86_64-windows:llvm-19-x86_64-windows-essentials:139@zip",
+        "kotlin.native:libffi-3.3-windows-x64:1@zip"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "windows:x86_64",
+      "targetPlatform": "linux_arm64:LINUX:ARM64",
+      "dependencies": [
+        "kotlin.native:aarch64-unknown-linux-gnu-gcc-8.3.0-glibc-2.25-kernel-4.9:2@zip",
+        "kotlin.native:msys2-mingw-w64-x86_64:2@zip",
+        "kotlin.native.resources.llvm.19-x86_64-windows:llvm-19-x86_64-windows-essentials:139@zip",
+        "kotlin.native:libffi-3.3-windows-x64:1@zip"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "windows:x86_64",
+      "targetPlatform": "mingw_x64:MINGW:X64",
+      "dependencies": [
+        "kotlin.native:lldb:2:windows@zip",
+        "kotlin.native:msys2-mingw-w64-x86_64:2@zip",
+        "kotlin.native.resources.llvm.19-x86_64-windows:llvm-19-x86_64-windows-essentials:139@zip",
+        "kotlin.native:libffi-3.3-windows-x64:1@zip"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "windows:x86_64",
+      "targetPlatform": "android_x86:ANDROID:X86",
+      "dependencies": [
+        "kotlin.native:target-sysroot:1:android_ndk@zip",
+        "kotlin.native:target-toolchain:2:windows-android_ndk@zip",
+        "kotlin.native.resources.llvm.19-x86_64-windows:llvm-19-x86_64-windows-essentials:139@zip",
+        "kotlin.native:libffi-3.3-windows-x64:1@zip"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "windows:x86_64",
+      "targetPlatform": "android_x64:ANDROID:X64",
+      "dependencies": [
+        "kotlin.native:target-sysroot:1:android_ndk@zip",
+        "kotlin.native:target-toolchain:2:windows-android_ndk@zip",
+        "kotlin.native.resources.llvm.19-x86_64-windows:llvm-19-x86_64-windows-essentials:139@zip",
+        "kotlin.native:libffi-3.3-windows-x64:1@zip"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "windows:x86_64",
+      "targetPlatform": "android_arm32:ANDROID:ARM32",
+      "dependencies": [
+        "kotlin.native:target-sysroot:1:android_ndk@zip",
+        "kotlin.native:target-toolchain:2:windows-android_ndk@zip",
+        "kotlin.native.resources.llvm.19-x86_64-windows:llvm-19-x86_64-windows-essentials:139@zip",
+        "kotlin.native:libffi-3.3-windows-x64:1@zip"
+      ]
+    },
+    {
+      "version": "2.3.20-Beta2",
+      "buildPlatform": "windows:x86_64",
+      "targetPlatform": "android_arm64:ANDROID:ARM64",
+      "dependencies": [
+        "kotlin.native:target-sysroot:1:android_ndk@zip",
+        "kotlin.native:target-toolchain:2:windows-android_ndk@zip",
+        "kotlin.native.resources.llvm.19-x86_64-windows:llvm-19-x86_64-windows-essentials:139@zip",
+        "kotlin.native:libffi-3.3-windows-x64:1@zip"
+      ]
     }
   ]
 }

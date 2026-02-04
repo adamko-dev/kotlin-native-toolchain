@@ -1,35 +1,52 @@
-package dev.adamko.knp
+package dev.adamko.kntoolchain.tools.tasks
 
-import dev.adamko.knp.internal.utils.buildStringBlock
-import dev.adamko.knp.internal.utils.konanDependenciesReport
-import dev.adamko.kntoolchain.tools.datamodel.KonanDependenciesReport
-import dev.adamko.kntoolchain.tools.datamodel.KotlinVersionTargetDependencies
-import dev.adamko.kntoolchain.tools.datamodel.Platform
+import dev.adamko.kntoolchain.tools.internal.datamodel.KonanDependenciesReport
+import dev.adamko.kntoolchain.tools.internal.datamodel.KotlinVersionTargetDependencies
+import dev.adamko.kntoolchain.tools.internal.datamodel.Platform
+import dev.adamko.kntoolchain.tools.internal.utils.buildStringBlock
 import java.nio.file.Path
 import java.util.*
 import kotlin.io.path.createDirectories
 import kotlin.io.path.writeText
+import kotlinx.serialization.json.Json
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
 import org.gradle.kotlin.dsl.support.uppercaseFirstChar
 
+
+// TODO Create two tasks, one to generate code, the other to copy the code to source dir.
+//      If generated data doesn't match target, then fail.
 abstract class KnpDataGenTask
 internal constructor() : DefaultTask() {
 
   @get:OutputDirectory
   abstract val outputDir: DirectoryProperty
 
+  @get:InputFile
+  abstract val konanDependenciesReportFile: RegularFileProperty
+
   @TaskAction
   protected fun action() {
     prepareOutputDir()
+    val konanDependenciesReport = loadKonanDependenciesReport()
     generateKotlinData(konanDependenciesReport)
   }
 
   private fun prepareOutputDir() {
     outputDir.get().asFile.deleteRecursively()
     outputDir.get().asFile.mkdirs()
+  }
+
+  private fun loadKonanDependenciesReport(): KonanDependenciesReport {
+    val konanDependenciesReportFile = konanDependenciesReportFile.get().asFile.readText()
+    return Json.decodeFromString(
+      KonanDependenciesReport.serializer(),
+      konanDependenciesReportFile,
+    )
   }
 
   private fun generateKotlinData(report: KonanDependenciesReport) {
@@ -390,9 +407,9 @@ private fun createKnpDependency() {
 context(ctx: Context)
 private fun createKnpDepData() {
 
-  val dataDir = ctx.outputDir.resolve("data").createDirectories()
+  val contentDir = ctx.outputDir.resolve("content").createDirectories()
 
-  dataDir.resolve("KnDependencyDataSpec.kt").writeText(
+  contentDir.resolve("KnDependencyDataSpec.kt").writeText(
     buildStringBlock {
       line("package dev.adamko.kntoolchain.tools.data.content")
       line()
@@ -425,7 +442,7 @@ private fun createKnpDepData() {
   dataGroupedByVersion.forEach { (version, reports) ->
     val versionPretty = ctx.allVersions[version] ?: error("Unknown version: $version")
 
-    val outputFile = dataDir.resolve("KnDependencyData_${versionPretty}.kt")
+    val outputFile = contentDir.resolve("KnDependencyData_${versionPretty}.kt")
 
     outputFile.writeText(
       buildStringBlock {

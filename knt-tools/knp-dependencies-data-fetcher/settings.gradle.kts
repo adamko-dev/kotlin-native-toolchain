@@ -22,4 +22,4 @@ dependencyResolutionManagement {
   }
 }
 
-includeBuild("../knp-dependencies-data-model/")
+//includeBuild("../knp-dependencies-data-model/")

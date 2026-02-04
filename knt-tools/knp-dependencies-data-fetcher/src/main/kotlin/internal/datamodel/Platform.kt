@@ -1,5 +1,6 @@
-package dev.adamko.kntoolchain.tools.datamodel
+package dev.adamko.kntoolchain.tools.internal.datamodel
 
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor
@@ -7,7 +8,7 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
 @Serializable(with = Platform.Serializer::class)
-data class Platform(
+internal data class Platform(
   val osFamily: String,
   val osArch: String,
 ) : java.io.Serializable, Comparable<Platform> {
@@ -34,7 +35,7 @@ data class Platform(
     }
   }
 
-  object Serializer : kotlinx.serialization.KSerializer<Platform> {
+  object Serializer : KSerializer<Platform> {
     override val descriptor: SerialDescriptor
       get() = String.serializer().descriptor
 

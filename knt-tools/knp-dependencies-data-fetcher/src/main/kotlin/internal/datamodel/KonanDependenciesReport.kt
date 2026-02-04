@@ -1,8 +1,8 @@
-package dev.adamko.kntoolchain.tools.datamodel
+package dev.adamko.kntoolchain.tools.internal.datamodel
 
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class KonanDependenciesReport(
+internal data class KonanDependenciesReport(
   val data: List<KotlinVersionTargetDependencies>,
 )

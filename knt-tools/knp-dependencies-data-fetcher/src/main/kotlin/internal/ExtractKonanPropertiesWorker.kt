@@ -1,6 +1,6 @@
 package dev.adamko.kntoolchain.tools.internal
 
-import dev.adamko.kntoolchain.tools.datamodel.KotlinNativePrebuiltData.ArchiveType
+import dev.adamko.kntoolchain.tools.internal.datamodel.KotlinNativePrebuiltData.ArchiveType
 import javax.inject.Inject
 import kotlin.io.path.exists
 import kotlin.io.path.name

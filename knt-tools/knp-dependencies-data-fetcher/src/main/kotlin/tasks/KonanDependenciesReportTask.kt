@@ -1,15 +1,15 @@
 package dev.adamko.kntoolchain.tools.tasks
 
-import dev.adamko.kntoolchain.tools.datamodel.KonanDependenciesReport
-import dev.adamko.kntoolchain.tools.datamodel.KotlinNativePrebuiltData.ArchiveType
-import dev.adamko.kntoolchain.tools.datamodel.Platform
+import dev.adamko.kntoolchain.tools.internal.datamodel.KonanDependenciesReport
+import dev.adamko.kntoolchain.tools.internal.datamodel.KotlinNativePrebuiltData.ArchiveType
+import dev.adamko.kntoolchain.tools.internal.datamodel.Platform
 import dev.adamko.kntoolchain.tools.internal.ExtractKonanPropertiesWorker
 import dev.adamko.kntoolchain.tools.internal.KonanDependenciesWorker
+import dev.adamko.kntoolchain.tools.internal.json
 import java.nio.file.Path
 import javax.inject.Inject
 import kotlin.io.path.*
 import kotlinx.serialization.SerializationException
-import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromStream
 import kotlinx.serialization.json.encodeToStream
 import org.gradle.api.DefaultTask
@@ -26,6 +26,8 @@ import org.jetbrains.kotlin.tooling.core.KotlinToolingVersion
  * containing all required Konan dependencies.
  *
  * The dependencies must be installed into the `.konan` data dir.
+ *
+ * This task is slow and should only be run when the source data has changed.
  */
 @CacheableTask
 abstract class KonanDependenciesReportTask
@@ -46,7 +48,7 @@ internal constructor(
    * Packaged kotlin-native-prebuilt distributions.
    *
    * The available versions are discovered by
-   * [dev.adamko.kntoolchain.tools.internal.KotlinNativePrebuiltVariantsSource].
+   * [dev.adamko.kntoolchain.tools.tasks.KonanDependenciesReportTask].
    */
   @get:InputFiles
   @get:PathSensitive(NONE)
@@ -120,7 +122,7 @@ internal constructor(
 
     val allData = allReports.flatMap { it.data }
 
-    // aggregate dependenciesData for each dist into single file
+    // aggregate dependenciesData for each dist into a single file
     val report = KonanDependenciesReport(allData)
 
     saveToJson(report)
@@ -154,6 +156,10 @@ internal constructor(
    * Create a [KnpDist] for each archive file.
    */
   private fun createKnpDists(): List<KnpDist> {
+    if (konanDistributions.isEmpty) {
+      error("No konanDistributions provided")
+    }
+
     logger.lifecycle("[$path] Creating ${konanDistributions.count()} knp distributions")
 
     return konanDistributions.map { knpDistFile ->
@@ -197,7 +203,6 @@ internal constructor(
           }
         }
         knpDists.forEach { knpDist ->
-
           konanDependenciesWorkQueue.submit(KonanDependenciesWorker::class) {
             it.targetDependenciesReportFile.set(knpDist.dependenciesData.toFile())
             it.konanPropertiesFile.set(knpDist.konanProperties.toFile())
@@ -214,10 +219,5 @@ internal constructor(
     logger.lifecycle("[$path] Computed ${knpDists.size} konan dependencies")
   }
 
-  companion object {
-    private val json = Json {
-      prettyPrint = true
-      prettyPrintIndent = "  "
-    }
-  }
+  companion object
 }

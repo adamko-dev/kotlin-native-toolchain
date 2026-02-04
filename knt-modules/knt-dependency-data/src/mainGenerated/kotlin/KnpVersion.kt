@@ -45,4 +45,10 @@ enum class KnpVersion(
 
   /** Version `2.3.0`. */
   V2_3_0("2.3.0"),
+
+  /** Version `2.3.10-RC2`. */
+  V2_3_10_RC2("2.3.10-RC2"),
+
+  /** Version `2.3.20-Beta2`. */
+  V2_3_20_Beta2("2.3.20-Beta2"),
 }

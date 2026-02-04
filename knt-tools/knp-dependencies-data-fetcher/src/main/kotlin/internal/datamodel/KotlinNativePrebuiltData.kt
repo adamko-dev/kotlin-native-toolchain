@@ -1,12 +1,11 @@
-package dev.adamko.kntoolchain.tools.datamodel
+package dev.adamko.kntoolchain.tools.internal.datamodel
 
-import dev.adamko.kntoolchain.tools.datamodel.internal.KotlinToolingVersionEnc
 import java.nio.file.Path
 import kotlin.io.path.name
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class KotlinNativePrebuiltData(
+internal data class KotlinNativePrebuiltData(
   val data: Map<KotlinToolingVersionEnc, Set<PrebuiltVariant>>,
 ) {
 
@@ -23,9 +22,6 @@ data class KotlinNativePrebuiltData(
 
     override fun toString(): String =
       "$classifier-${archiveType.dependencyExtension}"
-
-    fun toEscapedString(): String =
-      toString().map { if (it.isLetterOrDigit()) it else '_' }.joinToString("")
 
     override fun compareTo(other: PrebuiltVariant): Int =
       this.toString().compareTo(other.toString())

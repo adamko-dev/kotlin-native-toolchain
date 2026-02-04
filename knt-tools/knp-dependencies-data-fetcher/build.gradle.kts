@@ -3,12 +3,13 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
   id("conventions.kotlin-gradle-plugin")
+  kotlin("plugin.serialization") version embeddedKotlinVersion
 }
 
 description = "Determine the dependencies required for a Kotlin/Native Konan installation."
 
 dependencies {
-  implementation("dev.adamko.kotlin-native-toolchain:knp-dependencies-data-model")
+  //implementation("dev.adamko.kotlin-native-toolchain:knp-dependencies-data-model")
 
   implementation(platform(libs.kotlinxSerialization.bom))
   implementation(libs.kotlinxSerialization.json)

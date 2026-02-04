@@ -1,6 +1,5 @@
 package dev.adamko.kntoolchain.tools.internal.utils
 
-import java.io.File
 import java.io.OutputStream.nullOutputStream
 import java.math.BigInteger
 import java.nio.file.Path
@@ -17,19 +16,19 @@ internal fun Path.md5Checksum(): String =
   checksum(this, "MD5")
 
 
-internal fun File.sha512Checksum(): String =
-  toPath().sha512Checksum()
+//internal fun File.sha512Checksum(): String =
+//  toPath().sha512Checksum()
 
 
-internal fun Path.sha512Checksum(): String {
-  return when {
-    isRegularFile() || isDirectory() ->
-      checksum(this, "SHA-512")
-
-    else                             ->
-      error("Cannot checksum $this: it is neither a file nor a directory")
-  }
-}
+//internal fun Path.sha512Checksum(): String {
+//  return when {
+//    isRegularFile() || isDirectory() ->
+//      checksum(this, "SHA-512")
+//
+//    else                             ->
+//      error("Cannot checksum $this: it is neither a file nor a directory")
+//  }
+//}
 
 private fun checksum(path: Path, algorithm: String): String {
   val md = MessageDigest.getInstance(algorithm)

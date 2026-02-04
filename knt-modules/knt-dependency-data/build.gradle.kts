@@ -1,14 +1,7 @@
 plugins {
   id("conventions.kotlin-jvm")
   id("conventions.maven-publishing")
-  id("dev.adamko.knp.KnpDataGenPlugin")
-}
-
-dependencies {
-}
-
-tasks.knpDataGen {
-  outputDir.set(layout.projectDirectory.dir("src/mainGenerated/kotlin"))
+  id("dev.adamko.kntoolchain.tools.konan-dependencies-data-fetcher")
 }
 
 kotlin {

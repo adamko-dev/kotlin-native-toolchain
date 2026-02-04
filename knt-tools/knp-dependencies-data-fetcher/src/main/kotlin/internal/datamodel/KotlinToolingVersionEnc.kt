@@ -1,4 +1,4 @@
-package dev.adamko.kntoolchain.tools.datamodel.internal
+package dev.adamko.kntoolchain.tools.internal.datamodel
 
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable

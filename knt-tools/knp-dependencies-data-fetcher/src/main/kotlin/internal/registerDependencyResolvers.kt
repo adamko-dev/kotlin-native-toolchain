@@ -1,6 +1,6 @@
 package dev.adamko.kntoolchain.tools.internal
 
-import dev.adamko.kntoolchain.tools.datamodel.KotlinNativePrebuiltData
+import dev.adamko.kntoolchain.tools.internal.datamodel.KotlinNativePrebuiltData
 import dev.adamko.kntoolchain.tools.internal.utils.createDependencyNotation
 import dev.adamko.kntoolchain.tools.internal.utils.toEscapedString
 import org.gradle.api.NamedDomainObjectProvider
