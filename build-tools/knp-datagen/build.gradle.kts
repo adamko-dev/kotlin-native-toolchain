@@ -1,3 +1,4 @@
+import org.gradle.kotlin.dsl.invoke
 import org.gradle.kotlin.dsl.support.serviceOf
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -9,12 +10,16 @@ plugins {
 description = "Determine the dependencies required for a Kotlin/Native Konan installation."
 
 dependencies {
-  //implementation("dev.adamko.kotlin-native-toolchain:knp-dependencies-data-model")
-
   implementation(platform(libs.kotlinxSerialization.bom))
   implementation(libs.kotlinxSerialization.json)
 
   compileOnly("org.jetbrains.kotlin:kotlin-gradle-plugin:${embeddedKotlinVersion}")
+
+  testImplementation(platform(libs.junit.bom))
+  testImplementation(libs.junit.jupiter)
+  testRuntimeOnly(libs.junit.platformLauncher)
+
+  testImplementation(libs.kotest.assertions)
 }
 
 kotlin {
@@ -63,8 +68,8 @@ kotlin.sourceSets.main {
 }
 
 gradlePlugin {
-  plugins.register("knp-dependencies-data-fetcher") {
-    id = "dev.adamko.kntoolchain.tools.konan-dependencies-data-fetcher"
+  plugins.register("knp-datagen") {
+    id = "dev.adamko.kntoolchain.tools.konan-dependencies-generator"
     implementationClass = "dev.adamko.kntoolchain.tools.KonanDependenciesDataFetcherPlugin"
   }
 }

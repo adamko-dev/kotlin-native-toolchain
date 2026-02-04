@@ -1,4 +1,4 @@
-# knp-dependencies-data
+# knp-datagen
 
 Tools for retrieving kotlin-native-prebuilt distribution dependency information.
 

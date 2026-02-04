@@ -12,14 +12,15 @@ import kotlinx.serialization.json.Json
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.RegularFileProperty
-import org.gradle.api.tasks.InputFile
-import org.gradle.api.tasks.OutputDirectory
-import org.gradle.api.tasks.TaskAction
+import org.gradle.api.tasks.*
+import org.gradle.api.tasks.PathSensitivity.NAME_ONLY
 import org.gradle.kotlin.dsl.support.uppercaseFirstChar
+import org.gradle.work.NormalizeLineEndings
 
 
 // TODO Create two tasks, one to generate code, the other to copy the code to source dir.
 //      If generated data doesn't match target, then fail.
+@CacheableTask
 abstract class KnpDataGenTask
 internal constructor() : DefaultTask() {
 
@@ -27,6 +28,8 @@ internal constructor() : DefaultTask() {
   abstract val outputDir: DirectoryProperty
 
   @get:InputFile
+  @get:PathSensitive(NAME_ONLY)
+  @get:NormalizeLineEndings
   abstract val konanDependenciesReportFile: RegularFileProperty
 
   @TaskAction

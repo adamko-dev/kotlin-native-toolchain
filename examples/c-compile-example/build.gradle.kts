@@ -65,10 +65,8 @@ val compileMyCLib by tasks.registering {
     exec.exec {
       executable("clang")
       args(
-        "-c",
-        "myclib.c",
-        "-o",
-        "myclib.o"
+        "-c", "myclib.c",
+        "-o", "myclib.o"
       )
       workingDir(workDir)
     }

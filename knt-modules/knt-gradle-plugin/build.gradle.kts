@@ -6,12 +6,7 @@ plugins {
   id("conventions.kotlin-gradle-plugin")
   id("conventions.maven-publishing")
   `java-test-fixtures`
-  //id("dev.adamko.knp.KnpDataGenPlugin")
 }
-
-//val knpDependenciesDataModelCoords: Provider<String> = gitVersion.map { version ->
-//  "dev.adamko.kotlin-native-toolchain:knp-dependencies-data-model:$version"
-//}
 
 dependencies {
   compileOnly(gradleApi())
@@ -26,10 +21,6 @@ dependencies {
 
   implementation(libs.apache.commonsCompress)
 
-//  implementation(platform(libs.kotlinxSerialization.bom))
-//  implementation(libs.kotlinxSerialization.json)
-
-  //compileOnly(libs.gradlePlugin.kotlin)
   compileOnly("org.jetbrains.kotlin:kotlin-gradle-plugin:${embeddedKotlinVersion}")
 
   testFixturesCompileOnly(gradleTestKit())
@@ -51,7 +42,6 @@ gradlePlugin {
 
 dependencies {
   devPublication(projects.kntModules.kntDependencyData)
-//  devPublication("dev.adamko.kotlin-native-toolchain:knp-dependencies-data-model")
 }
 
 testing {

@@ -1,7 +1,7 @@
 plugins {
   id("conventions.kotlin-jvm")
   id("conventions.maven-publishing")
-  id("dev.adamko.kntoolchain.tools.konan-dependencies-data-fetcher")
+  id("dev.adamko.kntoolchain.tools.konan-dependencies-generator")
 }
 
 kotlin {

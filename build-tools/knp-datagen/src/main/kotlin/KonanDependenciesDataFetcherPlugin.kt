@@ -35,78 +35,11 @@ internal constructor(
 ) : Plugin<Project> {
 
   override fun apply(project: Project) {
-    //apply1(project)
-    apply2(project)
-  }
-
-//  private fun apply1(project: Project) {
-//    val kotlinVersionsData: Provider<Set<KotlinToolingVersion>> =
-//      providers.of(KotlinVersionsDataSource::class) { vs ->
-//        vs.parameters {
-//          it.stateDir.set(layout.projectDirectory.dir("data"))
-//          it.currentKotlinVersion.set(BuildConstants.kotlinVersion)
-//        }
-//      }
-//
-//    val kotlinNativePrebuiltData: Provider<KotlinNativePrebuiltData> =
-//      providers.of(KotlinNativePrebuiltVariantsSource::class) { vs ->
-//        vs.parameters {
-//          it.stateDir.set(layout.projectDirectory.dir("data"))
-//          it.kotlinVersions.set(kotlinVersionsData)
-//        }
-//      }
-//
-//    val allKonanDistributions: ConfigurableFileCollection = project.objects.fileCollection()
-//
-//    kotlinNativePrebuiltData.get().data.forEach { (kotlinVersion, variants) ->
-//      logger.info("[${project.path}] registering dependency resolvers for $kotlinVersion variants: $variants")
-//      val konanDist = registerDependencyResolvers(project, kotlinVersion, variants)
-//      allKonanDistributions.from(konanDist)
-//    }
-//
-//    val konanDependenciesReportTaskClasspath: NamedDomainObjectProvider<DependencyScopeConfiguration> =
-//      project.configurations.dependencyScope("konanDependenciesReportTaskClasspath") { c ->
-//        c.defaultDependencies { deps ->
-//          deps.addAll(
-//            listOf(
-//              "org.jetbrains.kotlin:kotlin-native-utils:${BuildConstants.kotlinVersion}",
-//              "org.jetbrains.kotlin:kotlin-compiler-embeddable:${BuildConstants.kotlinVersion}",
-//            ).map(project.dependencies::create)
-//          )
-//        }
-//      }
-//
-//    val konanDependenciesReportTaskClasspathResolver: NamedDomainObjectProvider<ResolvableConfiguration> =
-//      project.configurations.resolvable(konanDependenciesReportTaskClasspath.name + "Resolver") { c ->
-//        c.extendsFrom(konanDependenciesReportTaskClasspath.get())
-//        c.attributes.attribute(USAGE_ATTRIBUTE, objects.named(JAVA_RUNTIME))
-//      }
-//
-//    project.tasks.withType<KonanDependenciesReportTask>().configureEach { task ->
-//      task.group = project.name
-//      task.workerClasspath.from(konanDependenciesReportTaskClasspathResolver)
-//    }
-//
-//    project.tasks.register("konanDependenciesReport", KonanDependenciesReportTask::class) { task ->
-//      task.konanDistributions.from(allKonanDistributions)
-//      task.reportFile.set(layout.projectDirectory.dir("data").file("KonanDependenciesReport.json"))
-//    }
-//  }
-
-//  private val dataDir: Directory = layout.projectDirectory.dir("knt-data")
-//  private val knpVariantsDataFile: RegularFile = dataDir.file("KotlinNativePrebuiltVariants.json")
-
-  private fun apply2(project: Project) {
     val knpDataExt: KnpDataExtension =
       createExtension(
         project = project,
       )
 
-//    val createKotlinNativePrebuiltDataTask: TaskProvider<CreateKotlinNativePrebuiltDataTask> =
-//      registerCreateKotlinNativePrebuiltDataTask(
-//        project = project,
-//        knpDataExt = knpDataExt,
-//      )
     val kotlinNativePrebuiltData: Provider<KotlinNativePrebuiltData> =
       providers.of(KotlinNativePrebuiltDataSource::class) { spec ->
         spec.parameters.regenerateData.set(knpDataExt.regenerateData)
@@ -114,17 +47,10 @@ internal constructor(
         spec.parameters.knpVariantsDataFile.set(knpDataExt.knpVariantsDataFile)
       }
 
-//    val kotlinNativePrebuiltData: KotlinNativePrebuiltData? =
-//      loadKnpData(
-//        knpDataExt = knpDataExt,
-//      )
-
     val allKonanDistributions: FileCollection =
       collectKonanDistributions(
         project = project,
-//        knpDataExt = knpDataExt,
         kotlinNativePrebuiltData = kotlinNativePrebuiltData,
-//        createKotlinNativePrebuiltDataTask = createKotlinNativePrebuiltDataTask,
       )
 
     val konanDependenciesReportTask =
@@ -164,19 +90,6 @@ internal constructor(
     }
   }
 
-//  /**
-//   * Load data from an existing [KnpDataExtension.knpVariantsDataFile].
-//   */
-//  private fun loadKnpData(
-//    knpDataExt: KnpDataExtension,
-//  ): KotlinNativePrebuiltData? {
-//    return knpDataExt.knpVariantsDataFile.get().asFile.toPath()
-//      .takeIf { it.exists() }
-//      ?.inputStream()?.use { source ->
-//        json.decodeFromStream(KotlinNativePrebuiltData.serializer(), source)
-//      }
-//  }
-
   private fun registerKonanDependenciesReportTaskClasspathResolver(
     project: Project,
   ): NamedDomainObjectProvider<ResolvableConfiguration> {
@@ -200,19 +113,10 @@ internal constructor(
 
   private fun collectKonanDistributions(
     project: Project,
-//    knpDataExt: KnpDataExtension,
     kotlinNativePrebuiltData: Provider<KotlinNativePrebuiltData>,
-//    createKotlinNativePrebuiltDataTask: TaskProvider<*>,
   ): FileCollection {
     val allKonanDistributions = objects.fileCollection()
 
-//    if (kotlinNativePrebuiltData == null) {
-//      logger.error(
-//        "Failed to load KotlinNativePrebuiltData from ${knpDataExt.knpVariantsDataFile.get().asFile.invariantSeparatorsPath}. "
-////            + "Run task ${project.path}:${createKotlinNativePrebuiltDataTask.name} to generate the report."
-//      )
-//    } else {
-//    }
     kotlinNativePrebuiltData.get().data.forEach { (kotlinVersion, variants) ->
       logger.info("[${project.path}] registering dependency resolvers for $kotlinVersion variants: $variants")
       val konanDist = registerDependencyResolvers(project, kotlinVersion, variants)
@@ -234,16 +138,6 @@ internal constructor(
       task.reportFile.convention(knpDataExt.konanDependenciesReportFile)
     }
   }
-
-//  private fun registerCreateKotlinNativePrebuiltDataTask(
-//    project: Project,
-//    knpDataExt: KnpDataExtension,
-//  ): TaskProvider<CreateKotlinNativePrebuiltDataTask> {
-//    return project.tasks.register("createKotlinNativePrebuiltData", CreateKotlinNativePrebuiltDataTask::class) { task ->
-//      task.group = project.name
-//      task.knpVariantsDataFile.convention(knpDataExt.knpVariantsDataFile)
-//    }
-//  }
 
   private fun registerKnpDataGenTask(
     project: Project,
@@ -270,12 +164,6 @@ internal constructor(
         knpDataExt.regenerateData.get()
       }
     }
-
-//    project.tasks.withType<CreateKotlinNativePrebuiltDataTask>().configureEach { task ->
-//      task.onlyIf("regenerate is enabled") { _ ->
-//        knpDataExt.regenerateData.get()
-//      }
-//    }
 
     project.tasks.withType<KnpDataGenTask>().configureEach { task ->
       task.onlyIf("regenerate is enabled") { _ ->

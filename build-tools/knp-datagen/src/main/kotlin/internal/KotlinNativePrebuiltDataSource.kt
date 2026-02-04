@@ -1,7 +1,7 @@
 package dev.adamko.kntoolchain.tools.internal
 
 import dev.adamko.kntoolchain.tools.internal.datamodel.KotlinNativePrebuiltData
-import dev.adamko.kntoolchain.tools.internal.utils.md5ChecksumOrNull
+import dev.adamko.kntoolchain.tools.internal.utils.md5ChecksumContentOrNull
 import java.net.URI
 import java.net.http.HttpClient
 import java.net.http.HttpRequest
@@ -134,7 +134,7 @@ internal abstract class KotlinNativePrebuiltDataSource :
 private fun downloadKotlinStdlibMavenMetadata(
   destination: Path,
 ) {
-  val fileChecksum = destination.md5ChecksumOrNull()
+  val fileChecksum = destination.md5ChecksumContentOrNull()
 
   val request =
     HttpRequest.newBuilder().apply {
@@ -165,7 +165,7 @@ private fun downloadKotlinStdlibMavenMetadata(
   check(responseEtag?.ifBlank { null } != null) {
     "Expected response to have an ETag header, but it was $responseEtag."
   }
-  val updatedChecksum = destination.md5ChecksumOrNull()
+  val updatedChecksum = destination.md5ChecksumContentOrNull()
   check(responseEtag == updatedChecksum) {
     "Expected saved file had checksum $responseEtag, but was $updatedChecksum (original checksum: $fileChecksum)"
   }
