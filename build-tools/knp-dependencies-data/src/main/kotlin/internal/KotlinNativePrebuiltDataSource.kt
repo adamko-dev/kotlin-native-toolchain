@@ -37,15 +37,6 @@ internal abstract class KotlinNativePrebuiltDataSource :
     val workDir: DirectoryProperty
   }
 
-//  /**
-//   * The generated `KotlinNativePrebuiltVariants.json` file.
-//   */
-//  @get:OutputFile
-//  abstract val knpVariantsDataFile: RegularFileProperty
-//
-//  @get:LocalState
-//  abstract val workDir: DirectoryProperty
-
   private val knpVariantsDataFile: Path
     get() = parameters.knpVariantsDataFile.get().asFile.toPath()
 

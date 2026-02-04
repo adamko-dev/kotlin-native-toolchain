@@ -1,4 +1,3 @@
-import dev.adamko.kntoolchain.kotlinNativePrebuiltDependencies
 import dev.adamko.kntoolchain.tools.data.KnCompileTarget
 import dev.adamko.kntoolchain.tools.data.KnpVersion
 import org.gradle.kotlin.dsl.support.serviceOf
@@ -92,7 +91,9 @@ val compileMyCLib by tasks.registering {
 knToolchain {
   kotlinNativePrebuiltDistribution {
     version = KnpVersion.V2_3_0
-    //compileTargets = KnCompileTarget.allTargets
+    // Only fetch the required kotlin-native-prebuilt distributions.
+    // (This could be improved by only fetching knp-dists supported by the host machine,
+    // e.g. don't fetch OsX when running on Windows.)
     compileTargets = KnCompileTarget.allTargets.filter {
       it.os in setOf(
         KnCompileTarget.OsFamily.OsX,

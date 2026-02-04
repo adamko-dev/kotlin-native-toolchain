@@ -1,10 +1,10 @@
 package dev.adamko.kntoolchain.tools.tasks
 
+import dev.adamko.kntoolchain.tools.internal.ExtractKonanPropertiesWorker
+import dev.adamko.kntoolchain.tools.internal.KonanDependenciesWorker
 import dev.adamko.kntoolchain.tools.internal.datamodel.KonanDependenciesReport
 import dev.adamko.kntoolchain.tools.internal.datamodel.KotlinNativePrebuiltData.ArchiveType
 import dev.adamko.kntoolchain.tools.internal.datamodel.Platform
-import dev.adamko.kntoolchain.tools.internal.ExtractKonanPropertiesWorker
-import dev.adamko.kntoolchain.tools.internal.KonanDependenciesWorker
 import dev.adamko.kntoolchain.tools.internal.json
 import java.nio.file.Path
 import javax.inject.Inject

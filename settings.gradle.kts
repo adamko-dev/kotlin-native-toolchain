@@ -5,7 +5,7 @@ rootProject.name = "kotlin-native-toolchain"
 pluginManagement {
   includeBuild("./build-tools/build-plugins/")
   includeBuild("./build-tools/settings-plugins/")
-  includeBuild("./knt-tools/knp-dependencies-data-fetcher/")
+  includeBuild("./build-tools/knp-dependencies-data/")
   repositories {
     mavenCentral()
     gradlePluginPortal()

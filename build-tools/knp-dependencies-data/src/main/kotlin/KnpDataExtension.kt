@@ -2,7 +2,6 @@ package dev.adamko.kntoolchain.tools
 
 import javax.inject.Inject
 import org.gradle.api.file.DirectoryProperty
-import org.gradle.api.file.ProjectLayout
 import org.gradle.api.file.RegularFile
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.Provider

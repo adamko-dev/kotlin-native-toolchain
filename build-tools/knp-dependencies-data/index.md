@@ -1,4 +1,4 @@
-# knt-tools
+# knp-dependencies-data
 
 Tools for retrieving kotlin-native-prebuilt distribution dependency information.
 

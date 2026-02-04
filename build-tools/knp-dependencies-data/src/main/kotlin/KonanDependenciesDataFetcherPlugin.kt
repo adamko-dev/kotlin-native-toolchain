@@ -2,12 +2,12 @@
 
 package dev.adamko.kntoolchain.tools
 
-import dev.adamko.kntoolchain.tools.internal.datamodel.KotlinNativePrebuiltData
 import dev.adamko.kntoolchain.tools.internal.BuildConstants
+import dev.adamko.kntoolchain.tools.internal.KotlinNativePrebuiltDataSource
+import dev.adamko.kntoolchain.tools.internal.datamodel.KotlinNativePrebuiltData
 import dev.adamko.kntoolchain.tools.internal.registerDependencyResolvers
 import dev.adamko.kntoolchain.tools.tasks.KnpDataGenTask
 import dev.adamko.kntoolchain.tools.tasks.KonanDependenciesReportTask
-import dev.adamko.kntoolchain.tools.internal.KotlinNativePrebuiltDataSource
 import javax.inject.Inject
 import org.gradle.api.NamedDomainObjectProvider
 import org.gradle.api.Plugin

@@ -1,6 +1,5 @@
 package dev.adamko.kntoolchain.tools.internal.datamodel
 
-import kotlin.text.get
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.descriptors.SerialDescriptor

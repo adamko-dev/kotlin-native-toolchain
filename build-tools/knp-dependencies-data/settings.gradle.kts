@@ -1,8 +1,7 @@
-rootProject.name = "knp-dependencies-data-model"
+rootProject.name = "knp-dependencies-data"
 
 pluginManagement {
   includeBuild("../../build-tools/build-plugins/")
-  includeBuild("../../build-tools/settings-plugins/")
   repositories {
     mavenCentral()
     gradlePluginPortal()
@@ -21,8 +20,4 @@ dependencyResolutionManagement {
       from(files("../../gradle/libs.versions.toml"))
     }
   }
-}
-
-plugins {
-  id("settings.conventions.git-versioning")
 }
