@@ -122,14 +122,14 @@ class ExamplesTest {
   private fun GradleTestContext.updateKntPluginVersion() {
     val kntPluginId = """id("dev.adamko.kotlin-native-toolchain")"""
     projectDir.walk()
-      .filter { it.name == "build.gradle.kts" }
+      .filter { it.name == "build.gradle.kts" || it.name == "settings.gradle.kts" }
       .filter { it.readText().contains("""$kntPluginId version""") }
       .forEach { file ->
         file.writeText(
           file.readLines()
             .joinToString("\n") { line ->
-              if (line.trim().startsWith("""$kntPluginId version""")) {
-                """$kntPluginId version "$kntGradlePluginProjectVersion""""
+              if (line.trim().startsWith("""$kntPluginId version """)) {
+                line.substringBefore(" version ") + """ version "$kntGradlePluginProjectVersion""""
               } else {
                 line
               }
