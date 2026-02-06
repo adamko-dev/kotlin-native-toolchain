@@ -71,7 +71,7 @@ internal constructor() :
         spec.parameters.osName.set(buildPlatform.map { it.family.value })
         spec.parameters.archName.set(buildPlatform.map { it.arch.value })
 //        spec.parameters.archName.set(architecture.map { it.id })
-        spec.parameters.kotlinVersion.set(version.map { it.value })
+        spec.parameters.kotlinVersion.set(version.map { it.version })
         spec.parameters.archiveExtension.set(archiveExtension)
       }
     }

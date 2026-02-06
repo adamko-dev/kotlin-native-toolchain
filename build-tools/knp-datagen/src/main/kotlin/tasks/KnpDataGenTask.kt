@@ -128,10 +128,12 @@ private fun createKnpVersion() {
       line("/**")
       line(" * A version of a kotlin-native-prebuilt distribution.")
       line(" */")
-      block("class KnpVersion private constructor(", ") {") {
-        line("val value: String,")
+      block("data class KnpVersion private constructor(", "): java.io.Serializable {") {
+        line("val name: String,")
+        line("val version: String,")
       }
       block("", "}") {
+        line()
         block("companion object {", "}") {
 
           line("/**")
@@ -148,7 +150,13 @@ private fun createKnpVersion() {
           ctx.allVersions.forEach { (version, name) ->
             line()
             line("/** Version `$version`. */")
-            line("val $name: KnpVersion = KnpVersion(\"$version\")")
+            block("val $name: KnpVersion =", " ") {
+              block("KnpVersion(", ")") {
+                line("name = \"$name\",")
+                line("version = \"$version\",")
+              }
+            }
+            //line("val $name: KnpVersion = KnpVersion(\"$version\")")
 //            line("$name(\"$version\"),")
           }
         }

@@ -1,4 +1,3 @@
-import org.gradle.kotlin.dsl.support.serviceOf
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -36,9 +35,6 @@ val createBuildConstants by tasks.registering {
 
   val kotlinVersion = libs.versions.kotlin
   inputs.property("kotlinVersion", kotlinVersion)
-
-  val outputDir = layout.buildDirectory.dir("generated/source/kotlin")
-  outputs.dir(outputDir).withPropertyName("outputDir")
 
   val projectName = project.name
 

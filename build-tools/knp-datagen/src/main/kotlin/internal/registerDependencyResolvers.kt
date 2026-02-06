@@ -15,6 +15,7 @@ import org.jetbrains.kotlin.tooling.core.KotlinToolingVersion
  * Registers [org.gradle.api.artifacts.Configuration]s
  * for resolving kotlin-native-prebuilt distributions for a specific Kotlin version.
  */
+@Suppress("UnstableApiUsage")
 internal fun registerKnpDistributionResolver(
   project: Project,
   kotlinVersion: KotlinToolingVersion,
