@@ -10,7 +10,6 @@ apache-commonsCompress = "1.28.0"
 junit = "6.0.1"
 
 kotest = "6.0.7"
-testBalloon = "0.7.1-K2.3.0"
 gradlePlugin-devPublishPlugin = "1.0.1"
 
 gradlePlugin-pluginPublishPlugin = "2.0.0"
