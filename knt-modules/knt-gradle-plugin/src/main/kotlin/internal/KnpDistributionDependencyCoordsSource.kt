@@ -53,8 +53,6 @@ internal constructor() :
      * See [KnpDistributionDependencyCoordsSource].
      */
     internal fun ProviderFactory.kotlinNativePrebuiltToolchainDependencySpec(
-//      osFamily: Provider<OsFamily>,
-//      architecture: Provider<Architecture>,
       buildPlatform: Provider<KnBuildPlatform>,
       version: Provider<KnpVersion>,
       group: Provider<String> = provider { "org.jetbrains.kotlin" },
@@ -70,7 +68,6 @@ internal constructor() :
         spec.parameters.module.set(module)
         spec.parameters.osName.set(buildPlatform.map { it.family.value })
         spec.parameters.archName.set(buildPlatform.map { it.arch.value })
-//        spec.parameters.archName.set(architecture.map { it.id })
         spec.parameters.kotlinVersion.set(version.map { it.version })
         spec.parameters.archiveExtension.set(archiveExtension)
       }
