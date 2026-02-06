@@ -59,7 +59,7 @@ val gitVersion: Provider<String> =
     val detached = branch.isNullOrBlank()
 
     if (!detached) {
-      "$branch-SNAPSHOT"
+      "$branch-SNAPSHOT".replace("/", "-")
     } else {
       val descriptions = described.split("-")
       val head = descriptions.singleOrNull() ?: ""
