@@ -2,7 +2,6 @@
 
 kotlin = "2.3.10"
 
-kotlinxCoroutines = "1.10.2"
 kotlinxSerialization = "1.10.0"
 
 apache-commonsCompress = "1.28.0"
@@ -21,9 +20,6 @@ gradlePlugin-nmcp = "1.4.4"
 # The kotlin version is used directly as a task input.
 #noinspection UnusedVersionCatalogEntry
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
-
-kotlinxCoroutines-bom = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-bom", version.ref = "kotlinxCoroutines" }
-kotlinxCoroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core" }
 
 kotlinxSerialization-bom = { module = "org.jetbrains.kotlinx:kotlinx-serialization-bom", version.ref = "kotlinxSerialization" }
 kotlinxSerialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json" }
