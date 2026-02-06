@@ -82,7 +82,7 @@ internal constructor(
       )
       kotlinNativePrebuiltDistribution.version.convention(
         providers.provider {
-          KnpVersion.entries.firstOrNull {
+          KnpVersion.allVersions.firstOrNull {
             it.value == kotlinGradlePluginVersion
           }
         }

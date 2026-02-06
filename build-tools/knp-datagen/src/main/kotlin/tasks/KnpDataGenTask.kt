@@ -126,16 +126,31 @@ private fun createKnpVersion() {
       line()
 
       line("/**")
-      line(" * kotlin-native-prebuilt version.")
+      line(" * A version of a kotlin-native-prebuilt distribution.")
       line(" */")
-      block("enum class KnpVersion(", ") {") {
+      block("class KnpVersion private constructor(", ") {") {
         line("val value: String,")
       }
       block("", "}") {
-        ctx.allVersions.forEach { (version, name) ->
-          line()
-          line("/** Version `$version`. */")
-          line("$name(\"$version\"),")
+        block("companion object {", "}") {
+
+          line("/**")
+          line(" * All supported kotlin-native-prebuilt distribution versions.")
+          line(" */")
+          block("val allVersions: Set<KnpVersion> by lazy {", "}") {
+            block("setOf(", ")") {
+              ctx.allVersions.forEach { (_, name) ->
+                line("$name,")
+              }
+            }
+          }
+
+          ctx.allVersions.forEach { (version, name) ->
+            line()
+            line("/** Version `$version`. */")
+            line("val $name: KnpVersion = KnpVersion(\"$version\")")
+//            line("$name(\"$version\"),")
+          }
         }
       }
     }
@@ -365,6 +380,11 @@ private fun createKnpDependency() {
       line("package dev.adamko.kntoolchain.tools.data")
       line()
 
+      line("/**")
+      line(" * A specific ancillary dependency for a kotlin-native-prebuilt distribution.")
+      line(" *")
+      line(" * For example, when building on macOS and targeting linux a `gcc` dependency is required.")
+      line(" */")
       block("data class KnpDependency internal constructor(", ") {") {
         line("val coord: String,")
         line("val artifact: String? = null,")
@@ -381,7 +401,7 @@ private fun createKnpDependency() {
         line()
         block("init {", "}") {
           line("val match = coordRegex.matchEntire(coord)")
-          line($$"  ?: error(\"Invalid dependency notation: $coord\")")
+          line($$"""  ?: error("Invalid dependency notation: $coord")""")
           line("""group = match.groups["group"]?.value""")
           line($$"""  ?: error("Missing 'group' in dependency notation: $coord")""")
           line("""module = match.groups["module"]?.value""")
@@ -420,16 +440,20 @@ private fun createKnpDepData() {
       line()
 
       line("/**")
-      line(" * Data for a K/N compile target.")
+      line(" * Details the compilation tools required for a specific host machine and compilation target.")
       line(" */")
       block("sealed class KnDependencyDataSpec {", "}") {
         line()
+        line("/** The version of the kotlin-native-prebuilt distribution. */")
         line("abstract val version: KnpVersion")
         line()
+        line("/** The platform on which the compilation tools are executed. */")
         line("abstract val buildPlatform: KnBuildPlatform")
         line()
+        line("/** The Kotlin Native target platform that the compiler will generate code for. */")
         line("abstract val compileTarget: KnCompileTarget")
         line()
+        line("/** The required ancillary dependencies for the kotlin-native-prebuilt distribution. */")
         line("abstract val dependencies: Set<KnpDependency>")
         line()
         line("companion object")
@@ -472,7 +496,6 @@ private fun createKnpDepData() {
             val baseClsName = "${buildOs}_${buildArch}"
 
             line()
-            line("""@Suppress("ClassName")""")
             block("sealed class ${baseClsName}: ${clsNameVersion}() {", "}") {
 
               line()
@@ -516,6 +539,9 @@ private fun createKnpDepData() {
       line()
       line("import dev.adamko.kntoolchain.tools.data.content.*")
       line()
+      line("/**")
+      line(" * All known [KnDependencyDataSpec] instances.")
+      line(" */")
       block("val knDependencyData: Set<KnDependencyDataSpec> =", "") {
         block("setOf(", ")") {
           allKnDependencyDataSpecs.forEach { spec ->

@@ -7,7 +7,6 @@ sealed class KnDependencyData_V2_1_21: KnDependencyDataSpec() {
 
   override val version: KnpVersion = KnpVersion.V2_1_21
 
-  @Suppress("ClassName")
   sealed class Linux_X86_64: KnDependencyData_V2_1_21() {
 
     override val buildPlatform: KnBuildPlatform = KnBuildPlatform.Linux.X86_64
@@ -116,7 +115,6 @@ sealed class KnDependencyData_V2_1_21: KnDependencyDataSpec() {
     }
   }
 
-  @Suppress("ClassName")
   sealed class MacOs_AArch64: KnDependencyData_V2_1_21() {
 
     override val buildPlatform: KnBuildPlatform = KnBuildPlatform.MacOs.AArch64
@@ -366,7 +364,6 @@ sealed class KnDependencyData_V2_1_21: KnDependencyDataSpec() {
     }
   }
 
-  @Suppress("ClassName")
   sealed class MacOs_X86_64: KnDependencyData_V2_1_21() {
 
     override val buildPlatform: KnBuildPlatform = KnBuildPlatform.MacOs.X86_64
@@ -616,7 +613,6 @@ sealed class KnDependencyData_V2_1_21: KnDependencyDataSpec() {
     }
   }
 
-  @Suppress("ClassName")
   sealed class Windows_X86_64: KnDependencyData_V2_1_21() {
 
     override val buildPlatform: KnBuildPlatform = KnBuildPlatform.Windows.X86_64

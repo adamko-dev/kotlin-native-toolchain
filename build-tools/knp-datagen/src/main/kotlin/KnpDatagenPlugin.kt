@@ -1,11 +1,9 @@
-@file:Suppress("UnstableApiUsage")
-
 package dev.adamko.kntoolchain.tools
 
 import dev.adamko.kntoolchain.tools.internal.BuildConstants
 import dev.adamko.kntoolchain.tools.internal.KotlinNativePrebuiltDataSource
 import dev.adamko.kntoolchain.tools.internal.datamodel.KotlinNativePrebuiltData
-import dev.adamko.kntoolchain.tools.internal.registerDependencyResolvers
+import dev.adamko.kntoolchain.tools.internal.registerKnpDistributionResolver
 import dev.adamko.kntoolchain.tools.tasks.KnpDataGenTask
 import dev.adamko.kntoolchain.tools.tasks.KonanDependenciesReportTask
 import javax.inject.Inject
@@ -90,6 +88,7 @@ internal constructor(
     }
   }
 
+  @Suppress("UnstableApiUsage")
   private fun registerKonanDependenciesReportTaskClasspathResolver(
     project: Project,
   ): NamedDomainObjectProvider<ResolvableConfiguration> {
@@ -111,6 +110,11 @@ internal constructor(
     }
   }
 
+  /**
+   * Find all kotlin-native-prebuilt distributions, described in [KotlinNativePrebuiltData].
+   *
+   * Registers dependency resolvers for each version - see [registerKnpDistributionResolver].
+   */
   private fun collectKonanDistributions(
     project: Project,
     kotlinNativePrebuiltData: Provider<KotlinNativePrebuiltData>,
@@ -119,7 +123,7 @@ internal constructor(
 
     kotlinNativePrebuiltData.get().data.forEach { (kotlinVersion, variants) ->
       logger.info("[${project.path}] registering dependency resolvers for $kotlinVersion variants: $variants")
-      val konanDist = registerDependencyResolvers(project, kotlinVersion, variants)
+      val konanDist = registerKnpDistributionResolver(project, kotlinVersion, variants)
       allKonanDistributions.from(konanDist)
     }
 
@@ -155,17 +159,11 @@ internal constructor(
   private fun configureTaskConventions(
     project: Project,
     knpDataExt: KnpDatagenExtension,
-    konanDependenciesReportTaskClasspathResolver: NamedDomainObjectProvider<ResolvableConfiguration>,
+    konanDependenciesReportTaskClasspathResolver: NamedDomainObjectProvider<@Suppress("UnstableApiUsage") ResolvableConfiguration>,
   ) {
     project.tasks.withType<KonanDependenciesReportTask>().configureEach { task ->
       task.group = project.name
       task.workerClasspath.from(konanDependenciesReportTaskClasspathResolver)
-      task.onlyIf("regenerate is enabled") { _ ->
-        knpDataExt.regenerateData.get()
-      }
-    }
-
-    project.tasks.withType<KnpDataGenTask>().configureEach { task ->
       task.onlyIf("regenerate is enabled") { _ ->
         knpDataExt.regenerateData.get()
       }

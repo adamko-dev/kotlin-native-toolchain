@@ -27,7 +27,10 @@ import org.jetbrains.kotlin.tooling.core.KotlinToolingVersion
  *
  * The dependencies must be installed into the `.konan` data dir.
  *
- * This task is slow and should only be run when the source data has changed.
+ * This task is slow and downloads many large files,
+ * so it should only be run when the source data has changed
+ * (e.g. when there's a new Kotlin version, or the knp-datagen code has changed).
+ * Enable [dev.adamko.kntoolchain.tools.KnpDatagenExtension.regenerateData] to re-run the task.
  */
 @CacheableTask
 abstract class KonanDependenciesReportTask

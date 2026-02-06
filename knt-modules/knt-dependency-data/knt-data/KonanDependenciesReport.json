@@ -7536,7 +7536,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "linux:x86_64",
       "targetPlatform": "linux_x64:LINUX:X64",
       "dependencies": [
@@ -7547,7 +7547,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "linux:x86_64",
       "targetPlatform": "linux_arm32_hfp:LINUX:ARM32",
       "dependencies": [
@@ -7558,7 +7558,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "linux:x86_64",
       "targetPlatform": "linux_arm64:LINUX:ARM64",
       "dependencies": [
@@ -7569,7 +7569,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "linux:x86_64",
       "targetPlatform": "mingw_x64:MINGW:X64",
       "dependencies": [
@@ -7579,7 +7579,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "linux:x86_64",
       "targetPlatform": "android_x86:ANDROID:X86",
       "dependencies": [
@@ -7590,7 +7590,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "linux:x86_64",
       "targetPlatform": "android_x64:ANDROID:X64",
       "dependencies": [
@@ -7601,7 +7601,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "linux:x86_64",
       "targetPlatform": "android_arm32:ANDROID:ARM32",
       "dependencies": [
@@ -7612,7 +7612,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "linux:x86_64",
       "targetPlatform": "android_arm64:ANDROID:ARM64",
       "dependencies": [
@@ -7623,7 +7623,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "macos:aarch64",
       "targetPlatform": "linux_x64:LINUX:X64",
       "dependencies": [
@@ -7633,7 +7633,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "macos:aarch64",
       "targetPlatform": "linux_arm32_hfp:LINUX:ARM32",
       "dependencies": [
@@ -7643,7 +7643,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "macos:aarch64",
       "targetPlatform": "linux_arm64:LINUX:ARM64",
       "dependencies": [
@@ -7653,7 +7653,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "macos:aarch64",
       "targetPlatform": "mingw_x64:MINGW:X64",
       "dependencies": [
@@ -7663,7 +7663,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "macos:aarch64",
       "targetPlatform": "android_x86:ANDROID:X86",
       "dependencies": [
@@ -7674,7 +7674,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "macos:aarch64",
       "targetPlatform": "android_x64:ANDROID:X64",
       "dependencies": [
@@ -7685,7 +7685,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "macos:aarch64",
       "targetPlatform": "android_arm32:ANDROID:ARM32",
       "dependencies": [
@@ -7696,7 +7696,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "macos:aarch64",
       "targetPlatform": "android_arm64:ANDROID:ARM64",
       "dependencies": [
@@ -7707,7 +7707,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "macos:aarch64",
       "targetPlatform": "macos_x64:OSX:X64",
       "dependencies": [
@@ -7716,7 +7716,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "macos:aarch64",
       "targetPlatform": "macos_arm64:OSX:ARM64",
       "dependencies": [
@@ -7726,7 +7726,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "macos:aarch64",
       "targetPlatform": "ios_arm64:IOS:ARM64",
       "dependencies": [
@@ -7735,7 +7735,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "macos:aarch64",
       "targetPlatform": "ios_x64:IOS:X64",
       "dependencies": [
@@ -7744,7 +7744,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "macos:aarch64",
       "targetPlatform": "ios_simulator_arm64:IOS:ARM64",
       "dependencies": [
@@ -7753,7 +7753,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "macos:aarch64",
       "targetPlatform": "watchos_arm32:WATCHOS:ARM32",
       "dependencies": [
@@ -7762,7 +7762,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "macos:aarch64",
       "targetPlatform": "watchos_arm64:WATCHOS:ARM64",
       "dependencies": [
@@ -7771,7 +7771,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "macos:aarch64",
       "targetPlatform": "watchos_x64:WATCHOS:X64",
       "dependencies": [
@@ -7780,7 +7780,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "macos:aarch64",
       "targetPlatform": "watchos_simulator_arm64:WATCHOS:ARM64",
       "dependencies": [
@@ -7789,7 +7789,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "macos:aarch64",
       "targetPlatform": "watchos_device_arm64:WATCHOS:ARM64",
       "dependencies": [
@@ -7798,7 +7798,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "macos:aarch64",
       "targetPlatform": "tvos_arm64:TVOS:ARM64",
       "dependencies": [
@@ -7807,7 +7807,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "macos:aarch64",
       "targetPlatform": "tvos_x64:TVOS:X64",
       "dependencies": [
@@ -7816,7 +7816,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "macos:aarch64",
       "targetPlatform": "tvos_simulator_arm64:TVOS:ARM64",
       "dependencies": [
@@ -7825,7 +7825,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "macos:x86_64",
       "targetPlatform": "linux_x64:LINUX:X64",
       "dependencies": [
@@ -7835,7 +7835,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "macos:x86_64",
       "targetPlatform": "linux_arm32_hfp:LINUX:ARM32",
       "dependencies": [
@@ -7845,7 +7845,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "macos:x86_64",
       "targetPlatform": "linux_arm64:LINUX:ARM64",
       "dependencies": [
@@ -7855,7 +7855,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "macos:x86_64",
       "targetPlatform": "mingw_x64:MINGW:X64",
       "dependencies": [
@@ -7865,7 +7865,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "macos:x86_64",
       "targetPlatform": "android_x86:ANDROID:X86",
       "dependencies": [
@@ -7876,7 +7876,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "macos:x86_64",
       "targetPlatform": "android_x64:ANDROID:X64",
       "dependencies": [
@@ -7887,7 +7887,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "macos:x86_64",
       "targetPlatform": "android_arm32:ANDROID:ARM32",
       "dependencies": [
@@ -7898,7 +7898,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "macos:x86_64",
       "targetPlatform": "android_arm64:ANDROID:ARM64",
       "dependencies": [
@@ -7909,7 +7909,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "macos:x86_64",
       "targetPlatform": "macos_x64:OSX:X64",
       "dependencies": [
@@ -7919,7 +7919,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "macos:x86_64",
       "targetPlatform": "macos_arm64:OSX:ARM64",
       "dependencies": [
@@ -7928,7 +7928,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "macos:x86_64",
       "targetPlatform": "ios_arm64:IOS:ARM64",
       "dependencies": [
@@ -7937,7 +7937,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "macos:x86_64",
       "targetPlatform": "ios_x64:IOS:X64",
       "dependencies": [
@@ -7946,7 +7946,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "macos:x86_64",
       "targetPlatform": "ios_simulator_arm64:IOS:ARM64",
       "dependencies": [
@@ -7955,7 +7955,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "macos:x86_64",
       "targetPlatform": "watchos_arm32:WATCHOS:ARM32",
       "dependencies": [
@@ -7964,7 +7964,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "macos:x86_64",
       "targetPlatform": "watchos_arm64:WATCHOS:ARM64",
       "dependencies": [
@@ -7973,7 +7973,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "macos:x86_64",
       "targetPlatform": "watchos_x64:WATCHOS:X64",
       "dependencies": [
@@ -7982,7 +7982,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "macos:x86_64",
       "targetPlatform": "watchos_simulator_arm64:WATCHOS:ARM64",
       "dependencies": [
@@ -7991,7 +7991,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "macos:x86_64",
       "targetPlatform": "watchos_device_arm64:WATCHOS:ARM64",
       "dependencies": [
@@ -8000,7 +8000,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "macos:x86_64",
       "targetPlatform": "tvos_arm64:TVOS:ARM64",
       "dependencies": [
@@ -8009,7 +8009,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "macos:x86_64",
       "targetPlatform": "tvos_x64:TVOS:X64",
       "dependencies": [
@@ -8018,7 +8018,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "macos:x86_64",
       "targetPlatform": "tvos_simulator_arm64:TVOS:ARM64",
       "dependencies": [
@@ -8027,7 +8027,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "windows:x86_64",
       "targetPlatform": "linux_x64:LINUX:X64",
       "dependencies": [
@@ -8038,7 +8038,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "windows:x86_64",
       "targetPlatform": "linux_arm32_hfp:LINUX:ARM32",
       "dependencies": [
@@ -8049,7 +8049,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "windows:x86_64",
       "targetPlatform": "linux_arm64:LINUX:ARM64",
       "dependencies": [
@@ -8060,7 +8060,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "windows:x86_64",
       "targetPlatform": "mingw_x64:MINGW:X64",
       "dependencies": [
@@ -8071,7 +8071,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "windows:x86_64",
       "targetPlatform": "android_x86:ANDROID:X86",
       "dependencies": [
@@ -8082,7 +8082,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "windows:x86_64",
       "targetPlatform": "android_x64:ANDROID:X64",
       "dependencies": [
@@ -8093,7 +8093,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "windows:x86_64",
       "targetPlatform": "android_arm32:ANDROID:ARM32",
       "dependencies": [
@@ -8104,7 +8104,7 @@
       ]
     },
     {
-      "version": "2.3.10-RC2",
+      "version": "2.3.10",
       "buildPlatform": "windows:x86_64",
       "targetPlatform": "android_arm64:ANDROID:ARM64",
       "dependencies": [

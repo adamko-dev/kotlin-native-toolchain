@@ -11,15 +11,19 @@ import org.gradle.api.file.FileCollection
 import org.gradle.api.provider.Provider
 import org.jetbrains.kotlin.tooling.core.KotlinToolingVersion
 
-internal fun registerDependencyResolvers(
+/**
+ * Registers [org.gradle.api.artifacts.Configuration]s
+ * for resolving kotlin-native-prebuilt distributions for a specific Kotlin version.
+ */
+internal fun registerKnpDistributionResolver(
   project: Project,
   kotlinVersion: KotlinToolingVersion,
   knVariants: Set<KotlinNativePrebuiltData.PrebuiltVariant>,
 ): Provider<FileCollection> {
 
   val knPrebuiltConf: NamedDomainObjectProvider<DependencyScopeConfiguration> =
-    project.configurations.dependencyScope("knPrebuiltConf_${kotlinVersion.toEscapedString()}") { c ->
-      c.description = "Kotlin/Native $kotlinVersion prebuilt dependencies."
+    project.configurations.dependencyScope("knpDistribution_${kotlinVersion.toEscapedString()}") { c ->
+      c.description = "kotlin-native-prebuilt distributions declared for version $kotlinVersion."
 
       c.defaultDependencies { dependencies ->
         knVariants.forEach { (classifier, archiveType) ->
@@ -40,9 +44,9 @@ internal fun registerDependencyResolvers(
 
   val knPrebuiltConfResolver: NamedDomainObjectProvider<ResolvableConfiguration> =
     project.configurations.resolvable(knPrebuiltConf.name + "Resolver") { c ->
-      c.description = "Resolves Kotlin/Native $kotlinVersion prebuilt dependencies declared in ${knPrebuiltConf.name}."
+      c.description =
+        "Resolves kotlin-native-prebuilt distributions declared for version $kotlinVersion in ${knPrebuiltConf.name}."
       c.extendsFrom(knPrebuiltConf.get())
-
       c.isTransitive = false
     }
 

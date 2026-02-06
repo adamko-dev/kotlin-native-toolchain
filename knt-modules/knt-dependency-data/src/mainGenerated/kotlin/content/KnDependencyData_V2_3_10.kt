@@ -3,12 +3,11 @@ package dev.adamko.kntoolchain.tools.data.content
 import dev.adamko.kntoolchain.tools.data.*
 
 @Suppress("ClassName")
-sealed class KnDependencyData_V2_3_10_RC2: KnDependencyDataSpec() {
+sealed class KnDependencyData_V2_3_10: KnDependencyDataSpec() {
 
-  override val version: KnpVersion = KnpVersion.V2_3_10_RC2
+  override val version: KnpVersion = KnpVersion.V2_3_10
 
-  @Suppress("ClassName")
-  sealed class Linux_X86_64: KnDependencyData_V2_3_10_RC2() {
+  sealed class Linux_X86_64: KnDependencyData_V2_3_10() {
 
     override val buildPlatform: KnBuildPlatform = KnBuildPlatform.Linux.X86_64
 
@@ -116,8 +115,7 @@ sealed class KnDependencyData_V2_3_10_RC2: KnDependencyDataSpec() {
     }
   }
 
-  @Suppress("ClassName")
-  sealed class MacOs_AArch64: KnDependencyData_V2_3_10_RC2() {
+  sealed class MacOs_AArch64: KnDependencyData_V2_3_10() {
 
     override val buildPlatform: KnBuildPlatform = KnBuildPlatform.MacOs.AArch64
 
@@ -366,8 +364,7 @@ sealed class KnDependencyData_V2_3_10_RC2: KnDependencyDataSpec() {
     }
   }
 
-  @Suppress("ClassName")
-  sealed class MacOs_X86_64: KnDependencyData_V2_3_10_RC2() {
+  sealed class MacOs_X86_64: KnDependencyData_V2_3_10() {
 
     override val buildPlatform: KnBuildPlatform = KnBuildPlatform.MacOs.X86_64
 
@@ -616,8 +613,7 @@ sealed class KnDependencyData_V2_3_10_RC2: KnDependencyDataSpec() {
     }
   }
 
-  @Suppress("ClassName")
-  sealed class Windows_X86_64: KnDependencyData_V2_3_10_RC2() {
+  sealed class Windows_X86_64: KnDependencyData_V2_3_10() {
 
     override val buildPlatform: KnBuildPlatform = KnBuildPlatform.Windows.X86_64
 

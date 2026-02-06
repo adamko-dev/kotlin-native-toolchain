@@ -1,7 +1,7 @@
 rootProject.name = "knp-datagen"
 
 pluginManagement {
-  includeBuild("../../build-tools/build-plugins/")
+  includeBuild("../build-plugins/")
   repositories {
     mavenCentral()
     gradlePluginPortal()

@@ -2,14 +2,19 @@ package dev.adamko.kntoolchain.tools.internal.datamodel
 
 import java.nio.file.Path
 import kotlin.io.path.name
+import kotlinx.serialization.KSerializer
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.descriptors.SerialDescriptor
+import kotlinx.serialization.encoding.Decoder
+import kotlinx.serialization.encoding.Encoder
 
 @Serializable
 internal data class KotlinNativePrebuiltData(
   val data: Map<KotlinToolingVersionEnc, Set<PrebuiltVariant>>,
 ) {
 
-  @Serializable
+  @Serializable(with = PrebuiltVariant.Serializer::class)
   data class PrebuiltVariant(
     /**
      * `$os-$arch`, e.g. `linux-x86_64` or `macos-aarch64`.
@@ -25,6 +30,26 @@ internal data class KotlinNativePrebuiltData(
 
     override fun compareTo(other: PrebuiltVariant): Int =
       this.toString().compareTo(other.toString())
+
+    object Serializer : KSerializer<PrebuiltVariant> {
+      override val descriptor: SerialDescriptor = String.serializer().descriptor
+      private const val SEPARATOR = "@"
+
+      override fun serialize(encoder: Encoder, value: PrebuiltVariant) {
+        encoder.encodeString(value.classifier + SEPARATOR + value.archiveType.name)
+      }
+
+      override fun deserialize(decoder: Decoder): PrebuiltVariant {
+        val value = decoder.decodeString()
+        val (classifier, archiveType) = value
+          .split(SEPARATOR, limit = 2)
+        return PrebuiltVariant(
+          classifier = classifier,
+          archiveType = ArchiveType.valueOf(archiveType)
+        )
+      }
+    }
+
   }
 
   @Serializable

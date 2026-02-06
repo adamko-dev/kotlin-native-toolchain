@@ -31,7 +31,8 @@ kotlin {
 val createBuildConstants by tasks.registering {
   group = project.name
 
-  val fs = serviceOf<FileSystemOperations>()
+  val outputDir = layout.buildDirectory.dir("generated/source/kotlin")
+  outputs.dir(outputDir).withPropertyName("outputDir")
 
   val kotlinVersion = libs.versions.kotlin
   inputs.property("kotlinVersion", kotlinVersion)
@@ -43,7 +44,7 @@ val createBuildConstants by tasks.registering {
 
   doLast {
     val outputSrcDir = outputDir.get().asFile
-    fs.delete { delete(outputSrcDir) }
+    outputSrcDir.deleteRecursively()
     outputSrcDir.mkdirs()
 
     outputSrcDir.resolve("BuildConstants.kt").writeText(
