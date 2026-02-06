@@ -13,7 +13,7 @@ kotest = "6.1.3"
 gradlePlugin-devPublishPlugin = "1.0.1"
 
 gradlePlugin-pluginPublishPlugin = "2.0.0"
-gradlePlugin-nmcp = "1.4.3"
+gradlePlugin-nmcp = "1.4.4"
 
 [libraries]
 
