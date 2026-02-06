@@ -26,28 +26,8 @@ internal constructor() : Serializable, Describable {
 
   abstract val buildPlatform: Property<KnBuildPlatform>
 
-//  /**
-//   * The operating system family of the current machine.
-//   *
-//   * Used to determine which Kotlin/Native toolchain variant to download.
-//   *
-//   * @see org.jetbrains.kotlin.konan.target.HostManager.Companion.simpleOsName
-//   */
-//  abstract val osFamily: Property<OsFamily>
-
-
-//  /**
-//   * The architecture of the kotlin-native-prebuilt distribution.
-//   *
-//   * Used to determine which Kotlin/Native toolchain variant to download.
-//   *
-//   * @see org.jetbrains.kotlin.konan.target.HostManager.Companion.hostArch
-//   */
-//  abstract val architecture: Property<Architecture>
-
   /**
    * The GAV Maven coordinates of the kotlin-native-prebuilt distribution.
-   * Derived from [osFamily], [architecture], and [version].
    *
    * This property should only be overridden if modifying
    * the other properties isn't enough to correctly describe the distribution
