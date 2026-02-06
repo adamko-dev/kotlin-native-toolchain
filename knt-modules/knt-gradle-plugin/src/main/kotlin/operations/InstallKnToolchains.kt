@@ -1,21 +1,19 @@
 package dev.adamko.kntoolchain.operations
 
+import dev.adamko.kntoolchain.internal.utils.*
 import dev.adamko.kntoolchain.internal.utils.BuildChecksumContext.Companion.checksum
 import dev.adamko.kntoolchain.internal.utils.BuildChecksumContext.Companion.checksumFile
-import dev.adamko.kntoolchain.internal.utils.buildChecksum
-import dev.adamko.kntoolchain.internal.utils.extractArchive
-import dev.adamko.kntoolchain.internal.utils.listInstallDirPathsMetadata
-import dev.adamko.kntoolchain.internal.utils.useArchiveEntries
-import dev.adamko.kntoolchain.internal.utils.warn
 import java.nio.file.FileSystems
 import java.nio.file.Path
 import java.nio.file.attribute.FileTime
 import java.time.Instant
+import java.util.concurrent.CompletableFuture
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 import javax.inject.Inject
 import kotlin.io.path.*
 import kotlin.time.TimeSource
 import kotlin.time.measureTimedValue
-import kotlinx.coroutines.*
 import org.gradle.api.logging.Logger
 import org.gradle.api.logging.Logging
 
@@ -79,13 +77,14 @@ internal constructor() : BaseKnToolchainsOperation<Set<Path>>() {
       logger.lifecycle("Installing kotlin-native-prebuilt specs:${pendingInstalls.size}, partial installs:${partialInstalls.size}")
 
       val startMark = TimeSource.Monotonic.markNow()
-      runBlocking {
-        requiredInstalls.map { installSpec ->
-          async(installDispatcher) {
-            installArchive(spec = installSpec)
-          }
-        }.awaitAll()
-      }
+      CompletableFuture.allOf(
+        *requiredInstalls.map { spec ->
+          CompletableFuture.runAsync(
+            { installArchive(spec = spec) },
+            installArchivesExecutor,
+          )
+        }.toTypedArray()
+      ).join()
       logger.lifecycle("Finished installing/checking Konan and ${installSpecs.size} dependencies in ${startMark.elapsedNow()}")
     } else {
       logger.lifecycle("Skipping kotlin-native-prebuilt install. No pending installs (partial installs:${partialInstalls.size})")
@@ -287,7 +286,8 @@ internal constructor() : BaseKnToolchainsOperation<Set<Path>>() {
   companion object {
     private val logger: Logger = Logging.getLogger(InstallKnToolchains::class.java)
 
-    private val installDispatcher: CoroutineDispatcher =
-      Dispatchers.IO.limitedParallelism(10)
+    private val installArchivesExecutor: ExecutorService =
+      Executors.newFixedThreadPool(10)
+
   }
 }

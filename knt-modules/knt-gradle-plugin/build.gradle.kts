@@ -13,11 +13,6 @@ dependencies {
   compileOnly(gradleKotlinDsl())
 
   implementation(projects.kntModules.kntDependencyData)
-//  implementation(knpDependenciesDataModelCoords)
-
-  // TODO try replacing coroutines with Java executors...
-  implementation(platform(libs.kotlinxCoroutines.bom))
-  implementation(libs.kotlinxCoroutines.core)
 
   implementation(libs.apache.commonsCompress)
 
