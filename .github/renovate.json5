@@ -39,7 +39,16 @@
     "after 10am and before 6pm",
   ],
 
-  stabilityDays: 14,
+  postUpgradeTasks: {
+    commands: [
+      "./gradlew assemble -PkntRegenerate=true"
+    ],
+    fileFilters: [
+      "knt-modules/knt-dependency-data/**"
+    ]
+  },
+
+  //stabilityDays: 14,
   //  suppressNotifications: [
   //    "artifactErrors",
   //    "branchAutomergeFailure",
