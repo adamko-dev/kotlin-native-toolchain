@@ -1,0 +1,76 @@
+name: Regenerate knt-dependency-data
+
+on:
+  schedule:
+    - cron: "37 13 * * *"
+  workflow_dispatch:
+    inputs:
+      checkout-ref:
+        description: "The branch, tag or SHA to checkout. See actions/checkout 'ref'."
+        required: false
+        type: string
+
+concurrency:
+  # note: the Workflow inputs are also included in the concurrency group
+  group: "Regenerate knt-dependency-data: ${{ github.workflow }} ${{ join(inputs.*) }} @ ${{ github.event.pull_request.head.label || github.head_ref || github.ref }}"
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  regen:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout the repo
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.checkout-ref || github.ref }}
+
+      - name: Validate Gradle Wrapper
+        uses: gradle/actions/wrapper-validation@v4
+
+      - name: Setup JDKs
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: |
+            21
+
+      - name: Run Gradle task
+        run: ./gradlew assemble -PkntRegenerate=true
+
+      - name: Detect changes
+        id: diff
+        run: |
+          git status --porcelain
+          if git diff --quiet -- knt-modules/knt-dependency-data/; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Commit changes
+        if: steps.diff.outputs.changed == 'true'
+        run: |
+          git checkout -b update-knt-dependency-data
+          git add knt-modules/knt-dependency-data/
+          git commit -m "Regenerate knt-dependency-data"
+          git push --set-upstream origin update-knt-dependency-data
+
+      - name: Open pull request
+        if: steps.diff.outputs.changed == 'true'
+        run: |
+          gh pr create \
+            --title "Regenerate knt-dependency-data" \
+            --body "Update generated files using `./gradlew assemble -PkntRegenerate=true`" \
+            --base main
+            --head update-knt-dependency-data
+          
+          gh pr merge \
+            --auto \
+            --rebase \
+            --delete-branch \
+            --squash
