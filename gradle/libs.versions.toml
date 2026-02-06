@@ -18,6 +18,11 @@ gradlePlugin-nmcp = "1.4.3"
 
 [libraries]
 
+# kotlin-stdlib is defined so Renovate understands what the `kotlin` version is for.
+# The kotlin version is used directly as a task input.
+#noinspection UnusedVersionCatalogEntry
+kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
+
 kotlinxCoroutines-bom = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-bom", version.ref = "kotlinxCoroutines" }
 kotlinxCoroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core" }
 
