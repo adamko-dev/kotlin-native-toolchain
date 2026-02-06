@@ -5,18 +5,11 @@
   ],
   enabled: true,
   enabledManagers: [
-    "npm",
     "gradle",
     "gradle-wrapper",
     "github-actions",
   ],
 
-  // Will auto-merge directly, without a PR, if tests pass - else, makes a PR.
-  // Must add Renovate to 'Allow specified actors to bypass required pull requests'
-  // in branch protection rule
-  automergeType: "branch",
-  platformAutomerge: true,
-  ignoreTests: false,
   packageRules: [
     {
       description: "auto-merge all but major releases",
@@ -39,20 +32,6 @@
     "after 10am and before 6pm",
   ],
 
-  //stabilityDays: 14,
-  //  suppressNotifications: [
-  //    "artifactErrors",
-  //    "branchAutomergeFailure",
-  //    "configErrorIssue",
-  //    "deprecationWarningIssues",
-  //    "lockFileErrors",
-  //    "onboardingClose",
-  //    "prEditedNotification",
-  //    "prIgnoreNotification",
-  //  ],
   prCreation: "status-success",
   semanticCommits: "disabled",
-
-  ignorePaths: [
-  ]
 }
