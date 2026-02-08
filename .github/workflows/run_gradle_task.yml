@@ -84,13 +84,6 @@ jobs:
         if: runner.os == 'Linux'
         uses: jlumbroso/free-disk-space@v1.3.1
 
-      - name: Fix Windows TempDir 2
-        if: runner.os == 'Windows'
-        shell: pwsh
-        run: |
-          echo $Env:TEMP
-          echo $Env:TMP
-
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v5
         with:

@@ -55,8 +55,12 @@ internal constructor() : BaseKnToolchainsOperation<DependencyInstallReport>() {
   ): DependencyInstallReport.DependencyStatus {
     val startMark = TimeSource.Monotonic.markNow()
 
+    val installDirChecksumFileName =
+      spec.installDir
+        .relativeTo(this@CreateKnToolchainsStatusReport.baseInstallDir)
+        .joinToString("_") { it.name } + ".hash"
     val installDirChecksumFile =
-      checksumsDir.resolve("${spec.installDir.relativeTo(this@CreateKnToolchainsStatusReport.baseInstallDir).joinToString("_") { it.name }}.hash")
+      checksumsDir.resolve(installDirChecksumFileName)
     val installDirChanged = determineChecksumStatus(
       installDir = spec.installDir,
       installDirChecksumFile = installDirChecksumFile,
