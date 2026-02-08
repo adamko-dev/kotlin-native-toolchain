@@ -2,7 +2,6 @@ package dev.adamko.kntoolchain.internal.utils
 
 import java.nio.file.Path
 import kotlin.io.path.*
-import kotlin.text.get
 
 /**
  * Get all files within a directory.

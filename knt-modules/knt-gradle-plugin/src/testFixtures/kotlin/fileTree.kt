@@ -92,6 +92,6 @@ private val PathComparator: Comparator<Path> =
     when {
       a.isDirectory() && !b.isDirectory() -> -1
       !a.isDirectory() && b.isDirectory() -> +1
-      else                                 -> a.name.compareTo(b.name)
+      else                                -> a.name.compareTo(b.name)
     }
   }
