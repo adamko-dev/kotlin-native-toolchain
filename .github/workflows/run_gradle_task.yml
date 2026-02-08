@@ -80,6 +80,10 @@ jobs:
           echo "TMP=D:\Temp" >> $env:GITHUB_ENV
           echo "TEMP=D:\Temp" >> $env:GITHUB_ENV
 
+      - name: Free Disk Space (Linux)
+        if: runner.os == 'Linux'
+        uses: jlumbroso/free-disk-space@v1.3.1
+
       - name: Fix Windows TempDir 2
         if: runner.os == 'Windows'
         shell: pwsh
