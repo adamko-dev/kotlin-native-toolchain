@@ -15,14 +15,14 @@ plugins {
 publishing {
   publications.withType<MavenPublication>().configureEach {
     pom {
-      name.convention("Dev Publish Gradle Plugin")
-      description.convention("Dev Publish is a Gradle plugin that publishes subprojects to a project-local directory, ready for functional testing.")
-      url.convention("https://github.com/adamko-dev/dev-publish-plugin")
+      name.convention("Kotlin Native Toolchain")
+      description.convention("Gradle plugin, for cache-friendly 'kotlin-native-prebuilt' provisioning. Installs required tools for compiling C/C++ code to be used by Kotlin/Native.")
+      url.convention("https://github.com/adamko-dev/kotlin-native-toolchain")
 
       scm {
-        connection.convention("scm:git:https://github.com/adamko-dev/dev-publish-plugin")
-        developerConnection.convention("scm:git:https://github.com/adamko-dev/dev-publish-plugin")
-        url.convention("https://github.com/adamko-dev/dev-publish-plugin")
+        connection.convention("scm:git:https://github.com/adamko-dev/kotlin-native-toolchain")
+        developerConnection.convention("scm:git:https://github.com/adamko-dev/kotlin-native-toolchain")
+        url.convention("https://github.com/adamko-dev/kotlin-native-toolchain")
       }
 
       licenses {
