@@ -3,6 +3,7 @@ package dev.adamko.kntoolchain
 import dev.adamko.kntoolchain.test_utils.*
 import dev.adamko.kntoolchain.tools.data.KnBuildPlatform
 import dev.adamko.kntoolchain.tools.data.KnpVersion
+import io.kotest.matchers.paths.shouldNotExist
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
 import io.kotest.matchers.string.shouldNotContain
@@ -106,30 +107,7 @@ class ProvisionTest {
       buildPlatform = buildPlatform,
     )
 
-    buildGradleKts = """
-        |import java.io.ByteArrayOutputStream
-        |import org.gradle.kotlin.dsl.support.serviceOf
-        |
-        |$buildGradleKts
-        |
-        |val runKonanTask by tasks.registering {
-        |  val exec = serviceOf<ExecOperations>()
-        |
-        |  val runKonan = knToolchain.runKonan()
-        |
-        |  doLast {
-        |    val runKonan = runKonan.get()
-        |    val stdout = ByteArrayOutputStream()
-        |    println("run_konan path: {" + runKonan.invariantSeparatorsPathString + "}")
-        |    exec.exec {
-        |      executable(runKonan)
-        |      args(path)
-        |      standardOutput = stdout
-        |    }
-        |    println("run_konan output: {" + stdout.toString().trim() + "}")
-        |  }
-        |}
-        |""".trimMargin()
+    registerRunKonanTask()
 
     runner
       .withArguments(
@@ -142,6 +120,31 @@ class ProvisionTest {
           konanDataDir.resolve("kotlin-native-prebuilt-2.3.0-${buildPlatform.family.value}-${buildPlatform.arch.value}/bin/run_konan")
         output shouldContain "run_konan path: {${expectedRunKonanPath.invariantSeparatorsPathString}}"
         output shouldContain "run_konan output: {run_konan :runKonanTask}"
+      }
+  }
+
+  @ParameterizedTest
+  @ArgumentsSource(KnpOsArchArgs::class)
+  fun `when dry-run used - expect no toolchains installed`(
+    buildPlatform: KnBuildPlatform,
+    @TempDir tmpDir: Path,
+  ): Unit = with(GradleTestContext(tmpDir)) {
+
+    setupProject(
+      buildPlatform = buildPlatform,
+    )
+
+    registerRunKonanTask()
+
+    runner
+      .withArguments(
+        "runKonanTask",
+        "--dry-run",
+      )
+      .forwardOutput()
+      .build()
+      .apply {
+        konanDataDir.shouldNotExist()
       }
   }
 
@@ -594,8 +597,8 @@ private fun GradleTestContext.setupProject(
         |}
         |""".trimMargin()
 
-  settingsGradleKts = settingsGradleKts
-    .replace(
+  settingsGradleKts.modify { content ->
+    content.replace(
       "mavenCentral()",
       """
       val dummyRepo =
@@ -609,6 +612,7 @@ private fun GradleTestContext.setupProject(
       mavenCentral()
       """.trimIndent()
     )
+  }
 
   buildGradleKts += """
         |import kotlin.io.path.*
@@ -628,6 +632,34 @@ private fun GradleTestContext.setupProject(
         |""".trimMargin()
 }
 
+/**
+ * Register a Gradle task `runKonanTask` that executes the dummy `run_konan` shell script.
+ */
+private fun GradleTestContext.registerRunKonanTask() {
+  buildGradleKts += """
+        |import java.io.ByteArrayOutputStream
+        |import org.gradle.kotlin.dsl.support.serviceOf
+        |
+        |val runKonanTask by tasks.registering {
+        |  val exec = serviceOf<ExecOperations>()
+        |
+        |  val runKonan = knToolchain.runKonan()
+        |
+        |  doLast {
+        |    val runKonan = runKonan.get()
+        |    val stdout = ByteArrayOutputStream()
+        |    println("run_konan path: {" + runKonan.invariantSeparatorsPathString + "}")
+        |    exec.exec {
+        |      executable(runKonan)
+        |      args(path)
+        |      standardOutput = stdout
+        |    }
+        |    println("run_konan output: {" + stdout.toString().trim() + "}")
+        |  }
+        |}
+        |""".trimMargin()
+}
+
 private fun setupDummyRepo(dummyRepo: Path) {
   dummyRepo.createDirectories()
 
@@ -636,7 +668,6 @@ private fun setupDummyRepo(dummyRepo: Path) {
 
     createModuleTarGz("aarch64-unknown-linux-gnu-gcc-8.3.0-glibc-2.25-kernel-4.9-2")
     createModuleTarGz("arm-unknown-linux-gnueabihf-gcc-8.3.0-glibc-2.12.1-kernel-4.9-1")
-    createModuleZip("arm-unknown-linux-gnueabihf-gcc-8.3.0-glibc-2.12.1-kernel-4.9-1")
     createModuleTarGz("libffi-3.2.1-2-linux-x86-64")
     createModuleTarGz("libffi-3.2.1-3-darwin-macos")
     createModuleTarGz("libffi-3.3-1-macos-arm64")
@@ -645,26 +676,25 @@ private fun setupDummyRepo(dummyRepo: Path) {
     createModuleTarGz("msys2-mingw-w64-x86_64-2")
     createModuleTarGz("qemu-aarch64-static-5.1.0-linux-2")
     createModuleTarGz("qemu-arm-static-5.1.0-linux-2")
-    createModuleTarGz("target-sysroot-1-android_ndk")
-    createModuleTarGz("target-toolchain-2-linux-android_ndk")
-
-    createModuleTarGz("target-toolchain-2-osx-android_ndk")
     createModuleTarGz("x86_64-unknown-linux-gnu-gcc-8.3.0-glibc-2.19-kernel-4.9-2")
 
     createModuleZip("aarch64-unknown-linux-gnu-gcc-8.3.0-glibc-2")
     createModuleZip("aarch64-unknown-linux-gnu-gcc-8.3.0-glibc-2.25-kernel-4.9-2")
     createModuleZip("arm-unknown-linux-gnueabihf-gcc-8.3.0-glibc-2.12")
     createModuleZip("arm-unknown-linux-gnueabihf-gcc-8.3.0-glibc-2.12.1-kernel-4")
+    createModuleZip("arm-unknown-linux-gnueabihf-gcc-8.3.0-glibc-2.12.1-kernel-4.9-1")
     createModuleZip("libffi-3.3-windows-x64-1")
     createModuleZip("lldb-2-windows")
     createModuleZip("msys2-mingw-w64-x86_64-2")
-    createModuleZip("target-sysroot-1-android_ndk")
-    createModuleZip("target-toolchain-2-windows-android_ndk")
     createModuleZip("x86_64-unknown-linux-gnu-gcc-8.3.0-glibc-2.19-kernel-4")
     createModuleZip("x86_64-unknown-linux-gnu-gcc-8.3.0-glibc-2.19-kernel-4.9-2")
+
+    createModuleTarGz("target-sysroot-1-android_ndk")
+    createModuleTarGz("target-toolchain-2-linux-android_ndk")
+    createModuleTarGz("target-toolchain-2-osx-android_ndk")
+
     createModuleZip("target-sysroot-1-android_ndk")
     createModuleZip("target-toolchain-2-windows-android_ndk")
-    createModuleZip("libffi-3.3-windows-x64-1")
 
     resolve("resources/llvm/19-aarch64-macos/").apply {
       createDirectories()

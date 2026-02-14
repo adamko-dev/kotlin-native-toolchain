@@ -6,6 +6,7 @@ plugins {
   id("conventions.kotlin-gradle-plugin")
   id("conventions.maven-publishing")
   `java-test-fixtures`
+  kotlin("plugin.assignment")
 }
 
 dependencies {
@@ -123,4 +124,8 @@ testing {
 
 tasks.check {
   dependsOn(testing.suites)
+}
+
+assignment {
+  annotation("dev.adamko.kntoolchain.test_utils.KotlinAssignmentOverloadTarget")
 }

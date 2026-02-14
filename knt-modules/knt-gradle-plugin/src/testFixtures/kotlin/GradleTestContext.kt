@@ -13,13 +13,12 @@ class GradleTestContext(
 
   val projectDir: Path = tmpDir.resolve(projectName)
 
-  val settingsGradleKtsFile: Path = projectDir.resolve("settings.gradle.kts")
-  val buildGradleKtsFile: Path = projectDir.resolve("build.gradle.kts")
-  val gradlePropertiesFile: Path = projectDir.resolve("gradle.properties")
-
-  var settingsGradleKts: String by settingsGradleKtsFile.text()
-  var buildGradleKts: String by buildGradleKtsFile.text()
-  var gradleProperties: String by gradlePropertiesFile.text()
+  val settingsGradleKts: GradleScriptFile =
+    GradleScriptFile(projectDir.resolve("settings.gradle.kts"))
+  val buildGradleKts: GradleScriptFile =
+    GradleScriptFile(projectDir.resolve("build.gradle.kts"))
+  val gradleProperties: GradlePropertiesFile =
+    GradlePropertiesFile(projectDir.resolve("gradle.properties"))
 
   val konanDataDir: Path
     get() = projectDir.resolve("konan-data")
