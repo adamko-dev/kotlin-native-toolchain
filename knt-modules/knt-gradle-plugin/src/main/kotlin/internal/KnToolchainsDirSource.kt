@@ -22,7 +22,6 @@ import org.gradle.kotlin.dsl.of
  *
  * Use [KnToolchainsDirSource.Companion.knToolchainsDir] to get a new instance.
  */
-// A ValueSource is used to simplify combining lots of providers.
 internal abstract class KnToolchainsDirSource
 @Inject
 internal constructor() : ValueSource<Path, KnToolchainsDirSource.Parameters> {
