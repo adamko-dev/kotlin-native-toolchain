@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 package dev.adamko.kntoolchain.internal.utils
 
 import java.time.Clock
@@ -18,6 +20,7 @@ internal sealed class BaseEventReporterContext(
   }
 
   fun failed(message: String, details: String? = null) {
+    failedCount.incrementAndGet()
     reporter.failed(clock.instant(), message, details)
   }
 
@@ -41,13 +44,19 @@ internal class GroupTestEventReporterContext(
   clock: Clock,
 ) : BaseEventReporterContext(reporter, failedCount, clock) {
 
-  fun reportTest(name: String, displayName: String = name): TestEventReporterContext {
+  fun reportTest(
+    name: String,
+    displayName: String = name,
+    block: (test: TestEventReporterContext) -> Unit,
+  ) {
     val reporter = reporter.reportTest(name, displayName)
     reporter.started(clock.instant())
-    return TestEventReporterContext(reporter, failedCount)
+    TestEventReporterContext(reporter, failedCount).use(block)
   }
 
-  fun reportGroup(name: String): GroupTestEventReporterContext {
+  fun reportGroup(
+    name: String
+  ): GroupTestEventReporterContext {
     val reporter = reporter.reportTestGroup(name)
     reporter.started(clock.instant())
     return GroupTestEventReporterContext(reporter, failedCount, clock)
@@ -70,5 +79,9 @@ internal fun GroupTestEventReporter.start(
   contract { callsInPlace(body, InvocationKind.EXACTLY_ONCE) }
   val clock = Clock.systemUTC()
   started(clock.instant())
-  GroupTestEventReporterContext(this, AtomicInteger(0), clock = clock).use(body)
+  GroupTestEventReporterContext(
+    reporter = this,
+    failedCount = AtomicInteger(0),
+    clock = clock,
+  ).use(body)
 }

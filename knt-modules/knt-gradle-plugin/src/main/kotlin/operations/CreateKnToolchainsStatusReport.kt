@@ -55,24 +55,34 @@ internal constructor() : BaseKnToolchainsOperation<DependencyInstallReport>() {
   ): DependencyInstallReport.DependencyStatus {
     val startMark = TimeSource.Monotonic.markNow()
 
+    val installDirChecksumFile = installDirChecksumFile(spec)
+
+    val installDirChanged =
+      determineChecksumStatus(
+        installDir = spec.installDir,
+        installDirChecksumFile = installDirChecksumFile,
+        installFileExcludes = spec.installFileExcludes,
+      )
+
+    return when (installDirChanged) {
+      is DependencyInstallReport.DependencyStatus.Invalid -> {
+        logger.info("[${spec.archive.name}] install checksum mismatch. (Checked in ${startMark.elapsedNow()}. Dest:${spec.installDir.invariantSeparatorsPathString})")
+        installDirChanged
+      }
+
+      else                                                -> {
+        DependencyInstallReport.DependencyStatus.Valid
+      }
+    }
+  }
+
+
+  private fun installDirChecksumFile(spec: DependencyInstallSpec): Path {
     val installDirChecksumFileName =
       spec.installDir
         .relativeTo(this@CreateKnToolchainsStatusReport.baseInstallDir)
         .joinToString("_") { it.name } + ".hash"
-    val installDirChecksumFile =
-      checksumsDir.resolve(installDirChecksumFileName)
-    val installDirChanged = determineChecksumStatus(
-      installDir = spec.installDir,
-      installDirChecksumFile = installDirChecksumFile,
-      installFileExcludes = spec.installFileExcludes,
-    )
-
-    if (installDirChanged is DependencyInstallReport.DependencyStatus.Invalid) {
-      logger.info("[${spec.archive.name}] install checksum mismatch. (Checked in ${startMark.elapsedNow()}. Dest:${spec.installDir.invariantSeparatorsPathString})")
-      return installDirChanged
-    }
-
-    return DependencyInstallReport.DependencyStatus.Valid
+    return checksumsDir.resolve(installDirChecksumFileName)
   }
 
 
@@ -81,23 +91,19 @@ internal constructor() : BaseKnToolchainsOperation<DependencyInstallReport>() {
     installDirChecksumFile: Path,
     installFileExcludes: Set<String>,
   ): DependencyInstallReport.DependencyStatus {
-    if (!installDirChecksumFile.exists()) {
-      return DependencyInstallReport.DependencyStatus.Valid
-    }
     val dirChecksum = computeDirChecksum(
       destinationDir = installDir,
       excludes = installFileExcludes,
     )
-    val previousChecksum = installDirChecksumFile.useLines { it.firstOrNull() } ?: ""
+    val previousChecksum = installDirChecksumFile
+      .takeIf { it.exists() }
+      ?.useLines { it.firstOrNull() ?: "" }
     val isChanged = dirChecksum != previousChecksum
     if (isChanged) {
       val diffReport = createInstallDirDiffReportFile(installDir, installFileExcludes, installDirChecksumFile)
       return DependencyInstallReport.DependencyStatus.Invalid(
-        reason = "checksum mismatch",
-        details = """
-          Checksums differ: $dirChecksum != $previousChecksum
-          diffReport: ${diffReport.toUri()}
-          """.trimIndent()
+        reason = "checksum mismatch for ${installDir.name}. Expected:${previousChecksum}, Actual:${dirChecksum}",
+        details = diffReport.readText(),
       )
     }
     return DependencyInstallReport.DependencyStatus.Valid
@@ -135,7 +141,12 @@ private fun createInstallDirDiffReportFile(
   diffReport.writeText(installDir.invariantSeparatorsPathString)
   diffReport.appendText("\n")
 
-  val prev = installDirChecksumFile.useLines { lines -> lines.drop(1).toList() }.iterator()
+  val prev = installDirChecksumFile
+    .takeIf { it.exists() }
+    ?.useLines { lines -> lines.drop(1).toList() }
+    .orEmpty()
+    .iterator()
+
   val current = listInstallDirPathsMetadata(installDir, installFileExcludes)
     .iterator()
 

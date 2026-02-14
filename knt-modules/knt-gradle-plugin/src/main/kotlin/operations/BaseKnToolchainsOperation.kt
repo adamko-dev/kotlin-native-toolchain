@@ -76,15 +76,15 @@ internal sealed class BaseKnToolchainsOperation<R : Any> : ValueSource<R, BaseKn
     excludes: Set<String>,
   ): String? {
     if (!destinationDir.exists()) {
-      logger.warn("Could not compute snapshot for $destinationDir - directory does not exist")
+      logger.warn("Could not compute checksum for $destinationDir - directory does not exist")
       return null
     }
     if (!destinationDir.isDirectory()) {
-      logger.warn("Could not compute snapshot for $destinationDir - not a directory")
+      logger.warn("Could not compute checksum for $destinationDir - not a directory")
       return null
     }
     if (destinationDir.listDirectoryEntries().isEmpty()) {
-      logger.warn("Could not compute snapshot for $destinationDir - install directory is empty")
+      logger.warn("Could not compute checksum for $destinationDir - install directory is empty")
       return null
     }
 
@@ -128,12 +128,14 @@ internal sealed class BaseKnToolchainsOperation<R : Any> : ValueSource<R, BaseKn
 
     val type: Type,
   ) {
+
     enum class Type {
       /** A main kotlin-native-prebuilt distribution. */
       KnpDist,
       /** A 'secondary' dependency of the 'main' kotlin-native-prebuilt distribution. */
       Dependency,
     }
+
     /**
      * Cache directory tag file.
      *

@@ -1,40 +1,23 @@
 package dev.adamko.kntoolchain
 
-import dev.adamko.kntoolchain.test_utils.*
+import dev.adamko.kntoolchain.test_utils.GradleTestContext
+import dev.adamko.kntoolchain.test_utils.junit.KnpOsArchArgs
+import dev.adamko.kntoolchain.test_utils.projects.setupProjectForKnpDownload
+import dev.adamko.kntoolchain.test_utils.toTreeString
 import dev.adamko.kntoolchain.tools.data.KnBuildPlatform
-import dev.adamko.kntoolchain.tools.data.KnpVersion
 import io.kotest.matchers.paths.shouldNotExist
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
 import io.kotest.matchers.string.shouldNotContain
 import java.nio.file.Path
-import java.util.stream.Stream
-import kotlin.io.path.createDirectories
 import kotlin.io.path.invariantSeparatorsPathString
-import kotlin.io.path.writeText
-import org.apache.commons.compress.archivers.tar.TarArchiveEntry
-import org.apache.commons.compress.archivers.zip.ZipArchiveEntry
 import org.junit.jupiter.api.Assumptions.assumeTrue
 import org.junit.jupiter.api.condition.DisabledOnOs
-import org.junit.jupiter.api.extension.ExtensionContext
 import org.junit.jupiter.api.io.TempDir
 import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.Arguments
-import org.junit.jupiter.params.provider.ArgumentsProvider
 import org.junit.jupiter.params.provider.ArgumentsSource
-import org.junit.jupiter.params.support.ParameterDeclarations
 
 class ProvisionTest {
-
-  class KnpOsArchArgs : ArgumentsProvider {
-    override fun provideArguments(
-      parameters: ParameterDeclarations,
-      context: ExtensionContext,
-    ): Stream<out Arguments> =
-      KnBuildPlatform.allPlatforms.map {
-        Arguments.of(it)
-      }.stream()
-  }
 
   @ParameterizedTest
   @ArgumentsSource(KnpOsArchArgs::class)
@@ -43,7 +26,7 @@ class ProvisionTest {
     @TempDir tmpDir: Path,
   ): Unit = with(GradleTestContext(tmpDir)) {
 
-    setupProject(
+    setupProjectForKnpDownload(
       buildPlatform = buildPlatform,
     )
 
@@ -103,7 +86,7 @@ class ProvisionTest {
     // can't execute `run_konan.bat` on Linux/MacOS
     assumeTrue(buildPlatform.family != KnBuildPlatform.OsFamily.Windows)
 
-    setupProject(
+    setupProjectForKnpDownload(
       buildPlatform = buildPlatform,
     )
 
@@ -130,7 +113,7 @@ class ProvisionTest {
     @TempDir tmpDir: Path,
   ): Unit = with(GradleTestContext(tmpDir)) {
 
-    setupProject(
+    setupProjectForKnpDownload(
       buildPlatform = buildPlatform,
     )
 
@@ -158,7 +141,9 @@ class ProvisionTest {
 
 //    assumeFalse(knpOs == OsFamily.Windows) // can't execute `run_konan.bat` on Linux/MacOS
 
-    setupProject(buildPlatform = buildPlatform)
+    setupProjectForKnpDownload(
+      buildPlatform = buildPlatform
+    )
 
     buildGradleKts += """
         |val knToolchainUser by tasks.registering {
@@ -573,65 +558,6 @@ private object ExpectedDirectory {
 }
 
 
-private fun GradleTestContext.setupProject(
-  knpVersion: KnpVersion = KnpVersion.V2_3_0,
-  buildPlatform: KnBuildPlatform = KnBuildPlatform.MacOs.X86_64,
-) {
-  val dummyRepo = projectDir.resolve("dummy-repo")
-  setupDummyRepo(dummyRepo)
-
-  settingsGradleKts += """
-        |plugins {
-        |  id("dev.adamko.kotlin-native-toolchain") version "$kntGradlePluginProjectVersion"
-        |}
-        |
-        |dependencyResolutionManagement.repositories
-        |  .withType<IvyArtifactRepository>()
-        |  .matching { it.name == "Kotlin Native Prebuilt Dependencies" }
-        |  .configureEach { 
-        |    setUrl("${dummyRepo.toUri()}")
-        |  }
-        |  
-        |knToolchain {
-        |  baseInstallDir = file("${konanDataDir.invariantSeparatorsPathString}")
-        |}
-        |""".trimMargin()
-
-  settingsGradleKts.modify { content ->
-    content.replace(
-      "mavenCentral()",
-      """
-      val dummyRepo =
-        maven(file("${dummyRepo.invariantSeparatorsPathString}")) {
-          name = "DummyKnpRepo"
-        }
-      exclusiveContent {
-        forRepositories(dummyRepo)
-        filter { includeModule("org.jetbrains.kotlin", "kotlin-native-prebuilt") }
-      }
-      mavenCentral()
-      """.trimIndent()
-    )
-  }
-
-  buildGradleKts += """
-        |import kotlin.io.path.*
-        |import dev.adamko.kntoolchain.tools.data.*
-        |
-        |plugins {
-        |  id("dev.adamko.kotlin-native-toolchain")
-        |}
-        |
-        |knToolchain {
-        |  kotlinNativePrebuiltDistribution {
-        |    version = KnpVersion.${knpVersion.name}
-        |    buildPlatform = KnBuildPlatform.${buildPlatform.family.name}.${buildPlatform.arch.name}
-        |    compileTargets = KnCompileTarget.allTargets
-        |  }
-        |}
-        |""".trimMargin()
-}
-
 /**
  * Register a Gradle task `runKonanTask` that executes the dummy `run_konan` shell script.
  */
@@ -658,133 +584,4 @@ private fun GradleTestContext.registerRunKonanTask() {
         |  }
         |}
         |""".trimMargin()
-}
-
-private fun setupDummyRepo(dummyRepo: Path) {
-  dummyRepo.createDirectories()
-
-  dummyRepo.resolve("kotlin/native").apply {
-    createDirectories()
-
-    createModuleTarGz("aarch64-unknown-linux-gnu-gcc-8.3.0-glibc-2.25-kernel-4.9-2")
-    createModuleTarGz("arm-unknown-linux-gnueabihf-gcc-8.3.0-glibc-2.12.1-kernel-4.9-1")
-    createModuleTarGz("libffi-3.2.1-2-linux-x86-64")
-    createModuleTarGz("libffi-3.2.1-3-darwin-macos")
-    createModuleTarGz("libffi-3.3-1-macos-arm64")
-    createModuleTarGz("lldb-4-linux")
-    createModuleTarGz("lldb-4-macos")
-    createModuleTarGz("msys2-mingw-w64-x86_64-2")
-    createModuleTarGz("qemu-aarch64-static-5.1.0-linux-2")
-    createModuleTarGz("qemu-arm-static-5.1.0-linux-2")
-    createModuleTarGz("x86_64-unknown-linux-gnu-gcc-8.3.0-glibc-2.19-kernel-4.9-2")
-
-    createModuleZip("aarch64-unknown-linux-gnu-gcc-8.3.0-glibc-2")
-    createModuleZip("aarch64-unknown-linux-gnu-gcc-8.3.0-glibc-2.25-kernel-4.9-2")
-    createModuleZip("arm-unknown-linux-gnueabihf-gcc-8.3.0-glibc-2.12")
-    createModuleZip("arm-unknown-linux-gnueabihf-gcc-8.3.0-glibc-2.12.1-kernel-4")
-    createModuleZip("arm-unknown-linux-gnueabihf-gcc-8.3.0-glibc-2.12.1-kernel-4.9-1")
-    createModuleZip("libffi-3.3-windows-x64-1")
-    createModuleZip("lldb-2-windows")
-    createModuleZip("msys2-mingw-w64-x86_64-2")
-    createModuleZip("x86_64-unknown-linux-gnu-gcc-8.3.0-glibc-2.19-kernel-4")
-    createModuleZip("x86_64-unknown-linux-gnu-gcc-8.3.0-glibc-2.19-kernel-4.9-2")
-
-    createModuleTarGz("target-sysroot-1-android_ndk")
-    createModuleTarGz("target-toolchain-2-linux-android_ndk")
-    createModuleTarGz("target-toolchain-2-osx-android_ndk")
-
-    createModuleZip("target-sysroot-1-android_ndk")
-    createModuleZip("target-toolchain-2-windows-android_ndk")
-
-    resolve("resources/llvm/19-aarch64-macos/").apply {
-      createDirectories()
-      createModuleTarGz("llvm-19-aarch64-macos-essentials-79")
-    }
-    resolve("resources/llvm/19-aarch64-macos/llvm-19-aarch64-macos-dev/").apply {
-      createDirectories()
-      createModuleTarGz("llvm-19-aarch64-macos-dev-79")
-    }
-    resolve("resources/llvm/19-x86_64-macos/").apply {
-      createDirectories()
-      createModuleTarGz("llvm-19-x86_64-macos-essentials-75")
-    }
-    resolve("resources/llvm/19-x86_64-macos/llvm-19-x86_64-macos-dev/").apply {
-      createDirectories()
-      createModuleTarGz("llvm-19-x86_64-macos-dev-75")
-    }
-    resolve("resources/llvm/19-x86_64-linux/llvm-19-x86_64-linux-essentials/").apply {
-      createDirectories()
-      createModuleTarGz("llvm-19-x86_64-linux-essentials-103")
-    }
-    resolve("resources/llvm/19-x86_64-windows/").apply {
-      createDirectories()
-      createModuleZip("llvm-19-x86_64-windows-dev-134")
-      createModuleZip("llvm-19-x86_64-windows-essentials-134")
-    }
-  }
-
-  dummyRepo.resolve("org/jetbrains/kotlin/kotlin-native-prebuilt/2.3.0").apply {
-    createDirectories()
-
-    resolve("kotlin-native-prebuilt-2.3.0.pom").writeText(
-      /* language=XML */ """
-      |<?xml version="1.0" encoding="UTF-8"?>
-      |<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-      |    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-      |  <modelVersion>4.0.0</modelVersion>
-      |  <groupId>org.jetbrains.kotlin</groupId>
-      |  <artifactId>kotlin-native-prebuilt</artifactId>
-      |  <version>2.3.0</version>
-      |  <packaging>pom</packaging>
-      |  <name>Kotlin Native Prebuilt</name>
-      |</project>
-      |""".trimMargin()
-    )
-
-    listOf(
-      "macos" to "aarch64",
-      "macos" to "x86_64",
-      "linux" to "x86_64",
-    ).forEach { (os, arch) ->
-      createModuleTarGz("kotlin-native-prebuilt-2.3.0-$os-$arch") { name, sink ->
-        sink.putArchiveEntry(TarArchiveEntry("$name/bin/"))
-        sink.closeArchiveEntry()
-
-        val content = """
-        |#!/usr/bin/env bash
-        |
-        |echo "run_konan $1"
-        |""".trimMargin()
-        val entry = TarArchiveEntry("$name/bin/run_konan").apply {
-          size = content.length.toLong()
-          mode = "755".toInt(8)
-        }
-        sink.putArchiveEntry(entry)
-        sink.write(content.toByteArray())
-        sink.closeArchiveEntry()
-      }
-    }
-
-    listOf(
-      "windows" to "x86_64",
-    ).forEach { (os, arch) ->
-      createModuleZip("kotlin-native-prebuilt-2.3.0-$os-$arch") { name, sink ->
-        sink.putArchiveEntry(ZipArchiveEntry("$name/bin/"))
-        sink.closeArchiveEntry()
-
-        val content = """
-        |@echo off
-        |
-        |echo run_konan %1
-        |""".trimMargin()
-        val entry = ZipArchiveEntry("$name/bin/run_konan.bat").apply {
-          size = content.length.toLong()
-          //mode = "755".toInt(8)
-        }
-        sink.putArchiveEntry(entry)
-        sink.write(content.toByteArray())
-        sink.closeArchiveEntry()
-      }
-    }
-  }
 }

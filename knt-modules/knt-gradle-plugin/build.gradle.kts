@@ -19,8 +19,11 @@ dependencies {
 
   compileOnly("org.jetbrains.kotlin:kotlin-gradle-plugin:${embeddedKotlinVersion}")
 
+  testFixturesImplementation(platform(libs.junit.bom))
+  testFixturesImplementation(libs.junit.jupiter)
   testFixturesCompileOnly(gradleTestKit())
   testFixturesCompileOnly(libs.apache.commonsCompress)
+  testFixturesCompileOnly(projects.kntModules.kntDependencyData)
 }
 
 kotlin {

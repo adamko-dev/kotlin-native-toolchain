@@ -8,6 +8,7 @@ import dev.adamko.kntoolchain.model.DependencyInstallReport
 import dev.adamko.kntoolchain.model.KotlinNativePrebuiltDistributionSpec
 import dev.adamko.kntoolchain.operations.CreateKnToolchainsStatusReport.Companion.createKnToolchainsStatusReport
 import javax.inject.Inject
+import kotlin.io.path.name
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.Directory
 import org.gradle.api.file.DirectoryProperty
@@ -20,9 +21,8 @@ import org.gradle.api.provider.ProviderFactory
 import org.gradle.api.tasks.*
 import org.gradle.api.tasks.PathSensitivity.RELATIVE
 import org.gradle.api.tasks.testing.TestEventReporterFactory
-import org.gradle.work.DisableCachingByDefault
 
-@DisableCachingByDefault(because = "The kotlin-native-prebuilt install directory is not registered as a task input, so Gradle cannot perform up-to-date checks.")
+@CacheableTask
 abstract class CheckKnToolchainIntegrityTask
 @Inject
 internal constructor(
@@ -44,12 +44,14 @@ internal constructor(
   @get:OutputDirectory
   abstract val binaryResultsDirectory: DirectoryProperty
 
-  @get:InputDirectory
+  @get:InputFiles
+  // Use @InputFiles because this is optional. @InputDirectory requires the directory exists.
   @get:PathSensitive(RELATIVE)
   @get:IgnoreEmptyDirectories
   abstract val baseInstallDir: DirectoryProperty
 
-  @get:InputDirectory
+  @get:InputFiles
+  // Use @InputFiles because this is optional. @InputDirectory requires the directory exists.
   @get:PathSensitive(RELATIVE)
   @get:IgnoreEmptyDirectories
   abstract val checksumsDir: DirectoryProperty
@@ -89,25 +91,32 @@ internal constructor(
   protected fun action() {
     prepareTmpReportDirs()
 
-    // https://docs.gradle.org/current/userguide/test_reporting_api.html#test_reporting_api
-    testEventReporter.createTestEventReporter(
-      TEST_EVENT_ROOT_GROUP_NAME,
-      tmpBinaryResultsDir.get(),
-      tmpReportDir.get(),
-    ).start { root ->
-      executeChecksumTests(root)
-
-      // TODO could also check if executables can run?
-      //      e.g. run `konan.sh --version` and `clang --version`
+    try {
+      runAllTests()
+    } finally {
+      syncTestReports()
     }
-
-    syncTestReports()
   }
 
   private fun prepareTmpReportDirs() {
     fs.delete { spec ->
       spec.delete(tmpBinaryResultsDir)
       spec.delete(tmpReportDir)
+    }
+  }
+
+  private fun runAllTests() {
+    // https://docs.gradle.org/current/userguide/test_reporting_api.html#test_reporting_api
+    testEventReporter.createTestEventReporter(
+      TEST_EVENT_ROOT_GROUP_NAME,
+      tmpBinaryResultsDir.get(),
+      tmpReportDir.get(),
+      true
+    ).start { root ->
+      executeChecksumTests(root)
+
+      // TODO could also check if executables can run?
+      //      e.g. run `konan.sh --version` and `clang --version`
     }
   }
 
@@ -123,7 +132,7 @@ internal constructor(
       val report = report.orNull
 
       report?.dependencies?.forEach { dependency ->
-        group.reportTest(dependency.archiveName, dependency.archiveName).use { test ->
+        group.reportTest(dependency.installDir.name, dependency.installDir.name) { test ->
           when (dependency.status) {
             is DependencyInstallReport.DependencyStatus.Invalid -> {
               test.failed(

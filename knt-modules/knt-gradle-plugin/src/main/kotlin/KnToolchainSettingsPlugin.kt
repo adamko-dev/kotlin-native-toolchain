@@ -34,6 +34,7 @@ internal constructor(
       configureRootProject(
         rootProject = rootProject,
         kntService = kntService,
+        settingsExtension = settingsExtension,
       )
     }
 
@@ -76,10 +77,12 @@ internal constructor(
   private fun configureRootProject(
     rootProject: Project,
     kntService: Provider<KnToolchainService>,
+    settingsExtension: KnToolchainSettingsExtension,
   ) {
     val checkKnToolchainTask = registerCheckKonanDataIntegrityTask(
       project = rootProject,
       kntService = kntService,
+      settingsExtension = settingsExtension,
     )
 
     rootProject.pluginManager.apply("base")
@@ -95,6 +98,7 @@ internal constructor(
   private fun registerCheckKonanDataIntegrityTask(
     project: Project,
     kntService: Provider<KnToolchainService>,
+    settingsExtension: KnToolchainSettingsExtension,
   ): TaskProvider<CheckKnToolchainIntegrityTask> {
     require(project.isRootProject()) {
       "$CHECK_KN_TOOLCHAIN_TASK_NAME can only be registered in the root project."
@@ -107,6 +111,9 @@ internal constructor(
       task.description = "Checks that the Kotlin/Native prebuilt toolchain installation is valid."
 
       task.knpDists.convention(kntService.flatMap { it.requestedKnpDists })
+
+      task.baseInstallDir.convention(settingsExtension.baseInstallDir)
+      task.checksumsDir.convention(settingsExtension.checksumsDir)
 
       task.binaryResultsDirectory.convention(
         layout.buildDirectory.dir("test-results/${CheckKnToolchainIntegrityTask.TEST_EVENT_ROOT_GROUP_NAME}")

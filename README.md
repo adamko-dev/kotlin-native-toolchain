@@ -9,7 +9,7 @@ It is easy to use, and cache-friendly.
 
 #### Requirements
 
-- Gradle 9.0+
+- Gradle 9.3+
 - Kotlin 2.0.0+
   (Versions of kotlin-native-prebuilt prior to 2.0.0 were not published to Maven Central.)
 
