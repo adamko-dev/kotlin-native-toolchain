@@ -101,7 +101,7 @@ class ExamplesTest {
 
   private fun GradleTestContext.updateKntBaseInstallDir() {
     projectDir.walk()
-      .filter { it.name == "build.gradle.kts" }
+      .filter { it.name == "settings.gradle.kts" }
       .filter { it.readText().contains("""id("dev.adamko.kotlin-native-toolchain")""") }
       .forEach { file ->
         file.writeText(
@@ -109,7 +109,7 @@ class ExamplesTest {
             appendLine(file.readText())
             appendLine(
               """
-              |project.extensions.configure<dev.adamko.kntoolchain.KnToolchainProjectExtension> {
+              |knToolchain {
               |  baseInstallDir = file("${konanDataDir.invariantSeparatorsPathString}")
               |}
               """.trimMargin()

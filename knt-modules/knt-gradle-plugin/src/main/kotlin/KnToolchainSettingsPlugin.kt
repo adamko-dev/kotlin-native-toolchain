@@ -1,24 +1,30 @@
 package dev.adamko.kntoolchain
 
 import dev.adamko.kntoolchain.internal.KnToolchainService
+import dev.adamko.kntoolchain.internal.KnToolchainsDirSource.Companion.knToolchainsDir
 import dev.adamko.kntoolchain.internal.utils.isRootProject
 import dev.adamko.kntoolchain.tasks.CheckKnToolchainIntegrityTask
+import java.nio.file.Path
 import javax.inject.Inject
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.initialization.Settings
+import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.Provider
+import org.gradle.api.provider.ProviderFactory
 import org.gradle.api.tasks.TaskProvider
 import org.gradle.kotlin.dsl.*
 import org.gradle.language.base.plugins.LifecycleBasePlugin
 
 abstract class KnToolchainSettingsPlugin
 @Inject
-internal constructor() : Plugin<Settings> {
+internal constructor(
+  private val providers: ProviderFactory,
+  private val objects: ObjectFactory,
+) : Plugin<Settings> {
   override fun apply(settings: Settings) {
 
-//    val settingsExtension =
-    createExtension(settings)
+    val settingsExtension = createExtension(settings)
 
     val kntService = registerKnToolchainService(settings)
 
@@ -35,6 +41,9 @@ internal constructor() : Plugin<Settings> {
       project.plugins.withType<KnToolchainProjectPlugin>().configureEach { _ ->
         val projectExt = project.extensions.getByType<KnToolchainProjectExtension>()
         kntService.get().requestedKnpDists.add(projectExt.kotlinNativePrebuiltDistribution)
+
+        projectExt.baseInstallDirFromSettings.convention(settingsExtension.baseInstallDir)
+        projectExt.checksumsDirFromSettings.convention(settingsExtension.checksumsDir)
       }
     }
   }
@@ -42,6 +51,11 @@ internal constructor() : Plugin<Settings> {
 
   private fun createExtension(settings: Settings): KnToolchainSettingsExtension {
     return settings.extensions.create<KnToolchainSettingsExtension>(KnToolchainSettingsExtension.EXTENSION_NAME).apply {
+      baseInstallDir.convention(
+        objects.directoryProperty()
+          .fileProvider(providers.knToolchainsDir().map(Path::toFile))
+      )
+      checksumsDir.convention(baseInstallDir.dir("checksums"))
     }
   }
 

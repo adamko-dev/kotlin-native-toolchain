@@ -170,7 +170,6 @@ class ProvisionTest {
 
     buildGradleKts += """
         |knToolchain {
-        |  baseInstallDir = file("${konanDataDir.invariantSeparatorsPathString}")
         |  kotlinNativePrebuiltDistribution {
         |    compileTargets = setOf(KnCompileTarget.LinuxX64)
         |  }
@@ -589,6 +588,10 @@ private fun GradleTestContext.setupProject(
         |  .configureEach { 
         |    setUrl("${dummyRepo.toUri()}")
         |  }
+        |  
+        |knToolchain {
+        |  baseInstallDir = file("${konanDataDir.invariantSeparatorsPathString}")
+        |}
         |""".trimMargin()
 
   settingsGradleKts = settingsGradleKts
@@ -616,7 +619,6 @@ private fun GradleTestContext.setupProject(
         |}
         |
         |knToolchain {
-        |  baseInstallDir = file("${konanDataDir.invariantSeparatorsPathString}")
         |  kotlinNativePrebuiltDistribution {
         |    version = KnpVersion.${knpVersion.name}
         |    buildPlatform = KnBuildPlatform.${buildPlatform.family.name}.${buildPlatform.arch.name}

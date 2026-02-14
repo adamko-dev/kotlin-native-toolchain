@@ -7,10 +7,14 @@ import org.gradle.api.services.BuildService
 import org.gradle.api.services.BuildServiceParameters
 
 internal abstract class KnToolchainService
-@Inject internal constructor() : BuildService<KnToolchainService.Parameters> {
+@Inject
+internal constructor() : BuildService<KnToolchainService.Parameters> {
 
   internal interface Parameters : BuildServiceParameters
 
+  /**
+   * KNP dists requested from all subprojects.
+   */
   abstract val requestedKnpDists: ListProperty<KotlinNativePrebuiltDistributionSpec>
 
   companion object {

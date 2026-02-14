@@ -30,7 +30,6 @@ abstract class KnToolchainProjectPlugin
 internal constructor(
   private val objects: ObjectFactory,
   private val providers: ProviderFactory,
-  private val layout: ProjectLayout,
 ) : Plugin<Project> {
 
   override fun apply(project: Project) {
@@ -51,9 +50,6 @@ internal constructor(
 
   internal fun createKnToolchainExtension(project: Project): KnToolchainProjectExtension {
     return project.extensions.create<KnToolchainProjectExtension>(EXTENSION_NAME).apply {
-
-      baseInstallDir.convention(layout.dir(providers.knToolchainsDir().map(Path::toFile)))
-      checksumsDir.convention(baseInstallDir.dir("checksums"))
 
       val currentOs = providers.systemProperty("os.name").map { osName ->
         when {
