@@ -45,13 +45,18 @@ val compileMyCLib by tasks.registering {
   val exec = serviceOf<ExecOperations>()
   val fs = serviceOf<FileSystemOperations>()
 
+  val clibHeadersDir = layout.projectDirectory.dir("myclib/include")
+  inputs.dir(clibHeadersDir)
+    .withPathSensitivity(PathSensitivity.RELATIVE)
+    .normalizeLineEndings()
+
   val clibSrcDir = layout.projectDirectory.dir("myclib/src")
   inputs.dir(clibSrcDir)
     .withPathSensitivity(PathSensitivity.RELATIVE)
     .normalizeLineEndings()
 
   val workDir = temporaryDir.resolve("workdir")
-  val outputDir = layout.projectDirectory.dir("staticlibs")
+  val outputDir = layout.projectDirectory.dir("staticlibs/macos_arm64")
   outputs.dir(outputDir)
 
   outputs.cacheIf { true }
@@ -66,7 +71,8 @@ val compileMyCLib by tasks.registering {
       executable("clang")
       args(
         "-c", "myclib.c",
-        "-o", "myclib.o"
+        "-o", "myclib.o",
+        "-I", clibHeadersDir.asFile.invariantSeparatorsPath,
       )
       workingDir(workDir)
     }
