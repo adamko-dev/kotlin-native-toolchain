@@ -4,10 +4,7 @@ import javax.inject.Inject
 import kotlin.io.path.*
 import org.apache.tools.ant.taskdefs.condition.Os
 import org.gradle.api.DefaultTask
-import org.gradle.api.file.ConfigurableFileCollection
-import org.gradle.api.file.DirectoryProperty
-import org.gradle.api.file.FileSystemOperations
-import org.gradle.api.file.ProjectLayout
+import org.gradle.api.file.*
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.ProviderFactory
 import org.gradle.api.tasks.*
@@ -15,6 +12,9 @@ import org.gradle.api.tasks.PathSensitivity.RELATIVE
 import org.gradle.process.ExecOperations
 import org.gradle.work.NormalizeLineEndings
 
+/**
+ * Task for compiling C library sources into a shared library.
+ */
 @CacheableTask
 abstract class CompileCLibTask
 @Inject
