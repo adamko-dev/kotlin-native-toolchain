@@ -3,6 +3,7 @@ package dev.adamko.kntoolchain.tools.tasks
 import dev.adamko.kntoolchain.tools.internal.datamodel.KonanDependenciesReport
 import dev.adamko.kntoolchain.tools.internal.datamodel.KotlinVersionTargetDependencies
 import dev.adamko.kntoolchain.tools.internal.datamodel.Platform
+import dev.adamko.kntoolchain.tools.internal.utils.StringBlockBuilder
 import dev.adamko.kntoolchain.tools.internal.utils.buildStringBlock
 import java.nio.file.Path
 import java.util.*
@@ -61,6 +62,7 @@ internal constructor() : DefaultTask() {
       createKnpVersion()
       createKnBuildTarget()
       createKonanCompileTarget()
+      createKonanCompileTargetUtils()
       createKnpDepData()
       createKnpDependency()
     }
@@ -91,6 +93,19 @@ private class Context(
           .replace("Macos", "MacOs")
       }
 
+  /**
+   * Map ID to 'pretty name'.
+   */
+  val osFamilies = allKonanTargets.keys.map { it.family }
+    .associateWith { fam ->
+      fam.lowercase(Locale.ROOT)
+        .replaceFirstChar { it.uppercase(Locale.ROOT) }
+        .replace("Osx", "OsX")
+        .replace("Tvos", "TvOs")
+        .replace("Ios", "IOs")
+        .replace("Watchos", "WatchOs")
+    }
+
   val allBuildPlatforms: SortedSet<Platform> =
     report.data.map { it.buildPlatform }.toSortedSet()
 
@@ -98,10 +113,10 @@ private class Context(
     allBuildPlatforms.map { it.osFamily }.distinct()
       .associateWith { family ->
         when (family) {
-          "linux" -> "Linux"
-          "macos" -> "MacOs"
+          "linux"   -> "Linux"
+          "macos"   -> "MacOs"
           "windows" -> "Windows"
-          else -> error("Unknown OS family: $family")
+          else      -> error("Unknown OS family: $family")
         }
       }
       .toSortedMap()
@@ -128,14 +143,51 @@ private fun createKnpVersion() {
       line("/**")
       line(" * A version of a kotlin-native-prebuilt distribution.")
       line(" */")
-      block("data class KnpVersion private constructor(", "): java.io.Serializable {") {
+      block(
+        "data class KnpVersion private constructor(",
+        "): java.io.Serializable, Comparable<KnpVersion> {",
+      ) {
         line("val name: String,")
         line("val version: String,")
+        line("private val major: Int,")
+        line("private val minor: Int,")
+        line("private val patch: Int,")
+        line("private val stage: Stage,")
+        line("private val stageRevision: Int,")
       }
       block("", "}") {
         line()
-        block("companion object {", "}") {
+        block("override fun compareTo(other: KnpVersion): Int =", "") {
+          block("compareValuesBy(", ")") {
+            line("this,")
+            line("other,")
+            line("KnpVersion::major,")
+            line("KnpVersion::minor,")
+            line("KnpVersion::patch,")
+            line("KnpVersion::stage,")
+            line("KnpVersion::stageRevision,")
+          }
+        }
 
+        line()
+        line("""@Suppress("unused")""")
+        block("private enum class Stage {", "}") {
+          line("Release,")
+          line("Beta,")
+          line("RC,")
+        }
+
+        line()
+        block("companion object {", "}") {
+          line()
+          line("/**")
+          line(" * The latest stable release version of a kotlin-native-prebuilt distribution.")
+          line(" */")
+          block("val latestRelease: KnpVersion by lazy {", "}") {
+            line("allVersions.filter { it.stage == Release }.max()")
+          }
+
+          line()
           line("/**")
           line(" * All supported kotlin-native-prebuilt distribution versions.")
           line(" */")
@@ -149,21 +201,61 @@ private fun createKnpVersion() {
 
           ctx.allVersions.forEach { (version, name) ->
             line()
-            line("/** Version `$version`. */")
-            block("val $name: KnpVersion =", " ") {
-              block("KnpVersion(", ")") {
-                line("name = \"$name\",")
-                line("version = \"$version\",")
-              }
-            }
-            //line("val $name: KnpVersion = KnpVersion(\"$version\")")
-//            line("$name(\"$version\"),")
+            knpVersionInstance(version, name)
           }
         }
       }
     }
   )
+}
 
+private fun StringBlockBuilder.knpVersionInstance(
+  version: String,
+  name: String,
+) {
+  val majorMinorPatch = version
+    .substringBefore("-")
+    .split(".")
+    .map { it.toInt() }
+
+  require(majorMinorPatch.size == 3) { "Invalid version: $version" }
+
+  val suffix = version.substringAfter("-", "").ifEmpty { null }
+
+  val stage: String
+  val stageRevision: Int
+  when {
+    suffix == null            -> {
+      stage = "Release"
+      stageRevision = 0
+    }
+
+    suffix.startsWith("Beta") -> {
+      stage = "Beta"
+      stageRevision = suffix.removePrefix(stage).toIntOrNull() ?: 0
+    }
+
+    suffix.startsWith("RC")   -> {
+      stage = "RC"
+      stageRevision = suffix.removePrefix(stage).toIntOrNull() ?: 0
+    }
+
+    else                      ->
+      error("Unknown version: $version")
+  }
+
+  line("/** Version `$version`. */")
+  block("val $name: KnpVersion =", " ") {
+    block("KnpVersion(", ")") {
+      line("name = \"$name\",")
+      line("version = \"$version\",")
+      line("major = ${majorMinorPatch[0]},")
+      line("minor = ${majorMinorPatch[1]},")
+      line("patch = ${majorMinorPatch[2]},")
+      line("stage = ${stage},")
+      line("stageRevision = ${stageRevision},")
+    }
+  }
 }
 
 context(ctx: Context)
@@ -272,21 +364,12 @@ private fun createKnBuildTarget() {
 context(ctx: Context)
 private fun createKonanCompileTarget() {
 
-  val osFamilies = ctx.allKonanTargets.keys.map { it.family }
-    .associateWith { fam ->
-      fam.lowercase(Locale.ROOT)
-        .replaceFirstChar { it.uppercase(Locale.ROOT) }
-        .replace("Osx", "OsX")
-        .replace("Tvos", "TvOs")
-        .replace("Ios", "IOs")
-        .replace("Watchos", "WatchOs")
-    }
-
   val architectures = ctx.allKonanTargets.keys.map { it.architecture }
     .associateWith { fam ->
       fam.lowercase(Locale.ROOT)
         .replaceFirstChar { it.uppercase(Locale.ROOT) }
     }
+
 
   ctx.outputDir.resolve("KnCompileTarget.kt").writeText(
     buildStringBlock {
@@ -321,7 +404,7 @@ private fun createKonanCompileTarget() {
           line("val id: String,")
         }
         block("", "}") {
-          osFamilies.forEach { (family, prettyName) ->
+          ctx.osFamilies.forEach { (family, prettyName) ->
             line("$prettyName(\"$family\"),")
           }
         }
@@ -368,13 +451,59 @@ private fun createKonanCompileTarget() {
             block("val $prettyName: KnCompileTarget = ", "") {
               block("KnCompileTarget(", ")") {
                 line("name = \"${target.name}\",")
-                line("os = OsFamily.${osFamilies[target.family]},")
+                line("os = OsFamily.${ctx.osFamilies[target.family]},")
                 line("arch = Architecture.${architectures[target.architecture]},")
               }
             }
           }
         }
       }
+    }
+  )
+}
+
+
+context(ctx: Context)
+private fun createKonanCompileTargetUtils() {
+
+  val osFamiliesGroupPrettyNameToOsGroup: Map<String, List<String>> =
+    ctx.osFamilies.entries
+      .groupBy { (id, _) ->
+        when (id) {
+          "LINUX"                         -> "Linux"
+          "MINGW"                         -> "Windows"
+          "ANDROID"                       -> "Android"
+          "OSX", "IOS", "WATCHOS", "TVOS" -> "Apple"
+          else                            -> error("Unknown OS family: $id")
+        }
+      }
+      .mapValues { (_, entries) ->
+        entries.map { (_, prettyName) ->
+          prettyName
+        }
+      }
+
+
+  ctx.outputDir.resolve("utils.KnCompileTarget.kt").writeText(
+    buildStringBlock {
+      line("package dev.adamko.kntoolchain.tools.data")
+      line()
+
+      osFamiliesGroupPrettyNameToOsGroup.forEach { (group, osNames) ->
+        line()
+        block("val KnCompileTarget.OsFamily.is$group: Boolean", "") {
+          line(osNames.joinToString(" || ", prefix = " get() = ") { "this == $it" })
+        }
+      }
+      line()
+
+      osFamiliesGroupPrettyNameToOsGroup.forEach { (osGroup, _) ->
+        block("val KnCompileTarget.is$osGroup: Boolean", "") {
+          line("get() = os.is$osGroup")
+        }
+        line()
+      }
+      line()
     }
   )
 }

@@ -3,11 +3,11 @@ package dev.adamko.kntoolchain.tools.data.content
 import dev.adamko.kntoolchain.tools.data.*
 
 @Suppress("ClassName")
-sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
+sealed class KnDependencyData_V2_4_0_Beta1: KnDependencyDataSpec() {
 
-  override val version: KnpVersion = KnpVersion.V2_3_20_Beta2
+  override val version: KnpVersion = KnpVersion.V2_4_0_Beta1
 
-  sealed class Linux_X86_64: KnDependencyData_V2_3_20_Beta2() {
+  sealed class Linux_X86_64: KnDependencyData_V2_4_0_Beta1() {
 
     override val buildPlatform: KnBuildPlatform = KnBuildPlatform.Linux.X86_64
 
@@ -19,7 +19,7 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
         setOf(
           KnpDependency("kotlin.native:x86_64-unknown-linux-gnu-gcc-8.3.0-glibc-2.19-kernel-4.9:2@tar.gz"),
           KnpDependency("kotlin.native:lldb:4:linux@tar.gz"),
-          KnpDependency("kotlin.native.resources.llvm.19-x86_64-linux:llvm-19-x86_64-linux-essentials:109@tar.gz"),
+          KnpDependency("kotlin.native.resources.llvm.21-x86_64-linux:llvm-21-x86_64-linux-essentials:114@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.2.1-2-linux-x86:64@tar.gz"),
         )
     }
@@ -31,7 +31,7 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
       override val dependencies: Set<KnpDependency> =
         setOf(
           KnpDependency("kotlin.native:arm-unknown-linux-gnueabihf-gcc-8.3.0-glibc-2.12.1-kernel-4.9:1@tar.gz"),
-          KnpDependency("kotlin.native.resources.llvm.19-x86_64-linux:llvm-19-x86_64-linux-essentials:109@tar.gz"),
+          KnpDependency("kotlin.native.resources.llvm.21-x86_64-linux:llvm-21-x86_64-linux-essentials:114@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.2.1-2-linux-x86:64@tar.gz"),
           KnpDependency("kotlin.native:qemu-arm-static-5.1.0-linux:2@tar.gz"),
         )
@@ -44,7 +44,7 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
       override val dependencies: Set<KnpDependency> =
         setOf(
           KnpDependency("kotlin.native:aarch64-unknown-linux-gnu-gcc-8.3.0-glibc-2.25-kernel-4.9:2@tar.gz"),
-          KnpDependency("kotlin.native.resources.llvm.19-x86_64-linux:llvm-19-x86_64-linux-essentials:109@tar.gz"),
+          KnpDependency("kotlin.native.resources.llvm.21-x86_64-linux:llvm-21-x86_64-linux-essentials:114@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.2.1-2-linux-x86:64@tar.gz"),
           KnpDependency("kotlin.native:qemu-aarch64-static-5.1.0-linux:2@tar.gz"),
         )
@@ -57,7 +57,7 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
       override val dependencies: Set<KnpDependency> =
         setOf(
           KnpDependency("kotlin.native:msys2-mingw-w64-x86_64:2@tar.gz"),
-          KnpDependency("kotlin.native.resources.llvm.19-x86_64-linux:llvm-19-x86_64-linux-essentials:109@tar.gz"),
+          KnpDependency("kotlin.native.resources.llvm.21-x86_64-linux:llvm-21-x86_64-linux-essentials:114@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.2.1-2-linux-x86:64@tar.gz"),
         )
     }
@@ -70,7 +70,7 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
         setOf(
           KnpDependency("kotlin.native:target-sysroot:1:android_ndk@tar.gz"),
           KnpDependency("kotlin.native:target-toolchain:2:linux-android_ndk@tar.gz"),
-          KnpDependency("kotlin.native.resources.llvm.19-x86_64-linux:llvm-19-x86_64-linux-essentials:109@tar.gz"),
+          KnpDependency("kotlin.native.resources.llvm.21-x86_64-linux:llvm-21-x86_64-linux-essentials:114@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.2.1-2-linux-x86:64@tar.gz"),
         )
     }
@@ -83,7 +83,7 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
         setOf(
           KnpDependency("kotlin.native:target-sysroot:1:android_ndk@tar.gz"),
           KnpDependency("kotlin.native:target-toolchain:2:linux-android_ndk@tar.gz"),
-          KnpDependency("kotlin.native.resources.llvm.19-x86_64-linux:llvm-19-x86_64-linux-essentials:109@tar.gz"),
+          KnpDependency("kotlin.native.resources.llvm.21-x86_64-linux:llvm-21-x86_64-linux-essentials:114@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.2.1-2-linux-x86:64@tar.gz"),
         )
     }
@@ -96,7 +96,7 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
         setOf(
           KnpDependency("kotlin.native:target-sysroot:1:android_ndk@tar.gz"),
           KnpDependency("kotlin.native:target-toolchain:2:linux-android_ndk@tar.gz"),
-          KnpDependency("kotlin.native.resources.llvm.19-x86_64-linux:llvm-19-x86_64-linux-essentials:109@tar.gz"),
+          KnpDependency("kotlin.native.resources.llvm.21-x86_64-linux:llvm-21-x86_64-linux-essentials:114@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.2.1-2-linux-x86:64@tar.gz"),
         )
     }
@@ -109,13 +109,13 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
         setOf(
           KnpDependency("kotlin.native:target-sysroot:1:android_ndk@tar.gz"),
           KnpDependency("kotlin.native:target-toolchain:2:linux-android_ndk@tar.gz"),
-          KnpDependency("kotlin.native.resources.llvm.19-x86_64-linux:llvm-19-x86_64-linux-essentials:109@tar.gz"),
+          KnpDependency("kotlin.native.resources.llvm.21-x86_64-linux:llvm-21-x86_64-linux-essentials:114@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.2.1-2-linux-x86:64@tar.gz"),
         )
     }
   }
 
-  sealed class MacOs_AArch64: KnDependencyData_V2_3_20_Beta2() {
+  sealed class MacOs_AArch64: KnDependencyData_V2_4_0_Beta1() {
 
     override val buildPlatform: KnBuildPlatform = KnBuildPlatform.MacOs.AArch64
 
@@ -126,7 +126,7 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
       override val dependencies: Set<KnpDependency> =
         setOf(
           KnpDependency("kotlin.native:x86_64-unknown-linux-gnu-gcc-8.3.0-glibc-2.19-kernel-4.9:2@tar.gz"),
-          KnpDependency("kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:81@tar.gz"),
+          KnpDependency("kotlin.native.resources.llvm.21-aarch64-macos:llvm-21-aarch64-macos-essentials:93@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"),
         )
     }
@@ -138,7 +138,7 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
       override val dependencies: Set<KnpDependency> =
         setOf(
           KnpDependency("kotlin.native:arm-unknown-linux-gnueabihf-gcc-8.3.0-glibc-2.12.1-kernel-4.9:1@tar.gz"),
-          KnpDependency("kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:81@tar.gz"),
+          KnpDependency("kotlin.native.resources.llvm.21-aarch64-macos:llvm-21-aarch64-macos-essentials:93@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"),
         )
     }
@@ -150,7 +150,7 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
       override val dependencies: Set<KnpDependency> =
         setOf(
           KnpDependency("kotlin.native:aarch64-unknown-linux-gnu-gcc-8.3.0-glibc-2.25-kernel-4.9:2@tar.gz"),
-          KnpDependency("kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:81@tar.gz"),
+          KnpDependency("kotlin.native.resources.llvm.21-aarch64-macos:llvm-21-aarch64-macos-essentials:93@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"),
         )
     }
@@ -162,7 +162,7 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
       override val dependencies: Set<KnpDependency> =
         setOf(
           KnpDependency("kotlin.native:msys2-mingw-w64-x86_64:2@tar.gz"),
-          KnpDependency("kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:81@tar.gz"),
+          KnpDependency("kotlin.native.resources.llvm.21-aarch64-macos:llvm-21-aarch64-macos-essentials:93@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"),
         )
     }
@@ -175,7 +175,7 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
         setOf(
           KnpDependency("kotlin.native:target-sysroot:1:android_ndk@tar.gz"),
           KnpDependency("kotlin.native:target-toolchain:2:osx-android_ndk@tar.gz"),
-          KnpDependency("kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:81@tar.gz"),
+          KnpDependency("kotlin.native.resources.llvm.21-aarch64-macos:llvm-21-aarch64-macos-essentials:93@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"),
         )
     }
@@ -188,7 +188,7 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
         setOf(
           KnpDependency("kotlin.native:target-sysroot:1:android_ndk@tar.gz"),
           KnpDependency("kotlin.native:target-toolchain:2:osx-android_ndk@tar.gz"),
-          KnpDependency("kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:81@tar.gz"),
+          KnpDependency("kotlin.native.resources.llvm.21-aarch64-macos:llvm-21-aarch64-macos-essentials:93@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"),
         )
     }
@@ -201,7 +201,7 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
         setOf(
           KnpDependency("kotlin.native:target-sysroot:1:android_ndk@tar.gz"),
           KnpDependency("kotlin.native:target-toolchain:2:osx-android_ndk@tar.gz"),
-          KnpDependency("kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:81@tar.gz"),
+          KnpDependency("kotlin.native.resources.llvm.21-aarch64-macos:llvm-21-aarch64-macos-essentials:93@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"),
         )
     }
@@ -214,7 +214,7 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
         setOf(
           KnpDependency("kotlin.native:target-sysroot:1:android_ndk@tar.gz"),
           KnpDependency("kotlin.native:target-toolchain:2:osx-android_ndk@tar.gz"),
-          KnpDependency("kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:81@tar.gz"),
+          KnpDependency("kotlin.native.resources.llvm.21-aarch64-macos:llvm-21-aarch64-macos-essentials:93@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"),
         )
     }
@@ -225,7 +225,7 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
 
       override val dependencies: Set<KnpDependency> =
         setOf(
-          KnpDependency("kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:81@tar.gz"),
+          KnpDependency("kotlin.native.resources.llvm.21-aarch64-macos:llvm-21-aarch64-macos-essentials:93@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"),
         )
     }
@@ -237,7 +237,7 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
       override val dependencies: Set<KnpDependency> =
         setOf(
           KnpDependency("kotlin.native:lldb:4:macos@tar.gz"),
-          KnpDependency("kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:81@tar.gz"),
+          KnpDependency("kotlin.native.resources.llvm.21-aarch64-macos:llvm-21-aarch64-macos-essentials:93@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"),
         )
     }
@@ -248,7 +248,7 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
 
       override val dependencies: Set<KnpDependency> =
         setOf(
-          KnpDependency("kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:81@tar.gz"),
+          KnpDependency("kotlin.native.resources.llvm.21-aarch64-macos:llvm-21-aarch64-macos-essentials:93@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"),
         )
     }
@@ -259,7 +259,7 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
 
       override val dependencies: Set<KnpDependency> =
         setOf(
-          KnpDependency("kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:81@tar.gz"),
+          KnpDependency("kotlin.native.resources.llvm.21-aarch64-macos:llvm-21-aarch64-macos-essentials:93@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"),
         )
     }
@@ -270,7 +270,7 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
 
       override val dependencies: Set<KnpDependency> =
         setOf(
-          KnpDependency("kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:81@tar.gz"),
+          KnpDependency("kotlin.native.resources.llvm.21-aarch64-macos:llvm-21-aarch64-macos-essentials:93@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"),
         )
     }
@@ -281,7 +281,7 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
 
       override val dependencies: Set<KnpDependency> =
         setOf(
-          KnpDependency("kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:81@tar.gz"),
+          KnpDependency("kotlin.native.resources.llvm.21-aarch64-macos:llvm-21-aarch64-macos-essentials:93@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"),
         )
     }
@@ -292,7 +292,7 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
 
       override val dependencies: Set<KnpDependency> =
         setOf(
-          KnpDependency("kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:81@tar.gz"),
+          KnpDependency("kotlin.native.resources.llvm.21-aarch64-macos:llvm-21-aarch64-macos-essentials:93@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"),
         )
     }
@@ -303,7 +303,7 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
 
       override val dependencies: Set<KnpDependency> =
         setOf(
-          KnpDependency("kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:81@tar.gz"),
+          KnpDependency("kotlin.native.resources.llvm.21-aarch64-macos:llvm-21-aarch64-macos-essentials:93@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"),
         )
     }
@@ -314,7 +314,7 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
 
       override val dependencies: Set<KnpDependency> =
         setOf(
-          KnpDependency("kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:81@tar.gz"),
+          KnpDependency("kotlin.native.resources.llvm.21-aarch64-macos:llvm-21-aarch64-macos-essentials:93@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"),
         )
     }
@@ -325,7 +325,7 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
 
       override val dependencies: Set<KnpDependency> =
         setOf(
-          KnpDependency("kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:81@tar.gz"),
+          KnpDependency("kotlin.native.resources.llvm.21-aarch64-macos:llvm-21-aarch64-macos-essentials:93@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"),
         )
     }
@@ -336,7 +336,7 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
 
       override val dependencies: Set<KnpDependency> =
         setOf(
-          KnpDependency("kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:81@tar.gz"),
+          KnpDependency("kotlin.native.resources.llvm.21-aarch64-macos:llvm-21-aarch64-macos-essentials:93@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"),
         )
     }
@@ -347,7 +347,7 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
 
       override val dependencies: Set<KnpDependency> =
         setOf(
-          KnpDependency("kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:81@tar.gz"),
+          KnpDependency("kotlin.native.resources.llvm.21-aarch64-macos:llvm-21-aarch64-macos-essentials:93@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"),
         )
     }
@@ -358,13 +358,13 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
 
       override val dependencies: Set<KnpDependency> =
         setOf(
-          KnpDependency("kotlin.native.resources.llvm.19-aarch64-macos:llvm-19-aarch64-macos-essentials:81@tar.gz"),
+          KnpDependency("kotlin.native.resources.llvm.21-aarch64-macos:llvm-21-aarch64-macos-essentials:93@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"),
         )
     }
   }
 
-  sealed class MacOs_X86_64: KnDependencyData_V2_3_20_Beta2() {
+  sealed class MacOs_X86_64: KnDependencyData_V2_4_0_Beta1() {
 
     override val buildPlatform: KnBuildPlatform = KnBuildPlatform.MacOs.X86_64
 
@@ -375,7 +375,7 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
       override val dependencies: Set<KnpDependency> =
         setOf(
           KnpDependency("kotlin.native:x86_64-unknown-linux-gnu-gcc-8.3.0-glibc-2.19-kernel-4.9:2@tar.gz"),
-          KnpDependency("kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:77@tar.gz"),
+          KnpDependency("kotlin.native.resources.llvm.21-x86_64-macos:llvm-21-x86_64-macos-essentials:81@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"),
         )
     }
@@ -387,7 +387,7 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
       override val dependencies: Set<KnpDependency> =
         setOf(
           KnpDependency("kotlin.native:arm-unknown-linux-gnueabihf-gcc-8.3.0-glibc-2.12.1-kernel-4.9:1@tar.gz"),
-          KnpDependency("kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:77@tar.gz"),
+          KnpDependency("kotlin.native.resources.llvm.21-x86_64-macos:llvm-21-x86_64-macos-essentials:81@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"),
         )
     }
@@ -399,7 +399,7 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
       override val dependencies: Set<KnpDependency> =
         setOf(
           KnpDependency("kotlin.native:aarch64-unknown-linux-gnu-gcc-8.3.0-glibc-2.25-kernel-4.9:2@tar.gz"),
-          KnpDependency("kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:77@tar.gz"),
+          KnpDependency("kotlin.native.resources.llvm.21-x86_64-macos:llvm-21-x86_64-macos-essentials:81@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"),
         )
     }
@@ -411,7 +411,7 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
       override val dependencies: Set<KnpDependency> =
         setOf(
           KnpDependency("kotlin.native:msys2-mingw-w64-x86_64:2@tar.gz"),
-          KnpDependency("kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:77@tar.gz"),
+          KnpDependency("kotlin.native.resources.llvm.21-x86_64-macos:llvm-21-x86_64-macos-essentials:81@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"),
         )
     }
@@ -424,7 +424,7 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
         setOf(
           KnpDependency("kotlin.native:target-sysroot:1:android_ndk@tar.gz"),
           KnpDependency("kotlin.native:target-toolchain:2:osx-android_ndk@tar.gz"),
-          KnpDependency("kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:77@tar.gz"),
+          KnpDependency("kotlin.native.resources.llvm.21-x86_64-macos:llvm-21-x86_64-macos-essentials:81@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"),
         )
     }
@@ -437,7 +437,7 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
         setOf(
           KnpDependency("kotlin.native:target-sysroot:1:android_ndk@tar.gz"),
           KnpDependency("kotlin.native:target-toolchain:2:osx-android_ndk@tar.gz"),
-          KnpDependency("kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:77@tar.gz"),
+          KnpDependency("kotlin.native.resources.llvm.21-x86_64-macos:llvm-21-x86_64-macos-essentials:81@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"),
         )
     }
@@ -450,7 +450,7 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
         setOf(
           KnpDependency("kotlin.native:target-sysroot:1:android_ndk@tar.gz"),
           KnpDependency("kotlin.native:target-toolchain:2:osx-android_ndk@tar.gz"),
-          KnpDependency("kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:77@tar.gz"),
+          KnpDependency("kotlin.native.resources.llvm.21-x86_64-macos:llvm-21-x86_64-macos-essentials:81@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"),
         )
     }
@@ -463,7 +463,7 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
         setOf(
           KnpDependency("kotlin.native:target-sysroot:1:android_ndk@tar.gz"),
           KnpDependency("kotlin.native:target-toolchain:2:osx-android_ndk@tar.gz"),
-          KnpDependency("kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:77@tar.gz"),
+          KnpDependency("kotlin.native.resources.llvm.21-x86_64-macos:llvm-21-x86_64-macos-essentials:81@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"),
         )
     }
@@ -475,7 +475,7 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
       override val dependencies: Set<KnpDependency> =
         setOf(
           KnpDependency("kotlin.native:lldb:4:macos@tar.gz"),
-          KnpDependency("kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:77@tar.gz"),
+          KnpDependency("kotlin.native.resources.llvm.21-x86_64-macos:llvm-21-x86_64-macos-essentials:81@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"),
         )
     }
@@ -486,7 +486,7 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
 
       override val dependencies: Set<KnpDependency> =
         setOf(
-          KnpDependency("kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:77@tar.gz"),
+          KnpDependency("kotlin.native.resources.llvm.21-x86_64-macos:llvm-21-x86_64-macos-essentials:81@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"),
         )
     }
@@ -497,7 +497,7 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
 
       override val dependencies: Set<KnpDependency> =
         setOf(
-          KnpDependency("kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:77@tar.gz"),
+          KnpDependency("kotlin.native.resources.llvm.21-x86_64-macos:llvm-21-x86_64-macos-essentials:81@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"),
         )
     }
@@ -508,7 +508,7 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
 
       override val dependencies: Set<KnpDependency> =
         setOf(
-          KnpDependency("kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:77@tar.gz"),
+          KnpDependency("kotlin.native.resources.llvm.21-x86_64-macos:llvm-21-x86_64-macos-essentials:81@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"),
         )
     }
@@ -519,7 +519,7 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
 
       override val dependencies: Set<KnpDependency> =
         setOf(
-          KnpDependency("kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:77@tar.gz"),
+          KnpDependency("kotlin.native.resources.llvm.21-x86_64-macos:llvm-21-x86_64-macos-essentials:81@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"),
         )
     }
@@ -530,7 +530,7 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
 
       override val dependencies: Set<KnpDependency> =
         setOf(
-          KnpDependency("kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:77@tar.gz"),
+          KnpDependency("kotlin.native.resources.llvm.21-x86_64-macos:llvm-21-x86_64-macos-essentials:81@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"),
         )
     }
@@ -541,7 +541,7 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
 
       override val dependencies: Set<KnpDependency> =
         setOf(
-          KnpDependency("kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:77@tar.gz"),
+          KnpDependency("kotlin.native.resources.llvm.21-x86_64-macos:llvm-21-x86_64-macos-essentials:81@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"),
         )
     }
@@ -552,7 +552,7 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
 
       override val dependencies: Set<KnpDependency> =
         setOf(
-          KnpDependency("kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:77@tar.gz"),
+          KnpDependency("kotlin.native.resources.llvm.21-x86_64-macos:llvm-21-x86_64-macos-essentials:81@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"),
         )
     }
@@ -563,7 +563,7 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
 
       override val dependencies: Set<KnpDependency> =
         setOf(
-          KnpDependency("kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:77@tar.gz"),
+          KnpDependency("kotlin.native.resources.llvm.21-x86_64-macos:llvm-21-x86_64-macos-essentials:81@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"),
         )
     }
@@ -574,7 +574,7 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
 
       override val dependencies: Set<KnpDependency> =
         setOf(
-          KnpDependency("kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:77@tar.gz"),
+          KnpDependency("kotlin.native.resources.llvm.21-x86_64-macos:llvm-21-x86_64-macos-essentials:81@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"),
         )
     }
@@ -585,7 +585,7 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
 
       override val dependencies: Set<KnpDependency> =
         setOf(
-          KnpDependency("kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:77@tar.gz"),
+          KnpDependency("kotlin.native.resources.llvm.21-x86_64-macos:llvm-21-x86_64-macos-essentials:81@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"),
         )
     }
@@ -596,7 +596,7 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
 
       override val dependencies: Set<KnpDependency> =
         setOf(
-          KnpDependency("kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:77@tar.gz"),
+          KnpDependency("kotlin.native.resources.llvm.21-x86_64-macos:llvm-21-x86_64-macos-essentials:81@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"),
         )
     }
@@ -607,13 +607,13 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
 
       override val dependencies: Set<KnpDependency> =
         setOf(
-          KnpDependency("kotlin.native.resources.llvm.19-x86_64-macos:llvm-19-x86_64-macos-essentials:77@tar.gz"),
+          KnpDependency("kotlin.native.resources.llvm.21-x86_64-macos:llvm-21-x86_64-macos-essentials:81@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"),
         )
     }
   }
 
-  sealed class Windows_X86_64: KnDependencyData_V2_3_20_Beta2() {
+  sealed class Windows_X86_64: KnDependencyData_V2_4_0_Beta1() {
 
     override val buildPlatform: KnBuildPlatform = KnBuildPlatform.Windows.X86_64
 
@@ -625,7 +625,7 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
         setOf(
           KnpDependency("kotlin.native:x86_64-unknown-linux-gnu-gcc-8.3.0-glibc-2.19-kernel-4.9:2@zip"),
           KnpDependency("kotlin.native:msys2-mingw-w64-x86_64:2@zip"),
-          KnpDependency("kotlin.native.resources.llvm.19-x86_64-windows:llvm-19-x86_64-windows-essentials:139@zip"),
+          KnpDependency("kotlin.native.resources.llvm.21-x86_64-windows:llvm-21-x86_64-windows-essentials:148@zip"),
           KnpDependency("kotlin.native:libffi-3.3-windows-x64:1@zip"),
         )
     }
@@ -638,7 +638,7 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
         setOf(
           KnpDependency("kotlin.native:arm-unknown-linux-gnueabihf-gcc-8.3.0-glibc-2.12.1-kernel-4.9:1@zip"),
           KnpDependency("kotlin.native:msys2-mingw-w64-x86_64:2@zip"),
-          KnpDependency("kotlin.native.resources.llvm.19-x86_64-windows:llvm-19-x86_64-windows-essentials:139@zip"),
+          KnpDependency("kotlin.native.resources.llvm.21-x86_64-windows:llvm-21-x86_64-windows-essentials:148@zip"),
           KnpDependency("kotlin.native:libffi-3.3-windows-x64:1@zip"),
         )
     }
@@ -651,7 +651,7 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
         setOf(
           KnpDependency("kotlin.native:aarch64-unknown-linux-gnu-gcc-8.3.0-glibc-2.25-kernel-4.9:2@zip"),
           KnpDependency("kotlin.native:msys2-mingw-w64-x86_64:2@zip"),
-          KnpDependency("kotlin.native.resources.llvm.19-x86_64-windows:llvm-19-x86_64-windows-essentials:139@zip"),
+          KnpDependency("kotlin.native.resources.llvm.21-x86_64-windows:llvm-21-x86_64-windows-essentials:148@zip"),
           KnpDependency("kotlin.native:libffi-3.3-windows-x64:1@zip"),
         )
     }
@@ -664,7 +664,7 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
         setOf(
           KnpDependency("kotlin.native:lldb:2:windows@zip"),
           KnpDependency("kotlin.native:msys2-mingw-w64-x86_64:2@zip"),
-          KnpDependency("kotlin.native.resources.llvm.19-x86_64-windows:llvm-19-x86_64-windows-essentials:139@zip"),
+          KnpDependency("kotlin.native.resources.llvm.21-x86_64-windows:llvm-21-x86_64-windows-essentials:148@zip"),
           KnpDependency("kotlin.native:libffi-3.3-windows-x64:1@zip"),
         )
     }
@@ -677,7 +677,7 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
         setOf(
           KnpDependency("kotlin.native:target-sysroot:1:android_ndk@zip"),
           KnpDependency("kotlin.native:target-toolchain:2:windows-android_ndk@zip"),
-          KnpDependency("kotlin.native.resources.llvm.19-x86_64-windows:llvm-19-x86_64-windows-essentials:139@zip"),
+          KnpDependency("kotlin.native.resources.llvm.21-x86_64-windows:llvm-21-x86_64-windows-essentials:148@zip"),
           KnpDependency("kotlin.native:libffi-3.3-windows-x64:1@zip"),
         )
     }
@@ -690,7 +690,7 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
         setOf(
           KnpDependency("kotlin.native:target-sysroot:1:android_ndk@zip"),
           KnpDependency("kotlin.native:target-toolchain:2:windows-android_ndk@zip"),
-          KnpDependency("kotlin.native.resources.llvm.19-x86_64-windows:llvm-19-x86_64-windows-essentials:139@zip"),
+          KnpDependency("kotlin.native.resources.llvm.21-x86_64-windows:llvm-21-x86_64-windows-essentials:148@zip"),
           KnpDependency("kotlin.native:libffi-3.3-windows-x64:1@zip"),
         )
     }
@@ -703,7 +703,7 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
         setOf(
           KnpDependency("kotlin.native:target-sysroot:1:android_ndk@zip"),
           KnpDependency("kotlin.native:target-toolchain:2:windows-android_ndk@zip"),
-          KnpDependency("kotlin.native.resources.llvm.19-x86_64-windows:llvm-19-x86_64-windows-essentials:139@zip"),
+          KnpDependency("kotlin.native.resources.llvm.21-x86_64-windows:llvm-21-x86_64-windows-essentials:148@zip"),
           KnpDependency("kotlin.native:libffi-3.3-windows-x64:1@zip"),
         )
     }
@@ -716,7 +716,7 @@ sealed class KnDependencyData_V2_3_20_Beta2: KnDependencyDataSpec() {
         setOf(
           KnpDependency("kotlin.native:target-sysroot:1:android_ndk@zip"),
           KnpDependency("kotlin.native:target-toolchain:2:windows-android_ndk@zip"),
-          KnpDependency("kotlin.native.resources.llvm.19-x86_64-windows:llvm-19-x86_64-windows-essentials:139@zip"),
+          KnpDependency("kotlin.native.resources.llvm.21-x86_64-windows:llvm-21-x86_64-windows-essentials:148@zip"),
           KnpDependency("kotlin.native:libffi-3.3-windows-x64:1@zip"),
         )
     }

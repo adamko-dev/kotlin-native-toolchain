@@ -5,7 +5,8 @@ plugins {
   kotlin("plugin.serialization") version embeddedKotlinVersion
 }
 
-description = "Determine the dependencies required for a Kotlin/Native Konan installation."
+description = "Determine the dependencies required for a Kotlin/Native Konan installation. " +
+    "Generates Kotlin code so the data can be accessed inside the knt Gradle plugins."
 
 dependencies {
   implementation(platform(libs.kotlinxSerialization.bom))

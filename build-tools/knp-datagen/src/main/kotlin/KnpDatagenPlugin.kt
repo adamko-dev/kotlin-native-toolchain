@@ -162,16 +162,21 @@ internal constructor(
     konanDependenciesReportTaskClasspathResolver: NamedDomainObjectProvider<@Suppress("UnstableApiUsage") ResolvableConfiguration>,
   ) {
     project.tasks.withType<KonanDependenciesReportTask>().configureEach { task ->
-      task.group = project.name
+      task.group = KNP_DATA_GEN_TASK_GROUP
       task.workerClasspath.from(konanDependenciesReportTaskClasspathResolver)
       task.onlyIf("regenerate is enabled") { _ ->
         knpDataExt.regenerateData.get()
       }
+    }
+    project.tasks.withType<KnpDataGenTask>().configureEach {
+      it.group = KNP_DATA_GEN_TASK_GROUP
     }
   }
   //endregion
 
   companion object {
     private val logger: Logger = Logging.getLogger(KnpDatagenPlugin::class.java)
+
+    const val KNP_DATA_GEN_TASK_GROUP = "knp datagen"
   }
 }
