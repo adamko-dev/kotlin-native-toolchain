@@ -6,7 +6,7 @@ kotlinxSerialization = "1.10.0"
 
 apache-commonsCompress = "1.28.0"
 
-junit = "6.0.3"
+junit = "6.1.0"
 
 kotest = "6.1.11"
 gradlePlugin-devPublishPlugin = "1.0.1"
