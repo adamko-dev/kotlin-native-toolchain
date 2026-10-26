@@ -2,6 +2,7 @@ package dev.adamko.kntoolchain
 
 import dev.adamko.kntoolchain.test_utils.*
 import dev.adamko.kntoolchain.tools.data.KnBuildPlatform
+import dev.adamko.kntoolchain.tools.data.KnCompileTarget
 import dev.adamko.kntoolchain.tools.data.KnpVersion
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldContain
@@ -53,9 +54,21 @@ class ProvisionTest {
         |  doLast {
         |    val knToolchain = knToolchain.get()
         |    println("knToolchain dir: {" + knToolchain.installationDir.invariantSeparatorsPathString + "}")
+        |    println("knToolchain buildPlatform: {" + knToolchain.buildPlatform.family.name + "-" + knToolchain.buildPlatform.arch.name + "}")
+        |    println("knToolchain compileTargets: {" + knToolchain.compileTargets.map { it.name }.sorted() + "}")
+        |    println("knToolchain konanDataDir: {" + knToolchain.konanDataDir.invariantSeparatorsPathString + "}")
+        |    println("knToolchain runKonan: {" + knToolchain.runKonan.invariantSeparatorsPathString + "}")
         |  }
         |}
         |""".trimMargin()
+
+    val expectedInstallationDir =
+      konanDataDir.resolve("kotlin-native-prebuilt-2.3.0-${buildPlatform.family.name}-${buildPlatform.arch.name}")
+
+    val expectedRunKonan = when (buildPlatform.family) {
+      KnBuildPlatform.OsFamily.Windows -> expectedInstallationDir.resolve("bin/run_konan.bat")
+      else                             -> expectedInstallationDir.resolve("bin/run_konan")
+    }
 
     val expectedDependencyCount = when (buildPlatform.family) {
       KnBuildPlatform.OsFamily.MacOs   -> when (buildPlatform.arch) {
@@ -70,16 +83,18 @@ class ProvisionTest {
     }
 
     runner
-      .withArguments(
-        "knToolchainUser",
-      )
+      .withArguments("knToolchainUser")
       .forwardOutput()
       .build()
       .apply {
 
         output shouldNotContain "partially complete installations detected"
         output shouldContain "Finished installing/checking Konan and $expectedDependencyCount dependencies in"
-        output shouldContain "knToolchain dir: {${konanDataDir.invariantSeparatorsPathString}/kotlin-native-prebuilt-2.3.0-${buildPlatform.family.name}-${buildPlatform.arch.name}}"
+        output shouldContain "knToolchain dir: {${expectedInstallationDir.invariantSeparatorsPathString}}"
+        output shouldContain "knToolchain buildPlatform: {${buildPlatform.family.name}-${buildPlatform.arch.name}}"
+        output shouldContain "knToolchain compileTargets: {${KnCompileTarget.allTargets.map { it.name }.sorted()}}"
+        output shouldContain "knToolchain konanDataDir: {${konanDataDir.invariantSeparatorsPathString}}"
+        output shouldContain "knToolchain runKonan: {${expectedRunKonan.invariantSeparatorsPathString}}"
 
         konanDataDir.toTreeString() shouldBe when (buildPlatform.family) {
           KnBuildPlatform.OsFamily.MacOs   -> when (buildPlatform.arch) {
@@ -136,9 +151,7 @@ class ProvisionTest {
         |""".trimMargin()
 
     runner
-      .withArguments(
-        "runKonanTask",
-      )
+      .withArguments("runKonanTask")
       .forwardOutput()
       .build()
       .apply {
