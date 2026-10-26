@@ -144,7 +144,7 @@ private fun createKnpVersion() {
       line(" * A version of a kotlin-native-prebuilt distribution.")
       line(" */")
       block(
-        "data class KnpVersion private constructor(",
+        "data class KnpVersion internal constructor(",
         "): java.io.Serializable, Comparable<KnpVersion> {",
       ) {
         line("val name: String,")
@@ -170,11 +170,10 @@ private fun createKnpVersion() {
         }
 
         line()
-        line("""@Suppress("unused")""")
-        block("private enum class Stage {", "}") {
-          line("Release,")
+        block("internal enum class Stage {", "}") {
           line("Beta,")
           line("RC,")
+          line("Release,")
         }
 
         line()

@@ -1,3 +1,5 @@
+@file:Suppress("UnstableApiUsage")
+
 plugins {
   id("conventions.kotlin-jvm")
   id("conventions.maven-publishing")
@@ -7,6 +9,22 @@ plugins {
 kotlin {
   sourceSets.main {
     kotlin.srcDir(tasks.knpDataGen)
+  }
+}
+
+testing {
+  suites {
+    val test by getting(JvmTestSuite::class) {
+      dependencies {
+        implementation(platform(libs.junit.bom))
+        implementation(libs.junit.jupiter)
+        runtimeOnly(libs.junit.platformLauncher)
+
+        implementation(libs.kotest.assertions)
+
+        implementation(libs.semver)
+      }
+    }
   }
 }
 

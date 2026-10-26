@@ -3,7 +3,7 @@ package dev.adamko.kntoolchain.tools.data
 /**
  * A version of a kotlin-native-prebuilt distribution.
  */
-data class KnpVersion private constructor(
+data class KnpVersion internal constructor(
   val name: String,
   val version: String,
   private val major: Int,
@@ -24,11 +24,10 @@ data class KnpVersion private constructor(
       KnpVersion::stageRevision,
     )
 
-  @Suppress("unused")
-  private enum class Stage {
-    Release,
+  internal enum class Stage {
     Beta,
     RC,
+    Release,
   }
 
   companion object {
