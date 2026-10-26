@@ -1,5 +1,6 @@
 package dev.adamko.kntoolchain.model
 
+import dev.adamko.kntoolchain.tools.data.KnBuildPlatform
 import dev.adamko.kntoolchain.tools.data.KnCompileTarget
 import java.nio.file.Path
 
@@ -9,7 +10,8 @@ import java.nio.file.Path
  * Can be used on [buildPlatform] to target [compileTargets].
  */
 data class ProvisionedKnToolchain internal constructor(
-//  val buildPlatform: KnBuildPlatform,
+  /** The platform the toolchain runs on. */
+  val buildPlatform: KnBuildPlatform,
   val compileTargets: Set<KnCompileTarget>,
   /** The base directory where all distributions are installed (`KONAN_DATA_DIR`). */
   val konanDataDir: Path,

@@ -103,6 +103,7 @@ internal constructor() : BaseKnToolchainsOperation<Set<ProvisionedKnToolchain>>(
           "Path '$runKonan' is not within the installation directory '$installDir'"
         }
         ProvisionedKnToolchain(
+          buildPlatform = distSpec.buildPlatform.get(),
           compileTargets = distSpec.compileTargets.get(),
           konanDataDir = baseInstallDir,
           installationDir = installDir,
