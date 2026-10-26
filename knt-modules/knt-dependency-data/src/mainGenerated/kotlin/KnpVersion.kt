@@ -77,7 +77,6 @@ data class KnpVersion private constructor(
         stageRevision = 0,
       )
 
-
     /** Version `2.0.10`. */
     val V2_0_10: KnpVersion =
       KnpVersion(
@@ -89,7 +88,6 @@ data class KnpVersion private constructor(
         stage = Release,
         stageRevision = 0,
       )
-
 
     /** Version `2.0.20`. */
     val V2_0_20: KnpVersion =
@@ -103,7 +101,6 @@ data class KnpVersion private constructor(
         stageRevision = 0,
       )
 
-
     /** Version `2.0.21`. */
     val V2_0_21: KnpVersion =
       KnpVersion(
@@ -115,7 +112,6 @@ data class KnpVersion private constructor(
         stage = Release,
         stageRevision = 0,
       )
-
 
     /** Version `2.1.0`. */
     val V2_1_0: KnpVersion =
@@ -129,7 +125,6 @@ data class KnpVersion private constructor(
         stageRevision = 0,
       )
 
-
     /** Version `2.1.10`. */
     val V2_1_10: KnpVersion =
       KnpVersion(
@@ -141,7 +136,6 @@ data class KnpVersion private constructor(
         stage = Release,
         stageRevision = 0,
       )
-
 
     /** Version `2.1.20`. */
     val V2_1_20: KnpVersion =
@@ -155,7 +149,6 @@ data class KnpVersion private constructor(
         stageRevision = 0,
       )
 
-
     /** Version `2.1.21`. */
     val V2_1_21: KnpVersion =
       KnpVersion(
@@ -167,7 +160,6 @@ data class KnpVersion private constructor(
         stage = Release,
         stageRevision = 0,
       )
-
 
     /** Version `2.2.0`. */
     val V2_2_0: KnpVersion =
@@ -181,7 +173,6 @@ data class KnpVersion private constructor(
         stageRevision = 0,
       )
 
-
     /** Version `2.2.10`. */
     val V2_2_10: KnpVersion =
       KnpVersion(
@@ -193,7 +184,6 @@ data class KnpVersion private constructor(
         stage = Release,
         stageRevision = 0,
       )
-
 
     /** Version `2.2.20`. */
     val V2_2_20: KnpVersion =
@@ -207,7 +197,6 @@ data class KnpVersion private constructor(
         stageRevision = 0,
       )
 
-
     /** Version `2.2.21`. */
     val V2_2_21: KnpVersion =
       KnpVersion(
@@ -219,7 +208,6 @@ data class KnpVersion private constructor(
         stage = Release,
         stageRevision = 0,
       )
-
 
     /** Version `2.3.0`. */
     val V2_3_0: KnpVersion =
@@ -233,7 +221,6 @@ data class KnpVersion private constructor(
         stageRevision = 0,
       )
 
-
     /** Version `2.3.10`. */
     val V2_3_10: KnpVersion =
       KnpVersion(
@@ -245,7 +232,6 @@ data class KnpVersion private constructor(
         stage = Release,
         stageRevision = 0,
       )
-
 
     /** Version `2.3.20`. */
     val V2_3_20: KnpVersion =
@@ -259,7 +245,6 @@ data class KnpVersion private constructor(
         stageRevision = 0,
       )
 
-
     /** Version `2.3.21-RC`. */
     val V2_3_21_RC: KnpVersion =
       KnpVersion(
@@ -272,7 +257,6 @@ data class KnpVersion private constructor(
         stageRevision = 0,
       )
 
-
     /** Version `2.4.0-Beta1`. */
     val V2_4_0_Beta1: KnpVersion =
       KnpVersion(
@@ -284,6 +268,5 @@ data class KnpVersion private constructor(
         stage = Beta,
         stageRevision = 1,
       )
-
   }
 }

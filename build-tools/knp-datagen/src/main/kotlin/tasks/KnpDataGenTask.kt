@@ -245,7 +245,7 @@ private fun StringBlockBuilder.knpVersionInstance(
   }
 
   line("/** Version `$version`. */")
-  block("val $name: KnpVersion =", " ") {
+  block("val $name: KnpVersion =", "") {
     block("KnpVersion(", ")") {
       line("name = \"$name\",")
       line("version = \"$version\",")
