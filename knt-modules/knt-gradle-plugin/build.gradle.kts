@@ -115,6 +115,8 @@ testing {
           jvmArgumentProviders.add {
             listOf("-DkntGradlePluginProjectVersion=${projectVersion.get()}")
           }
+
+          environment("KONAN_USE_INTERNAL_SERVER", "0")
         }
       }
     }
