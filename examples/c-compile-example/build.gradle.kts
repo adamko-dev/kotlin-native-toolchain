@@ -119,7 +119,9 @@ kotlin.targets.withType<KotlinNativeTarget>().all target@{
       outputDir = staticLibDir
       cSourceFiles.from("myclib/src")
       cHeaderDirs.from("myclib/include")
-      runKonan = knToolchain.runKonan()
+      val provisionedKnToolchain = knToolchain.provisionInstallation()
+      runKonan = provisionedKnToolchain.map { it.runKonan }
+      konanDataDir = provisionedKnToolchain.map { it.konanDataDir }
       this.konanTargetName = konanTargetName
     }
 

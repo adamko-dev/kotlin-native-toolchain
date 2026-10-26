@@ -53,6 +53,9 @@ internal constructor(
   @get:Internal
   abstract val runKonan: Property<Path>
 
+  @get:Internal
+  abstract val konanDataDir: Property<Path>
+
   init {
     group = project.name
   }
@@ -136,12 +139,10 @@ internal constructor(
     args: List<String>,
   ) {
     val runKonan = runKonan.get().absolute().normalize()
-    val kotlinNativeHomeDir = runKonan.parent.parent
-    val konanDataDir = runKonan.parent.parent.parent
+    val konanDataDir = konanDataDir.get().absolute().normalize()
     val isWindows = Os.isFamily(Os.FAMILY_WINDOWS)
 
     println("$path runKonan $runKonan ${runKonan.exists()}")
-    println("$path kotlinNativeHomeDir entries ${kotlinNativeHomeDir.listDirectoryEntries().toList().map { it.name }}")
     println("$path bin entries ${runKonan.parent.listDirectoryEntries().toList().map { it.name }}")
 
     val commandLine = buildList {
