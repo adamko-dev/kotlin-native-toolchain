@@ -26,6 +26,7 @@ dependencyResolutionManagement {
 
 plugins {
   id("dev.adamko.kotlin-native-toolchain") version "main-SNAPSHOT"
+  id("dev.adamko.gradle-kotlin-accessors") version "0.0.1"
 }
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")

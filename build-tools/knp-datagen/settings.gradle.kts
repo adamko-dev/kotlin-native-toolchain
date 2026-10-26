@@ -21,3 +21,7 @@ dependencyResolutionManagement {
     }
   }
 }
+
+plugins {
+  id("dev.adamko.gradle-kotlin-accessors") version "0.0.1"
+}

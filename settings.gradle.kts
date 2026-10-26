@@ -23,6 +23,7 @@ dependencyResolutionManagement {
 
 plugins {
   id("settings.conventions.git-versioning")
+  id("dev.adamko.gradle-kotlin-accessors") version "0.0.1"
 }
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")

@@ -84,7 +84,7 @@ class ExamplesTest {
                     |exclusiveContent {
                     |  forRepositories(devRepo)
                     |    filter {
-                    |      includeGroupAndSubgroups("dev.adamko")
+                    |      includeGroup("dev.adamko.kotlin-native-toolchain")
                     |  }
                     |}
                     """.trimMargin().prependIndent("  ".repeat(currentIndent + 1))
