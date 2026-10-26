@@ -21,12 +21,10 @@ kotlin {
 
     freeCompilerArgs.addAll(
       "-Xconsistent-data-class-copy-visibility",
-      "-Xcontext-parameters",
-      "-Xwhen-guards",
-      "-Xnon-local-break-continue",
-      "-Xmulti-dollar-interpolation",
-      "-Xnested-type-aliases",
       "-Xcontext-sensitive-resolution",
+      "-Xcollection-literals",
+      "-Xexplicit-context-arguments",
+      "-Xreturn-value-checker=full",
     )
 
     freeCompilerArgs.add(jvmTarget.map { "-Xjdk-release=${it.target}" })
