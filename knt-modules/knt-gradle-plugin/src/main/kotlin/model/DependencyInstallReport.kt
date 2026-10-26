@@ -2,7 +2,6 @@ package dev.adamko.kntoolchain.model
 
 import java.nio.file.Path
 
-
 /**
  * Describe the status of a kotlin-native-prebuilt dependency installation.
  *

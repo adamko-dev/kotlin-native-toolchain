@@ -1,8 +1,7 @@
 package dev.adamko.kntoolchain
 
-import dev.adamko.kntoolchain.internal.utils.adding
-import dev.adamko.kntoolchain.model.KnTargetContainer
 import dev.adamko.kntoolchain.model.KotlinNativePrebuiltDistributionSpec
+import dev.adamko.kntoolchain.model.ProvisionedKnToolchain
 import dev.adamko.kntoolchain.operations.InstallKnToolchains
 import java.nio.file.Path
 import javax.inject.Inject
@@ -11,8 +10,6 @@ import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.logging.Logger
 import org.gradle.api.logging.Logging
 import org.gradle.api.model.ObjectFactory
-import org.gradle.api.plugins.ExtensionAware
-import org.gradle.api.plugins.ExtensionContainer
 import org.gradle.api.provider.Provider
 import org.gradle.api.provider.ProviderFactory
 import org.gradle.kotlin.dsl.newInstance
@@ -59,9 +56,6 @@ internal constructor(
     configure.execute(kotlinNativePrebuiltDistribution)
   }
 
-  val knTargets: KnTargetContainer =
-    extensions.adding("knTargets", objects.newInstance<KnTargetContainer>())
-
   /**
    * Returns a [Provider] for the installed kotlin-native-prebuilt distribution,
    * a.k.a. `KONAN_DATA_DIR`.
@@ -72,7 +66,7 @@ internal constructor(
    * of the distribution (if necessary).
    * Gradle requires downloading is performed during the task execution phase.
    */
-  fun provisionInstallation(): Provider<Path> {
+  fun provisionInstallation(): Provider<ProvisionedKnToolchain> {
     return providers.of(InstallKnToolchains::class) { vs ->
       vs.parameters.knpDistSpecs.add(kotlinNativePrebuiltDistribution)
       vs.parameters.baseInstallDir.set(baseInstallDir)
@@ -97,30 +91,17 @@ internal constructor(
     }
   }
 
-  fun runKonan(
-    pathToRunKonan: Provider<String> = kotlinNativePrebuiltDistribution.buildPlatform.map { platform ->
-      if (platform.family == dev.adamko.kntoolchain.tools.data.KnBuildPlatform.OsFamily.Windows) {
-        "bin/run_konan.bat"
-      } else {
-        "bin/run_konan"
-      }
-//      if (os is OsFamily.Windows) "bin/run_konan.bat" else "bin/run_konan"
-    },
-  ): Provider<Path> {
-    return providers.zip(
-      provisionInstallation(),
-      pathToRunKonan,
-    ) { knpDir, path ->
-      val actual = knpDir.resolve(path)
-      require(actual.startsWith(knpDir)) {
-        "Path '$actual' is not within the installation directory '$knpDir'"
-      }
-      actual
-    }
-  }
-
-  private val extensions: ExtensionContainer
-    get() = (this as ExtensionAware).extensions
+  /**
+   * Returns a [Provider] for the `run_konan` script of the installed distribution.
+   *
+   * The location is configured by [KotlinNativePrebuiltDistributionSpec.relativePathToRunKonan].
+   *
+   * **Note**: The provider *must* be evaluated during Gradle's task execution phase.
+   *
+   * @see provisionInstallation
+   */
+  fun runKonan(): Provider<Path> =
+    provisionInstallation().map { it.runKonan }
 
   companion object {
     private val logger: Logger = Logging.getLogger(KnToolchainProjectExtension::class.java)

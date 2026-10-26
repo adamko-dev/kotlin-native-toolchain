@@ -68,6 +68,12 @@ internal constructor() : Serializable, Describable {
    */
   abstract val installFileExcludes: SetProperty<String>
 
+  /**
+   * Path to the `run_konan` script, relative to the distribution's installation directory.
+   *
+   * Defaults to `bin/run_konan.bat` on Windows, and `bin/run_konan` otherwise.
+   */
+  abstract val relativePathToRunKonan: Property<String>
 
   override fun getDisplayName(): String = buildString {
     append("KotlinNativePrebuiltDistributionSpec")

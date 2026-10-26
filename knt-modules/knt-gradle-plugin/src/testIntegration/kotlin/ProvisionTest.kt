@@ -52,7 +52,7 @@ class ProvisionTest {
         |
         |  doLast {
         |    val knToolchain = knToolchain.get()
-        |    println("knToolchain dir: {" + knToolchain.invariantSeparatorsPathString + "}")
+        |    println("knToolchain dir: {" + knToolchain.installationDir.invariantSeparatorsPathString + "}")
         |  }
         |}
         |""".trimMargin()
@@ -163,7 +163,7 @@ class ProvisionTest {
         |
         |  doLast {
         |    val knToolchain = knToolchain.get()
-        |    println("knToolchain dir: {" + knToolchain.invariantSeparatorsPathString + "}")
+        |    println("knToolchain dir: {" + knToolchain.installationDir.invariantSeparatorsPathString + "}")
         |  }
         |}
         |""".trimMargin()

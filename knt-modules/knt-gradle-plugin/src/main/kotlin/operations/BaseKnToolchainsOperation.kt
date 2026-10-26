@@ -52,7 +52,7 @@ internal sealed class BaseKnToolchainsOperation<R : Any> : ValueSource<R, BaseKn
       add(
         DependencyInstallSpec.from(
           archive = knpDistArchive,
-          installDir = baseInstallDir.resolve(knpDistArchive.nameWithoutArchiveExtension()),
+          installDir = knpDistInstallDir(),
           type = DependencyInstallSpec.Type.KnpDist,
         )
       )
@@ -70,6 +70,12 @@ internal sealed class BaseKnToolchainsOperation<R : Any> : ValueSource<R, BaseKn
       )
     }
   }
+
+  /**
+   * The installation directory of the main kotlin-native-prebuilt distribution.
+   */
+  protected fun KotlinNativePrebuiltDistributionSpec.knpDistInstallDir(): Path =
+    baseInstallDir.resolve(knpDistArchive().nameWithoutArchiveExtension())
 
   protected fun computeDirChecksum(
     destinationDir: Path,

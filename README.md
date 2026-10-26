@@ -30,8 +30,9 @@ repositories {
 }
 ```
 
-The installation directory can be obtained using `knToolchain.provisionInstallation()`,
-which returns a `Provider<Path>`.
+The installed toolchain can be obtained using `knToolchain.provisionInstallation()`,
+which returns a `Provider<ProvisionedKnToolchain>`.
+`ProvisionedKnToolchain` contains the `installationDir`, `konanDataDir`, and the path to `runKonan`.
 **Important**: the `Provider` must only be evaluated in the task execution phase.
 
 ```kotlin
@@ -40,7 +41,7 @@ val knToolchainUser by tasks.registering {
 
   doLast {
     val knToolchain = knToolchain.get()
-    println("knToolchain dir: {" + knToolchain.invariantSeparatorsPathString + "}")
+    println("knToolchain dir: {" + knToolchain.installationDir.invariantSeparatorsPathString + "}")
   }
 }
 ```
@@ -48,11 +49,11 @@ val knToolchainUser by tasks.registering {
 ```kotlin
 val knToolchainUser by tasks.registering {
   val knToolchain = knToolchain.provisionInstallation()
-  inputs.dir(knToolchain)
+  inputs.dir(knToolchain.map { it.installationDir })
 
   doLast {
     val knToolchain = knToolchain.get()
-    println("knToolchain dir: " + knToolchain.invariantSeparatorsPathString)
+    println("knToolchain dir: " + knToolchain.installationDir.invariantSeparatorsPathString)
   }
 }
 ```
