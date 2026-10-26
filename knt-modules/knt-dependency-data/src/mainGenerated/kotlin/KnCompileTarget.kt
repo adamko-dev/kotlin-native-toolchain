@@ -13,25 +13,132 @@ private constructor(
   val arch: Architecture,
 ): java.io.Serializable {
 
-  enum class Architecture(
+  sealed class Architecture(
     val id: String,
-  ) {
-    X64("X64"),
-    Arm32("ARM32"),
-    Arm64("ARM64"),
-    X86("X86"),
+  ) : java.io.Serializable {
+    companion object {
+      @JvmStatic
+      val X64: Architecture get() = X64Internal
+
+      @JvmStatic
+      val Arm32: Architecture get() = Arm32Internal
+
+      @JvmStatic
+      val Arm64: Architecture get() = Arm64Internal
+
+      @JvmStatic
+      val X86: Architecture get() = X86Internal
+
+      @JvmStatic
+      val entries: Set<Architecture> get() = setOf(X64, Arm32, Arm64, X86)
+    }
+
+    internal data object X64Internal : Architecture("X64") {
+      override fun toString(): String = "Architecture.X64"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = X64Internal
+    }
+
+    internal data object Arm32Internal : Architecture("ARM32") {
+      override fun toString(): String = "Architecture.Arm32"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = Arm32Internal
+    }
+
+    internal data object Arm64Internal : Architecture("ARM64") {
+      override fun toString(): String = "Architecture.Arm64"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = Arm64Internal
+    }
+
+    internal data object X86Internal : Architecture("X86") {
+      override fun toString(): String = "Architecture.X86"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = X86Internal
+    }
   }
 
-  enum class OsFamily(
+  sealed class OsFamily(
     val id: String,
-  ) {
-    Linux("LINUX"),
-    Mingw("MINGW"),
-    Android("ANDROID"),
-    OsX("OSX"),
-    IOs("IOS"),
-    WatchOs("WATCHOS"),
-    TvOs("TVOS"),
+  ) : java.io.Serializable {
+    companion object {
+      @JvmStatic
+      val Linux: OsFamily get() = LinuxInternal
+
+      @JvmStatic
+      val Mingw: OsFamily get() = MingwInternal
+
+      @JvmStatic
+      val Android: OsFamily get() = AndroidInternal
+
+      @JvmStatic
+      val OsX: OsFamily get() = OsXInternal
+
+      @JvmStatic
+      val IOs: OsFamily get() = IOsInternal
+
+      @JvmStatic
+      val WatchOs: OsFamily get() = WatchOsInternal
+
+      @JvmStatic
+      val TvOs: OsFamily get() = TvOsInternal
+
+      @JvmStatic
+      val entries: Set<OsFamily> get() = setOf(Linux, Mingw, Android, OsX, IOs, WatchOs, TvOs)
+    }
+
+    internal data object LinuxInternal : OsFamily("LINUX") {
+      override fun toString(): String = "OsFamily.Linux"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = LinuxInternal
+    }
+
+    internal data object MingwInternal : OsFamily("MINGW") {
+      override fun toString(): String = "OsFamily.Mingw"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = MingwInternal
+    }
+
+    internal data object AndroidInternal : OsFamily("ANDROID") {
+      override fun toString(): String = "OsFamily.Android"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = AndroidInternal
+    }
+
+    internal data object OsXInternal : OsFamily("OSX") {
+      override fun toString(): String = "OsFamily.OsX"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = OsXInternal
+    }
+
+    internal data object IOsInternal : OsFamily("IOS") {
+      override fun toString(): String = "OsFamily.IOs"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = IOsInternal
+    }
+
+    internal data object WatchOsInternal : OsFamily("WATCHOS") {
+      override fun toString(): String = "OsFamily.WatchOs"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = WatchOsInternal
+    }
+
+    internal data object TvOsInternal : OsFamily("TVOS") {
+      override fun toString(): String = "OsFamily.TvOs"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = TvOsInternal
+    }
   }
 
   override fun equals(other: Any?): Boolean {
@@ -51,7 +158,7 @@ private constructor(
   }
 
   override fun toString(): String =
-    buildString{
+    buildString {
       append("KnCompileTarget(")
       append(name)
       append(")")

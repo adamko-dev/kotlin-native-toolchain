@@ -271,31 +271,25 @@ private fun createKnBuildTarget() {
       line("/**")
       line(" * A platform that can build Kotlin/Native code.")
       line(" */")
-      block("class KnBuildPlatform\nprivate constructor(", "): java.io.Serializable {") {
+      block("class KnBuildPlatform\nprivate constructor(", ") : java.io.Serializable {") {
         line("val family: OsFamily,")
         line("val arch: OsArch,")
       }
       line()
       block("", "}") {
 
-        block("enum class OsFamily(", ") {") {
-          line("val value: String,")
-        }
-        block("", "}") {
-          ctx.allOsFamilies.forEach { (family, prettyName) ->
-            line("$prettyName(\"$family\"),")
-          }
-        }
+        sealedEnumClass(
+          className = "OsFamily",
+          propertyName = "name",
+          values = ctx.allOsFamilies,
+        )
         line()
 
-        block("enum class OsArch(", ") {") {
-          line("val value: String,")
-        }
-        block("", "}") {
-          ctx.allOsArches.forEach { (arch, prettyName) ->
-            line("$prettyName(\"$arch\"),")
-          }
-        }
+        sealedEnumClass(
+          className = "OsArch",
+          propertyName = "name",
+          values = ctx.allOsArches,
+        )
         line()
 
         block("override fun equals(other: Any?): Boolean {", "}") {
@@ -315,24 +309,24 @@ private fun createKnBuildTarget() {
         line()
 
         block("override fun toString(): String =", "") {
-          block("buildString{", "}") {
+          block("buildString {", "}") {
             line("append(\"KnBuildPlatform(\")")
-            line("append(family)")
+            line("append(family.name)")
             line("append(\"-\")")
-            line("append(arch)")
+            line("append(arch.name)")
             line("append(\")\")")
           }
         }
-        line()
 
         groupedPlatforms.forEach { (family, platforms) ->
           val osName = ctx.allOsFamilies[family] ?: error("Unknown OS family: $family")
 
           line()
           block("object $osName {", "}") {
-            platforms.forEach { platform ->
+            platforms.forEachIndexed { i, platform ->
               val arch = ctx.allOsArches[platform.osArch] ?: error("Unknown OS arch: ${platform.osArch}")
-              line()
+              if (i > 0) line()
+              line("@JvmStatic")
               block("val ${arch}: KnBuildPlatform = ", "") {
                 block("KnBuildPlatform(", ")") {
                   line("family = OsFamily.$osName,")
@@ -343,6 +337,7 @@ private fun createKnBuildTarget() {
           }
         }
 
+        line()
         block("companion object {", "}") {
           block("val allPlatforms: Set<KnBuildPlatform> by lazy {", "}") {
             block("setOf(", ")") {
@@ -390,24 +385,18 @@ private fun createKonanCompileTarget() {
       block("", "}") {
         line()
 
-        block("enum class Architecture(", ") {") {
-          line("val id: String,")
-        }
-        block("", "}") {
-          architectures.forEach { (arch, prettyName) ->
-            line("$prettyName(\"$arch\"),")
-          }
-        }
+        sealedEnumClass(
+          className = "Architecture",
+          propertyName = "id",
+          values = architectures,
+        )
         line()
 
-        block("enum class OsFamily(", ") {") {
-          line("val id: String,")
-        }
-        block("", "}") {
-          ctx.osFamilies.forEach { (family, prettyName) ->
-            line("$prettyName(\"$family\"),")
-          }
-        }
+        sealedEnumClass(
+          className = "OsFamily",
+          propertyName = "id",
+          values = ctx.osFamilies,
+        )
         line()
 
         block("override fun equals(other: Any?): Boolean {", "}") {
@@ -429,7 +418,7 @@ private fun createKonanCompileTarget() {
         line()
 
         block("override fun toString(): String =", "") {
-          block("buildString{", "}") {
+          block("buildString {", "}") {
             line("append(\"KnCompileTarget(\")")
             line("append(name)")
             line("append(\")\")")
@@ -462,6 +451,46 @@ private fun createKonanCompileTarget() {
   )
 }
 
+
+/**
+ * Generate a sealed class with a fixed set of instances, used instead of an enum class.
+ *
+ * The instances are internal data objects, exposed via properties in the companion object.
+ *
+ * @param[values] Map of each instance's [propertyName] value to its pretty name.
+ */
+private fun StringBlockBuilder.sealedEnumClass(
+  className: String,
+  propertyName: String,
+  values: Map<String, String>,
+) {
+  fun internalName(prettyName: String): String =
+    prettyName.filter { it.isLetterOrDigit() } + "Internal"
+
+  block("sealed class $className(", ") : java.io.Serializable {") {
+    line("val $propertyName: String,")
+  }
+  block("", "}") {
+    block("companion object {", "}") {
+      values.values.forEach { prettyName ->
+        line("@JvmStatic")
+        line("val $prettyName: $className get() = ${internalName(prettyName)}")
+        line()
+      }
+      line("@JvmStatic")
+      line("val entries: Set<$className> get() = setOf(${values.values.joinToString()})")
+    }
+    values.forEach { (value, prettyName) ->
+      line()
+      block("internal data object ${internalName(prettyName)} : $className(\"$value\") {", "}") {
+        line("override fun toString(): String = \"$className.$prettyName\"")
+        line()
+        line("""@Suppress("unused")""")
+        line("private fun readResolve(): Any = ${internalName(prettyName)}")
+      }
+    }
+  }
+}
 
 context(ctx: Context)
 private fun createKonanCompileTargetUtils() {

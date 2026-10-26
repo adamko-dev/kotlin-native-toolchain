@@ -61,10 +61,12 @@ class ProvisionTest {
       KnBuildPlatform.OsFamily.MacOs   -> when (buildPlatform.arch) {
         KnBuildPlatform.OsArch.X86_64  -> 10
         KnBuildPlatform.OsArch.AArch64 -> 10
+        else                           -> error("Unexpected build platform: $buildPlatform")
       }
 
       KnBuildPlatform.OsFamily.Windows -> 10
       KnBuildPlatform.OsFamily.Linux   -> 12
+      else                             -> error("Unexpected build platform: $buildPlatform")
     }
 
     runner
@@ -77,16 +79,18 @@ class ProvisionTest {
 
         output shouldNotContain "partially complete installations detected"
         output shouldContain "Finished installing/checking Konan and $expectedDependencyCount dependencies in"
-        output shouldContain "knToolchain dir: {${konanDataDir.invariantSeparatorsPathString}/kotlin-native-prebuilt-2.3.0-${buildPlatform.family.value}-${buildPlatform.arch.value}}"
+        output shouldContain "knToolchain dir: {${konanDataDir.invariantSeparatorsPathString}/kotlin-native-prebuilt-2.3.0-${buildPlatform.family.name}-${buildPlatform.arch.name}}"
 
         konanDataDir.toTreeString() shouldBe when (buildPlatform.family) {
           KnBuildPlatform.OsFamily.MacOs   -> when (buildPlatform.arch) {
             KnBuildPlatform.OsArch.AArch64 -> ExpectedDirectory.MacOS.AARCH_64
             KnBuildPlatform.OsArch.X86_64  -> ExpectedDirectory.MacOS.X86_64
+            else                           -> error("Unexpected build platform: $buildPlatform")
           }
 
           KnBuildPlatform.OsFamily.Windows -> ExpectedDirectory.Windows.X86_64
           KnBuildPlatform.OsFamily.Linux   -> ExpectedDirectory.Linux.X86_64
+          else                             -> error("Unexpected build platform: $buildPlatform")
         }.trimIndent()
       }
   }
@@ -139,7 +143,7 @@ class ProvisionTest {
       .build()
       .apply {
         val expectedRunKonanPath =
-          konanDataDir.resolve("kotlin-native-prebuilt-2.3.0-${buildPlatform.family.value}-${buildPlatform.arch.value}/bin/run_konan")
+          konanDataDir.resolve("kotlin-native-prebuilt-2.3.0-${buildPlatform.family.name}-${buildPlatform.arch.name}/bin/run_konan")
         output shouldContain "run_konan path: {${expectedRunKonanPath.invariantSeparatorsPathString}}"
         output shouldContain "run_konan output: {run_konan :runKonanTask}"
       }
@@ -186,7 +190,7 @@ class ProvisionTest {
       .apply {
 
         output shouldNotContain "partially complete installations detected"
-        output shouldContain "knToolchain dir: {${konanDataDir.invariantSeparatorsPathString}/kotlin-native-prebuilt-2.3.0-${buildPlatform.family.value}-${buildPlatform.arch.value}}"
+        output shouldContain "knToolchain dir: {${konanDataDir.invariantSeparatorsPathString}/kotlin-native-prebuilt-2.3.0-${buildPlatform.family.name}-${buildPlatform.arch.name}}"
 
         konanDataDir.toTreeString() shouldBe when (buildPlatform.family) {
           KnBuildPlatform.OsFamily.MacOs   -> when (buildPlatform.arch) {
@@ -247,6 +251,8 @@ class ProvisionTest {
                   ├── CACHEDIR.TAG
                   └── demo-content.txt
               """.trimIndent()
+
+            else                           -> error("Unexpected build platform: $buildPlatform")
           }
 
           KnBuildPlatform.OsFamily.Windows ->
@@ -316,6 +322,8 @@ class ProvisionTest {
                 ├── CACHEDIR.TAG
                 └── demo-content.txt
             """.trimIndent()
+
+          else                             -> error("Unexpected build platform: $buildPlatform")
         }.trimIndent()
       }
   }
@@ -619,7 +627,7 @@ private fun GradleTestContext.setupProject(
         |  baseInstallDir = file("${konanDataDir.invariantSeparatorsPathString}")
         |  kotlinNativePrebuiltDistribution {
         |    version = KnpVersion.${knpVersion.name}
-        |    buildPlatform = KnBuildPlatform.${buildPlatform.family.name}.${buildPlatform.arch.name}
+        |    buildPlatform = KnBuildPlatform.allPlatforms.single { it.family.name == "${buildPlatform.family.name}" && it.arch.name == "${buildPlatform.arch.name}" }
         |    compileTargets = KnCompileTarget.allTargets
         |  }
         |}

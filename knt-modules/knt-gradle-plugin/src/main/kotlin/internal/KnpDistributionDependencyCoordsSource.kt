@@ -1,6 +1,5 @@
 package dev.adamko.kntoolchain.internal
 
-import dev.adamko.kntoolchain.internal.KnpDistributionDependencyCoordsSource.Companion.kotlinNativePrebuiltToolchainDependencySpec
 import dev.adamko.kntoolchain.internal.utils.createDependencyNotation
 import dev.adamko.kntoolchain.tools.data.KnBuildPlatform
 import dev.adamko.kntoolchain.tools.data.KnpVersion
@@ -66,8 +65,8 @@ internal constructor() :
       return of(KnpDistributionDependencyCoordsSource::class) { spec ->
         spec.parameters.group.set(group)
         spec.parameters.module.set(module)
-        spec.parameters.osName.set(buildPlatform.map { it.family.value })
-        spec.parameters.archName.set(buildPlatform.map { it.arch.value })
+        spec.parameters.osName.set(buildPlatform.map { it.family.name })
+        spec.parameters.archName.set(buildPlatform.map { it.arch.name })
         spec.parameters.kotlinVersion.set(version.map { it.version })
         spec.parameters.archiveExtension.set(archiveExtension)
       }
