@@ -21,6 +21,7 @@ import org.gradle.work.NormalizeLineEndings
 
 // TODO Create two tasks, one to generate code, the other to copy the code to source dir.
 //      If generated data doesn't match target, then fail.
+//      Motivation: prevent accidentally not committing updates.
 @CacheableTask
 abstract class KnpDataGenTask
 internal constructor() : DefaultTask() {
