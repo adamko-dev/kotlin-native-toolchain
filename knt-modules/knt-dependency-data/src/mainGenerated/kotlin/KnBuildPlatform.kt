@@ -100,16 +100,20 @@ private constructor(
       append(")")
     }
 
-  object Linux {
+  data object Linux {
     @JvmStatic
     val X86_64: KnBuildPlatform =
       KnBuildPlatform(
         family = OsFamily.Linux,
         arch = OsArch.X86_64,
       )
+    override fun toString(): String = "KnBuildPlatform.Linux"
+
+    @Suppress("unused")
+    private fun readResolve(): Any = Linux
   }
 
-  object MacOs {
+  data object MacOs {
     @JvmStatic
     val AArch64: KnBuildPlatform =
       KnBuildPlatform(
@@ -123,15 +127,23 @@ private constructor(
         family = OsFamily.MacOs,
         arch = OsArch.X86_64,
       )
+    override fun toString(): String = "KnBuildPlatform.MacOs"
+
+    @Suppress("unused")
+    private fun readResolve(): Any = MacOs
   }
 
-  object Windows {
+  data object Windows {
     @JvmStatic
     val X86_64: KnBuildPlatform =
       KnBuildPlatform(
         family = OsFamily.Windows,
         arch = OsArch.X86_64,
       )
+    override fun toString(): String = "KnBuildPlatform.Windows"
+
+    @Suppress("unused")
+    private fun readResolve(): Any = Windows
   }
 
   companion object {

@@ -59,8 +59,12 @@ data class KnpVersion internal constructor(
         V2_3_0,
         V2_3_10,
         V2_3_20,
-        V2_3_21_RC,
-        V2_4_0_Beta1,
+        V2_3_21,
+        V2_4_0,
+        V2_4_10,
+        V2_4_20,
+        V2_4_21,
+        V2_5_0_Beta2,
       )
     }
 
@@ -244,28 +248,76 @@ data class KnpVersion internal constructor(
         stageRevision = 0,
       )
 
-    /** Version `2.3.21-RC`. */
-    val V2_3_21_RC: KnpVersion =
+    /** Version `2.3.21`. */
+    val V2_3_21: KnpVersion =
       KnpVersion(
-        name = "V2_3_21_RC",
-        version = "2.3.21-RC",
+        name = "V2_3_21",
+        version = "2.3.21",
         major = 2,
         minor = 3,
         patch = 21,
-        stage = RC,
+        stage = Release,
         stageRevision = 0,
       )
 
-    /** Version `2.4.0-Beta1`. */
-    val V2_4_0_Beta1: KnpVersion =
+    /** Version `2.4.0`. */
+    val V2_4_0: KnpVersion =
       KnpVersion(
-        name = "V2_4_0_Beta1",
-        version = "2.4.0-Beta1",
+        name = "V2_4_0",
+        version = "2.4.0",
         major = 2,
         minor = 4,
         patch = 0,
+        stage = Release,
+        stageRevision = 0,
+      )
+
+    /** Version `2.4.10`. */
+    val V2_4_10: KnpVersion =
+      KnpVersion(
+        name = "V2_4_10",
+        version = "2.4.10",
+        major = 2,
+        minor = 4,
+        patch = 10,
+        stage = Release,
+        stageRevision = 0,
+      )
+
+    /** Version `2.4.20`. */
+    val V2_4_20: KnpVersion =
+      KnpVersion(
+        name = "V2_4_20",
+        version = "2.4.20",
+        major = 2,
+        minor = 4,
+        patch = 20,
+        stage = Release,
+        stageRevision = 0,
+      )
+
+    /** Version `2.4.21`. */
+    val V2_4_21: KnpVersion =
+      KnpVersion(
+        name = "V2_4_21",
+        version = "2.4.21",
+        major = 2,
+        minor = 4,
+        patch = 21,
+        stage = Release,
+        stageRevision = 0,
+      )
+
+    /** Version `2.5.0-Beta2`. */
+    val V2_5_0_Beta2: KnpVersion =
+      KnpVersion(
+        name = "V2_5_0_Beta2",
+        version = "2.5.0-Beta2",
+        major = 2,
+        minor = 5,
+        patch = 0,
         stage = Beta,
-        stageRevision = 1,
+        stageRevision = 2,
       )
   }
 }

@@ -258,12 +258,15 @@ private fun StringBlockBuilder.knpVersionInstance(
   }
 }
 
+private const val KnBuildPlatformName = "KnBuildPlatform"
+
 context(ctx: Context)
 private fun createKnBuildTarget() {
 
   val groupedPlatforms = ctx.allBuildPlatforms.groupBy { it.osFamily }
 
-  ctx.outputDir.resolve("KnBuildPlatform.kt").writeText(
+
+  ctx.outputDir.resolve("${KnBuildPlatformName}.kt").writeText(
     buildStringBlock {
       line("package dev.adamko.kntoolchain.tools.data")
       line()
@@ -271,7 +274,7 @@ private fun createKnBuildTarget() {
       line("/**")
       line(" * A platform that can build Kotlin/Native code.")
       line(" */")
-      block("class KnBuildPlatform\nprivate constructor(", ") : java.io.Serializable {") {
+      block("class ${KnBuildPlatformName}\nprivate constructor(", ") : java.io.Serializable {") {
         line("val family: OsFamily,")
         line("val arch: OsArch,")
       }
@@ -294,7 +297,7 @@ private fun createKnBuildTarget() {
 
         block("override fun equals(other: Any?): Boolean {", "}") {
           line("if (this === other) return true")
-          line("if (other !is KnBuildPlatform) return false")
+          line("if (other !is ${KnBuildPlatformName}) return false")
           line("if (family != other.family) return false")
           line("if (arch != other.arch) return false")
           line("return true")
@@ -310,7 +313,7 @@ private fun createKnBuildTarget() {
 
         block("override fun toString(): String =", "") {
           block("buildString {", "}") {
-            line("append(\"KnBuildPlatform(\")")
+            line("append(\"${KnBuildPlatformName}(\")")
             line("append(family.name)")
             line("append(\"-\")")
             line("append(arch.name)")
@@ -322,13 +325,13 @@ private fun createKnBuildTarget() {
           val osName = ctx.allOsFamilies[family] ?: error("Unknown OS family: $family")
 
           line()
-          block("object $osName {", "}") {
+          dataObject(name = osName, scope = KnBuildPlatformName) {
             platforms.forEachIndexed { i, platform ->
               val arch = ctx.allOsArches[platform.osArch] ?: error("Unknown OS arch: ${platform.osArch}")
               if (i > 0) line()
               line("@JvmStatic")
-              block("val ${arch}: KnBuildPlatform = ", "") {
-                block("KnBuildPlatform(", ")") {
+              block("val ${arch}: $KnBuildPlatformName = ", "") {
+                block("${KnBuildPlatformName}(", ")") {
                   line("family = OsFamily.$osName,")
                   line("arch = OsArch.$arch,")
                 }
@@ -339,7 +342,7 @@ private fun createKnBuildTarget() {
 
         line()
         block("companion object {", "}") {
-          block("val allPlatforms: Set<KnBuildPlatform> by lazy {", "}") {
+          block("val allPlatforms: Set<${KnBuildPlatformName}> by lazy {", "}") {
             block("setOf(", ")") {
               groupedPlatforms.forEach { (family, platforms) ->
                 val osName = ctx.allOsFamilies[family]
@@ -482,13 +485,44 @@ private fun StringBlockBuilder.sealedEnumClass(
     }
     values.forEach { (value, prettyName) ->
       line()
-      block("internal data object ${internalName(prettyName)} : $className(\"$value\") {", "}") {
-        line("override fun toString(): String = \"$className.$prettyName\"")
-        line()
-        line("""@Suppress("unused")""")
-        line("private fun readResolve(): Any = ${internalName(prettyName)}")
-      }
+      dataObject(
+        name = internalName(prettyName),
+        prettyName = prettyName,
+        scope = className,
+        modifiers = "internal",
+        supertypes = "$className(\"$value\")",
+      )
     }
+  }
+}
+
+
+/**
+ * Generate a `data object`, with an explicit `toString()` and a `readResolve()`
+ * (to preserve the singleton when deserialized).
+ */
+private fun StringBlockBuilder.dataObject(
+  name: String,
+  prettyName: String = name,
+  scope: String,
+  modifiers: String = "",
+  supertypes: String = "",
+  content: StringBlockBuilder.() -> Unit = {},
+) {
+  val header = buildString {
+    if (modifiers.isNotEmpty()) append("$modifiers ")
+    append("data object $name")
+    if (supertypes.isNotEmpty()) append(" : $supertypes")
+    append(" {")
+  }
+  block(header, "}") {
+    content()
+    line("override fun toString(): String = \"${scope}.${prettyName}\"")
+    line()
+    // data objects don't have readResolve(). Without it deserialization (e.g. Gradle CC) creates duplicate instances.
+    // readResolve() must return Any (JVM Object) for Java serialization to detect it.
+    line("""@Suppress("unused")""")
+    line("private fun readResolve(): Any = $name")
   }
 }
 
@@ -614,7 +648,7 @@ private fun createKnpDepData() {
         line("abstract val version: KnpVersion")
         line()
         line("/** The platform on which the compilation tools are executed. */")
-        line("abstract val buildPlatform: KnBuildPlatform")
+        line("abstract val buildPlatform: $KnBuildPlatformName")
         line()
         line("/** The Kotlin Native target platform that the compiler will generate code for. */")
         line("abstract val compileTarget: KnCompileTarget")
@@ -665,7 +699,7 @@ private fun createKnpDepData() {
             block("sealed class ${baseClsName}: ${clsNameVersion}() {", "}") {
 
               line()
-              line("override val buildPlatform: KnBuildPlatform = KnBuildPlatform.${buildOs}.${buildArch}")
+              line("override val buildPlatform: $KnBuildPlatformName = ${KnBuildPlatformName}.${buildOs}.${buildArch}")
 
               targetDependencies.forEach { dependencies ->
 
@@ -675,7 +709,11 @@ private fun createKnpDepData() {
                 allKnDependencyDataSpecs += "${clsNameVersion}.${baseClsName}.${targetName}"
 
                 line()
-                block("object ${targetName}: ${baseClsName}() {", "}") {
+                dataObject(
+                  name = targetName,
+                  scope = "$clsNameVersion.$baseClsName",
+                  supertypes = "${baseClsName}()",
+                ) {
                   line()
                   line("override val compileTarget: KnCompileTarget = KnCompileTarget.${targetName}")
                   line()

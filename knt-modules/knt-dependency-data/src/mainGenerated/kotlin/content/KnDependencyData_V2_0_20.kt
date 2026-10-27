@@ -11,7 +11,7 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
 
     override val buildPlatform: KnBuildPlatform = KnBuildPlatform.Linux.X86_64
 
-    object LinuxX64: Linux_X86_64() {
+    data object LinuxX64 : Linux_X86_64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.LinuxX64
 
@@ -22,9 +22,13 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:llvm:11.1.0:linux-x64-essentials@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.2.1-2-linux-x86:64@tar.gz"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.Linux_X86_64.LinuxX64"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = LinuxX64
     }
 
-    object LinuxArm32Hfp: Linux_X86_64() {
+    data object LinuxArm32Hfp : Linux_X86_64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.LinuxArm32Hfp
 
@@ -35,9 +39,13 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:libffi-3.2.1-2-linux-x86:64@tar.gz"),
           KnpDependency("kotlin.native:qemu-arm-static-5.1.0-linux:2@tar.gz"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.Linux_X86_64.LinuxArm32Hfp"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = LinuxArm32Hfp
     }
 
-    object LinuxArm64: Linux_X86_64() {
+    data object LinuxArm64 : Linux_X86_64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.LinuxArm64
 
@@ -48,9 +56,13 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:libffi-3.2.1-2-linux-x86:64@tar.gz"),
           KnpDependency("kotlin.native:qemu-aarch64-static-5.1.0-linux:2@tar.gz"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.Linux_X86_64.LinuxArm64"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = LinuxArm64
     }
 
-    object MingwX64: Linux_X86_64() {
+    data object MingwX64 : Linux_X86_64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.MingwX64
 
@@ -60,9 +72,13 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:llvm:11.1.0:linux-x64-essentials@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.2.1-2-linux-x86:64@tar.gz"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.Linux_X86_64.MingwX64"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = MingwX64
     }
 
-    object AndroidX86: Linux_X86_64() {
+    data object AndroidX86 : Linux_X86_64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.AndroidX86
 
@@ -73,9 +89,13 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:llvm:11.1.0:linux-x64-essentials@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.2.1-2-linux-x86:64@tar.gz"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.Linux_X86_64.AndroidX86"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = AndroidX86
     }
 
-    object AndroidX64: Linux_X86_64() {
+    data object AndroidX64 : Linux_X86_64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.AndroidX64
 
@@ -86,9 +106,13 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:llvm:11.1.0:linux-x64-essentials@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.2.1-2-linux-x86:64@tar.gz"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.Linux_X86_64.AndroidX64"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = AndroidX64
     }
 
-    object AndroidArm32: Linux_X86_64() {
+    data object AndroidArm32 : Linux_X86_64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.AndroidArm32
 
@@ -99,9 +123,13 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:llvm:11.1.0:linux-x64-essentials@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.2.1-2-linux-x86:64@tar.gz"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.Linux_X86_64.AndroidArm32"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = AndroidArm32
     }
 
-    object AndroidArm64: Linux_X86_64() {
+    data object AndroidArm64 : Linux_X86_64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.AndroidArm64
 
@@ -112,6 +140,10 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:llvm:11.1.0:linux-x64-essentials@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.2.1-2-linux-x86:64@tar.gz"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.Linux_X86_64.AndroidArm64"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = AndroidArm64
     }
   }
 
@@ -119,7 +151,7 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
 
     override val buildPlatform: KnBuildPlatform = KnBuildPlatform.MacOs.AArch64
 
-    object LinuxX64: MacOs_AArch64() {
+    data object LinuxX64 : MacOs_AArch64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.LinuxX64
 
@@ -129,9 +161,13 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:apple-llvm:20200714:macos-aarch64-essentials@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.MacOs_AArch64.LinuxX64"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = LinuxX64
     }
 
-    object LinuxArm32Hfp: MacOs_AArch64() {
+    data object LinuxArm32Hfp : MacOs_AArch64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.LinuxArm32Hfp
 
@@ -141,9 +177,13 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:apple-llvm:20200714:macos-aarch64-essentials@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.MacOs_AArch64.LinuxArm32Hfp"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = LinuxArm32Hfp
     }
 
-    object LinuxArm64: MacOs_AArch64() {
+    data object LinuxArm64 : MacOs_AArch64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.LinuxArm64
 
@@ -153,9 +193,13 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:apple-llvm:20200714:macos-aarch64-essentials@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.MacOs_AArch64.LinuxArm64"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = LinuxArm64
     }
 
-    object MingwX64: MacOs_AArch64() {
+    data object MingwX64 : MacOs_AArch64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.MingwX64
 
@@ -165,9 +209,13 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:apple-llvm:20200714:macos-aarch64-essentials@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.MacOs_AArch64.MingwX64"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = MingwX64
     }
 
-    object AndroidX86: MacOs_AArch64() {
+    data object AndroidX86 : MacOs_AArch64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.AndroidX86
 
@@ -178,9 +226,13 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:apple-llvm:20200714:macos-aarch64-essentials@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.MacOs_AArch64.AndroidX86"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = AndroidX86
     }
 
-    object AndroidX64: MacOs_AArch64() {
+    data object AndroidX64 : MacOs_AArch64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.AndroidX64
 
@@ -191,9 +243,13 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:apple-llvm:20200714:macos-aarch64-essentials@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.MacOs_AArch64.AndroidX64"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = AndroidX64
     }
 
-    object AndroidArm32: MacOs_AArch64() {
+    data object AndroidArm32 : MacOs_AArch64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.AndroidArm32
 
@@ -204,9 +260,13 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:apple-llvm:20200714:macos-aarch64-essentials@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.MacOs_AArch64.AndroidArm32"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = AndroidArm32
     }
 
-    object AndroidArm64: MacOs_AArch64() {
+    data object AndroidArm64 : MacOs_AArch64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.AndroidArm64
 
@@ -217,9 +277,13 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:apple-llvm:20200714:macos-aarch64-essentials@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.MacOs_AArch64.AndroidArm64"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = AndroidArm64
     }
 
-    object MacOsX64: MacOs_AArch64() {
+    data object MacOsX64 : MacOs_AArch64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.MacOsX64
 
@@ -228,9 +292,13 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:apple-llvm:20200714:macos-aarch64-essentials@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.MacOs_AArch64.MacOsX64"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = MacOsX64
     }
 
-    object MacOsArm64: MacOs_AArch64() {
+    data object MacOsArm64 : MacOs_AArch64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.MacOsArm64
 
@@ -240,9 +308,13 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:apple-llvm:20200714:macos-aarch64-essentials@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.MacOs_AArch64.MacOsArm64"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = MacOsArm64
     }
 
-    object IOsArm64: MacOs_AArch64() {
+    data object IOsArm64 : MacOs_AArch64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.IOsArm64
 
@@ -251,9 +323,13 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:apple-llvm:20200714:macos-aarch64-essentials@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.MacOs_AArch64.IOsArm64"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = IOsArm64
     }
 
-    object IOsX64: MacOs_AArch64() {
+    data object IOsX64 : MacOs_AArch64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.IOsX64
 
@@ -262,9 +338,13 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:apple-llvm:20200714:macos-aarch64-essentials@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.MacOs_AArch64.IOsX64"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = IOsX64
     }
 
-    object IOsSimulatorArm64: MacOs_AArch64() {
+    data object IOsSimulatorArm64 : MacOs_AArch64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.IOsSimulatorArm64
 
@@ -273,9 +353,13 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:apple-llvm:20200714:macos-aarch64-essentials@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.MacOs_AArch64.IOsSimulatorArm64"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = IOsSimulatorArm64
     }
 
-    object WatchOsArm32: MacOs_AArch64() {
+    data object WatchOsArm32 : MacOs_AArch64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.WatchOsArm32
 
@@ -284,9 +368,13 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:apple-llvm:20200714:macos-aarch64-essentials@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.MacOs_AArch64.WatchOsArm32"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = WatchOsArm32
     }
 
-    object WatchOsArm64: MacOs_AArch64() {
+    data object WatchOsArm64 : MacOs_AArch64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.WatchOsArm64
 
@@ -295,9 +383,13 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:apple-llvm:20200714:macos-aarch64-essentials@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.MacOs_AArch64.WatchOsArm64"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = WatchOsArm64
     }
 
-    object WatchOsX64: MacOs_AArch64() {
+    data object WatchOsX64 : MacOs_AArch64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.WatchOsX64
 
@@ -306,9 +398,13 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:apple-llvm:20200714:macos-aarch64-essentials@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.MacOs_AArch64.WatchOsX64"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = WatchOsX64
     }
 
-    object WatchOsSimulatorArm64: MacOs_AArch64() {
+    data object WatchOsSimulatorArm64 : MacOs_AArch64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.WatchOsSimulatorArm64
 
@@ -317,9 +413,13 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:apple-llvm:20200714:macos-aarch64-essentials@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.MacOs_AArch64.WatchOsSimulatorArm64"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = WatchOsSimulatorArm64
     }
 
-    object WatchOsDeviceArm64: MacOs_AArch64() {
+    data object WatchOsDeviceArm64 : MacOs_AArch64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.WatchOsDeviceArm64
 
@@ -328,9 +428,13 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:apple-llvm:20200714:macos-aarch64-essentials@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.MacOs_AArch64.WatchOsDeviceArm64"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = WatchOsDeviceArm64
     }
 
-    object TvOsArm64: MacOs_AArch64() {
+    data object TvOsArm64 : MacOs_AArch64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.TvOsArm64
 
@@ -339,9 +443,13 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:apple-llvm:20200714:macos-aarch64-essentials@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.MacOs_AArch64.TvOsArm64"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = TvOsArm64
     }
 
-    object TvOsX64: MacOs_AArch64() {
+    data object TvOsX64 : MacOs_AArch64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.TvOsX64
 
@@ -350,9 +458,13 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:apple-llvm:20200714:macos-aarch64-essentials@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.MacOs_AArch64.TvOsX64"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = TvOsX64
     }
 
-    object TvOsSimulatorArm64: MacOs_AArch64() {
+    data object TvOsSimulatorArm64 : MacOs_AArch64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.TvOsSimulatorArm64
 
@@ -361,6 +473,10 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:apple-llvm:20200714:macos-aarch64-essentials@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.3:1:macos-arm64@tar.gz"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.MacOs_AArch64.TvOsSimulatorArm64"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = TvOsSimulatorArm64
     }
   }
 
@@ -368,7 +484,7 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
 
     override val buildPlatform: KnBuildPlatform = KnBuildPlatform.MacOs.X86_64
 
-    object LinuxX64: MacOs_X86_64() {
+    data object LinuxX64 : MacOs_X86_64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.LinuxX64
 
@@ -378,9 +494,13 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:apple-llvm:20200714:macos-x64-essentials@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.MacOs_X86_64.LinuxX64"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = LinuxX64
     }
 
-    object LinuxArm32Hfp: MacOs_X86_64() {
+    data object LinuxArm32Hfp : MacOs_X86_64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.LinuxArm32Hfp
 
@@ -390,9 +510,13 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:apple-llvm:20200714:macos-x64-essentials@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.MacOs_X86_64.LinuxArm32Hfp"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = LinuxArm32Hfp
     }
 
-    object LinuxArm64: MacOs_X86_64() {
+    data object LinuxArm64 : MacOs_X86_64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.LinuxArm64
 
@@ -402,9 +526,13 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:apple-llvm:20200714:macos-x64-essentials@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.MacOs_X86_64.LinuxArm64"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = LinuxArm64
     }
 
-    object MingwX64: MacOs_X86_64() {
+    data object MingwX64 : MacOs_X86_64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.MingwX64
 
@@ -414,9 +542,13 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:apple-llvm:20200714:macos-x64-essentials@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.MacOs_X86_64.MingwX64"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = MingwX64
     }
 
-    object AndroidX86: MacOs_X86_64() {
+    data object AndroidX86 : MacOs_X86_64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.AndroidX86
 
@@ -427,9 +559,13 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:apple-llvm:20200714:macos-x64-essentials@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.MacOs_X86_64.AndroidX86"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = AndroidX86
     }
 
-    object AndroidX64: MacOs_X86_64() {
+    data object AndroidX64 : MacOs_X86_64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.AndroidX64
 
@@ -440,9 +576,13 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:apple-llvm:20200714:macos-x64-essentials@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.MacOs_X86_64.AndroidX64"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = AndroidX64
     }
 
-    object AndroidArm32: MacOs_X86_64() {
+    data object AndroidArm32 : MacOs_X86_64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.AndroidArm32
 
@@ -453,9 +593,13 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:apple-llvm:20200714:macos-x64-essentials@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.MacOs_X86_64.AndroidArm32"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = AndroidArm32
     }
 
-    object AndroidArm64: MacOs_X86_64() {
+    data object AndroidArm64 : MacOs_X86_64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.AndroidArm64
 
@@ -466,9 +610,13 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:apple-llvm:20200714:macos-x64-essentials@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.MacOs_X86_64.AndroidArm64"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = AndroidArm64
     }
 
-    object MacOsX64: MacOs_X86_64() {
+    data object MacOsX64 : MacOs_X86_64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.MacOsX64
 
@@ -478,9 +626,13 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:apple-llvm:20200714:macos-x64-essentials@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.MacOs_X86_64.MacOsX64"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = MacOsX64
     }
 
-    object MacOsArm64: MacOs_X86_64() {
+    data object MacOsArm64 : MacOs_X86_64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.MacOsArm64
 
@@ -489,9 +641,13 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:apple-llvm:20200714:macos-x64-essentials@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.MacOs_X86_64.MacOsArm64"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = MacOsArm64
     }
 
-    object IOsArm64: MacOs_X86_64() {
+    data object IOsArm64 : MacOs_X86_64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.IOsArm64
 
@@ -500,9 +656,13 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:apple-llvm:20200714:macos-x64-essentials@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.MacOs_X86_64.IOsArm64"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = IOsArm64
     }
 
-    object IOsX64: MacOs_X86_64() {
+    data object IOsX64 : MacOs_X86_64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.IOsX64
 
@@ -511,9 +671,13 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:apple-llvm:20200714:macos-x64-essentials@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.MacOs_X86_64.IOsX64"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = IOsX64
     }
 
-    object IOsSimulatorArm64: MacOs_X86_64() {
+    data object IOsSimulatorArm64 : MacOs_X86_64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.IOsSimulatorArm64
 
@@ -522,9 +686,13 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:apple-llvm:20200714:macos-x64-essentials@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.MacOs_X86_64.IOsSimulatorArm64"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = IOsSimulatorArm64
     }
 
-    object WatchOsArm32: MacOs_X86_64() {
+    data object WatchOsArm32 : MacOs_X86_64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.WatchOsArm32
 
@@ -533,9 +701,13 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:apple-llvm:20200714:macos-x64-essentials@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.MacOs_X86_64.WatchOsArm32"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = WatchOsArm32
     }
 
-    object WatchOsArm64: MacOs_X86_64() {
+    data object WatchOsArm64 : MacOs_X86_64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.WatchOsArm64
 
@@ -544,9 +716,13 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:apple-llvm:20200714:macos-x64-essentials@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.MacOs_X86_64.WatchOsArm64"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = WatchOsArm64
     }
 
-    object WatchOsX64: MacOs_X86_64() {
+    data object WatchOsX64 : MacOs_X86_64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.WatchOsX64
 
@@ -555,9 +731,13 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:apple-llvm:20200714:macos-x64-essentials@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.MacOs_X86_64.WatchOsX64"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = WatchOsX64
     }
 
-    object WatchOsSimulatorArm64: MacOs_X86_64() {
+    data object WatchOsSimulatorArm64 : MacOs_X86_64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.WatchOsSimulatorArm64
 
@@ -566,9 +746,13 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:apple-llvm:20200714:macos-x64-essentials@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.MacOs_X86_64.WatchOsSimulatorArm64"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = WatchOsSimulatorArm64
     }
 
-    object WatchOsDeviceArm64: MacOs_X86_64() {
+    data object WatchOsDeviceArm64 : MacOs_X86_64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.WatchOsDeviceArm64
 
@@ -577,9 +761,13 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:apple-llvm:20200714:macos-x64-essentials@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.MacOs_X86_64.WatchOsDeviceArm64"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = WatchOsDeviceArm64
     }
 
-    object TvOsArm64: MacOs_X86_64() {
+    data object TvOsArm64 : MacOs_X86_64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.TvOsArm64
 
@@ -588,9 +776,13 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:apple-llvm:20200714:macos-x64-essentials@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.MacOs_X86_64.TvOsArm64"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = TvOsArm64
     }
 
-    object TvOsX64: MacOs_X86_64() {
+    data object TvOsX64 : MacOs_X86_64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.TvOsX64
 
@@ -599,9 +791,13 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:apple-llvm:20200714:macos-x64-essentials@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.MacOs_X86_64.TvOsX64"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = TvOsX64
     }
 
-    object TvOsSimulatorArm64: MacOs_X86_64() {
+    data object TvOsSimulatorArm64 : MacOs_X86_64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.TvOsSimulatorArm64
 
@@ -610,6 +806,10 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:apple-llvm:20200714:macos-x64-essentials@tar.gz"),
           KnpDependency("kotlin.native:libffi-3.2.1:3:darwin-macos@tar.gz"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.MacOs_X86_64.TvOsSimulatorArm64"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = TvOsSimulatorArm64
     }
   }
 
@@ -617,7 +817,7 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
 
     override val buildPlatform: KnBuildPlatform = KnBuildPlatform.Windows.X86_64
 
-    object LinuxX64: Windows_X86_64() {
+    data object LinuxX64 : Windows_X86_64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.LinuxX64
 
@@ -628,9 +828,13 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:llvm:11.1.0:windows-x64-essentials@zip"),
           KnpDependency("kotlin.native:libffi-3.3-windows-x64:1@zip"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.Windows_X86_64.LinuxX64"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = LinuxX64
     }
 
-    object LinuxArm32Hfp: Windows_X86_64() {
+    data object LinuxArm32Hfp : Windows_X86_64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.LinuxArm32Hfp
 
@@ -641,9 +845,13 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:llvm:11.1.0:windows-x64-essentials@zip"),
           KnpDependency("kotlin.native:libffi-3.3-windows-x64:1@zip"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.Windows_X86_64.LinuxArm32Hfp"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = LinuxArm32Hfp
     }
 
-    object LinuxArm64: Windows_X86_64() {
+    data object LinuxArm64 : Windows_X86_64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.LinuxArm64
 
@@ -654,9 +862,13 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:llvm:11.1.0:windows-x64-essentials@zip"),
           KnpDependency("kotlin.native:libffi-3.3-windows-x64:1@zip"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.Windows_X86_64.LinuxArm64"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = LinuxArm64
     }
 
-    object MingwX64: Windows_X86_64() {
+    data object MingwX64 : Windows_X86_64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.MingwX64
 
@@ -668,9 +880,13 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:llvm:11.1.0:windows-x64-essentials@zip"),
           KnpDependency("kotlin.native:libffi-3.3-windows-x64:1@zip"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.Windows_X86_64.MingwX64"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = MingwX64
     }
 
-    object AndroidX86: Windows_X86_64() {
+    data object AndroidX86 : Windows_X86_64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.AndroidX86
 
@@ -681,9 +897,13 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:llvm:11.1.0:windows-x64-essentials@zip"),
           KnpDependency("kotlin.native:libffi-3.3-windows-x64:1@zip"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.Windows_X86_64.AndroidX86"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = AndroidX86
     }
 
-    object AndroidX64: Windows_X86_64() {
+    data object AndroidX64 : Windows_X86_64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.AndroidX64
 
@@ -694,9 +914,13 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:llvm:11.1.0:windows-x64-essentials@zip"),
           KnpDependency("kotlin.native:libffi-3.3-windows-x64:1@zip"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.Windows_X86_64.AndroidX64"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = AndroidX64
     }
 
-    object AndroidArm32: Windows_X86_64() {
+    data object AndroidArm32 : Windows_X86_64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.AndroidArm32
 
@@ -707,9 +931,13 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:llvm:11.1.0:windows-x64-essentials@zip"),
           KnpDependency("kotlin.native:libffi-3.3-windows-x64:1@zip"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.Windows_X86_64.AndroidArm32"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = AndroidArm32
     }
 
-    object AndroidArm64: Windows_X86_64() {
+    data object AndroidArm64 : Windows_X86_64() {
 
       override val compileTarget: KnCompileTarget = KnCompileTarget.AndroidArm64
 
@@ -720,6 +948,10 @@ sealed class KnDependencyData_V2_0_20: KnDependencyDataSpec() {
           KnpDependency("kotlin.native:llvm:11.1.0:windows-x64-essentials@zip"),
           KnpDependency("kotlin.native:libffi-3.3-windows-x64:1@zip"),
         )
+      override fun toString(): String = "KnDependencyData_V2_0_20.Windows_X86_64.AndroidArm64"
+
+      @Suppress("unused")
+      private fun readResolve(): Any = AndroidArm64
     }
   }
 }
