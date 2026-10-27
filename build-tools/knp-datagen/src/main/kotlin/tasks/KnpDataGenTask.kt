@@ -137,13 +137,15 @@ private fun createKnpVersion() {
     buildStringBlock {
       line("package dev.adamko.kntoolchain.tools.data")
       line()
+      line("import java.io.Serializable as JavaIoSerializable")
+      line()
 
       line("/**")
       line(" * A version of a kotlin-native-prebuilt distribution.")
       line(" */")
       block(
         "data class KnpVersion internal constructor(",
-        "): java.io.Serializable, Comparable<KnpVersion> {",
+        "): JavaIoSerializable, Comparable<KnpVersion> {",
       ) {
         line("val name: String,")
         line("val version: String,")
@@ -270,11 +272,13 @@ private fun createKnBuildTarget() {
     buildStringBlock {
       line("package dev.adamko.kntoolchain.tools.data")
       line()
+      line("import java.io.Serializable as JavaIoSerializable")
+      line()
 
       line("/**")
       line(" * A platform that can build Kotlin/Native code.")
       line(" */")
-      block("class ${KnBuildPlatformName}\nprivate constructor(", ") : java.io.Serializable {") {
+      block("class ${KnBuildPlatformName}\nprivate constructor(", ") : JavaIoSerializable {") {
         line("val family: OsFamily,")
         line("val arch: OsArch,")
       }
@@ -325,7 +329,7 @@ private fun createKnBuildTarget() {
           val osName = ctx.allOsFamilies[family] ?: error("Unknown OS family: $family")
 
           line()
-          dataObject(name = osName, scope = KnBuildPlatformName) {
+          dataObject(name = osName, scope = KnBuildPlatformName, supertypes = "JavaIoSerializable") {
             platforms.forEachIndexed { i, platform ->
               val arch = ctx.allOsArches[platform.osArch] ?: error("Unknown OS arch: ${platform.osArch}")
               if (i > 0) line()
@@ -373,11 +377,13 @@ private fun createKonanCompileTarget() {
     buildStringBlock {
       line("package dev.adamko.kntoolchain.tools.data")
       line()
+      line("import java.io.Serializable as JavaIoSerializable")
+      line()
 
       line("/**")
       line(" * A target platform for Kotlin/Native code.")
       line(" */")
-      block("class KnCompileTarget\nprivate constructor(", "): java.io.Serializable {") {
+      block("class KnCompileTarget\nprivate constructor(", "): JavaIoSerializable {") {
         line("/** [org.jetbrains.kotlin.konan.target.KonanTarget.name] */")
         line("val name: String,")
         line("/** [org.jetbrains.kotlin.konan.target.KonanTarget.family] */")
@@ -470,7 +476,7 @@ private fun StringBlockBuilder.sealedEnumClass(
   fun internalName(prettyName: String): String =
     prettyName.filter { it.isLetterOrDigit() } + "Internal"
 
-  block("sealed class $className(", ") : java.io.Serializable {") {
+  block("sealed class $className(", ") : JavaIoSerializable {") {
     line("val $propertyName: String,")
   }
   block("", "}") {
@@ -554,6 +560,14 @@ private fun createKonanCompileTargetUtils() {
 
       osFamiliesGroupPrettyNameToOsGroup.forEach { (group, osNames) ->
         line()
+        line("/**")
+        line(" * `true` if this OS family belongs to the $group group.")
+        line(" *")
+        line(" * $group group:")
+        osNames.forEach { osName ->
+          line(" * - [KnCompileTarget.OsFamily.$osName]")
+        }
+        line(" */")
         block("val KnCompileTarget.OsFamily.is$group: Boolean", "") {
           line(osNames.joinToString(" || ", prefix = " get() = ") { "this == $it" })
         }
@@ -561,6 +575,11 @@ private fun createKonanCompileTargetUtils() {
       line()
 
       osFamiliesGroupPrettyNameToOsGroup.forEach { (osGroup, _) ->
+        line("/**")
+        line(" * `true` if this target's [KnCompileTarget.os] belongs to the $osGroup OS group.")
+        line(" *")
+        line(" * @see KnCompileTarget.OsFamily.is$osGroup")
+        line(" */")
         block("val KnCompileTarget.is$osGroup: Boolean", "") {
           line("get() = os.is$osGroup")
         }
@@ -579,13 +598,15 @@ private fun createKnpDependency() {
     buildStringBlock {
       line("package dev.adamko.kntoolchain.tools.data")
       line()
+      line("import java.io.Serializable as JavaIoSerializable")
+      line()
 
       line("/**")
       line(" * A specific ancillary dependency for a kotlin-native-prebuilt distribution.")
       line(" *")
-      line(" * For example, when building on macOS and targeting linux a `gcc` dependency is required.")
+      line(" * For example, when building on macOS and targeting Linux a `gcc` dependency is required.")
       line(" */")
-      block("data class KnpDependency internal constructor(", ") {") {
+      block("data class KnpDependency internal constructor(", ") : JavaIoSerializable {") {
         line("val coord: String,")
         line("val artifact: String? = null,")
       }
@@ -637,12 +658,13 @@ private fun createKnpDepData() {
       line("package dev.adamko.kntoolchain.tools.data.content")
       line()
       line("import dev.adamko.kntoolchain.tools.data.*")
+      line("import java.io.Serializable as JavaIoSerializable")
       line()
 
       line("/**")
       line(" * Details the compilation tools required for a specific host machine and compilation target.")
       line(" */")
-      block("sealed class KnDependencyDataSpec {", "}") {
+      block("sealed class KnDependencyDataSpec : JavaIoSerializable {", "}") {
         line()
         line("/** The version of the kotlin-native-prebuilt distribution. */")
         line("abstract val version: KnpVersion")

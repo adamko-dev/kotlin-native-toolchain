@@ -1,11 +1,12 @@
 package dev.adamko.kntoolchain.tools.data.content
 
 import dev.adamko.kntoolchain.tools.data.*
+import java.io.Serializable as JavaIoSerializable
 
 /**
  * Details the compilation tools required for a specific host machine and compilation target.
  */
-sealed class KnDependencyDataSpec {
+sealed class KnDependencyDataSpec : JavaIoSerializable {
 
   /** The version of the kotlin-native-prebuilt distribution. */
   abstract val version: KnpVersion

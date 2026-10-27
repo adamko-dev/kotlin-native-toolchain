@@ -1,5 +1,7 @@
 package dev.adamko.kntoolchain.tools.data
 
+import java.io.Serializable as JavaIoSerializable
+
 /**
  * A platform that can build Kotlin/Native code.
  */
@@ -7,11 +9,11 @@ class KnBuildPlatform
 private constructor(
   val family: OsFamily,
   val arch: OsArch,
-) : java.io.Serializable {
+) : JavaIoSerializable {
 
   sealed class OsFamily(
     val name: String,
-  ) : java.io.Serializable {
+  ) : JavaIoSerializable {
     companion object {
       @JvmStatic
       val Linux: OsFamily get() = LinuxInternal
@@ -50,7 +52,7 @@ private constructor(
 
   sealed class OsArch(
     val name: String,
-  ) : java.io.Serializable {
+  ) : JavaIoSerializable {
     companion object {
       @JvmStatic
       val AArch64: OsArch get() = AArch64Internal
@@ -100,7 +102,7 @@ private constructor(
       append(")")
     }
 
-  data object Linux {
+  data object Linux : JavaIoSerializable {
     @JvmStatic
     val X86_64: KnBuildPlatform =
       KnBuildPlatform(
@@ -113,7 +115,7 @@ private constructor(
     private fun readResolve(): Any = Linux
   }
 
-  data object MacOs {
+  data object MacOs : JavaIoSerializable {
     @JvmStatic
     val AArch64: KnBuildPlatform =
       KnBuildPlatform(
@@ -133,7 +135,7 @@ private constructor(
     private fun readResolve(): Any = MacOs
   }
 
-  data object Windows {
+  data object Windows : JavaIoSerializable {
     @JvmStatic
     val X86_64: KnBuildPlatform =
       KnBuildPlatform(

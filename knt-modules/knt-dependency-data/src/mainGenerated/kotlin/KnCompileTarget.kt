@@ -1,5 +1,7 @@
 package dev.adamko.kntoolchain.tools.data
 
+import java.io.Serializable as JavaIoSerializable
+
 /**
  * A target platform for Kotlin/Native code.
  */
@@ -11,11 +13,11 @@ private constructor(
   val os: OsFamily,
   /** [org.jetbrains.kotlin.konan.target.KonanTarget.architecture] */
   val arch: Architecture,
-): java.io.Serializable {
+): JavaIoSerializable {
 
   sealed class Architecture(
     val id: String,
-  ) : java.io.Serializable {
+  ) : JavaIoSerializable {
     companion object {
       @JvmStatic
       val X64: Architecture get() = X64Internal
@@ -64,7 +66,7 @@ private constructor(
 
   sealed class OsFamily(
     val id: String,
-  ) : java.io.Serializable {
+  ) : JavaIoSerializable {
     companion object {
       @JvmStatic
       val Linux: OsFamily get() = LinuxInternal

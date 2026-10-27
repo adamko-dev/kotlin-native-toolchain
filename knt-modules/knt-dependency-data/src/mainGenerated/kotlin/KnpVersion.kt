@@ -1,5 +1,7 @@
 package dev.adamko.kntoolchain.tools.data
 
+import java.io.Serializable as JavaIoSerializable
+
 /**
  * A version of a kotlin-native-prebuilt distribution.
  */
@@ -11,7 +13,7 @@ data class KnpVersion internal constructor(
   private val patch: Int,
   private val stage: Stage,
   private val stageRevision: Int,
-): java.io.Serializable, Comparable<KnpVersion> {
+): JavaIoSerializable, Comparable<KnpVersion> {
 
   override fun compareTo(other: KnpVersion): Int =
     compareValuesBy(
