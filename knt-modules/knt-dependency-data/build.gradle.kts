@@ -8,7 +8,7 @@ plugins {
 
 kotlin {
   sourceSets.main {
-    kotlin.srcDir(tasks.knpDataGen)
+    kotlin.srcDir(tasks.knpDataSync)
   }
 }
 
