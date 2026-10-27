@@ -16,12 +16,15 @@ concurrency:
   cancel-in-progress: true
 
 permissions:
-  contents: write
-  pull-requests: write
+  contents: read
 
 jobs:
   regen:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    outputs:
+      changed: ${{ steps.diff.outputs.changed }}
     steps:
 
       - name: Checkout the repo
@@ -64,8 +67,33 @@ jobs:
           git commit -m "Regenerate knt-dependency-data"
           git push --force --set-upstream origin update-knt-dependency-data
 
+  # PRs opened with GITHUB_TOKEN don't trigger other workflows,
+  # so run the tests here, before opening the PR.
+  tests:
+    needs: regen
+    if: needs.regen.outputs.changed == 'true'
+    uses: ./.github/workflows/run_tests.yml
+    permissions:
+      contents: read
+      checks: write
+    with:
+      checkout-ref: update-knt-dependency-data
+
+  pull-request:
+    needs: [ regen, tests ]
+    if: needs.regen.outputs.changed == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+
+      - name: Checkout the repo
+        uses: actions/checkout@v6
+        with:
+          ref: update-knt-dependency-data
+
       - name: Open pull request
-        if: steps.diff.outputs.changed == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
