@@ -206,6 +206,9 @@ private fun createKnpVersion() {
   )
 }
 
+// TODO instead of storing dependencies as code, instead load from a resources file.
+//      Motivation: avoid code compilation when data changes, unless structurally necessary.
+
 private fun StringBlockBuilder.knpVersionInstance(
   version: String,
   name: String,

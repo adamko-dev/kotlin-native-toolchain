@@ -9,6 +9,11 @@ internal data class KotlinVersionTargetDependencies(
   val buildPlatform: Platform,
   /** The platform that the compiler will generate code for. */
   val targetPlatform: KonanTargetData,
+  // TODO is there a way to detect if the dependencies don't change per version?
+  //      E.g. for 2.0.0-2.4.0 the deps for linux don't change.
+  //      So dependencies could be an array, or a reference to another entry.
+  //      `dependencies : "@linux_arm64:LINUX:ARM64:2.0.0"`
+  //      `dependencies : [ ... ]`
   val dependencies: Set<Coordinates>,
 ) {
   @Serializable(with = CoordinatesSerializer::class)
