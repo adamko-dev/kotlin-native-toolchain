@@ -9,9 +9,9 @@ It is easy to use, and cache-friendly.
 
 #### Requirements
 
-- Gradle 9.0+
+- Gradle 9.3+
 - Kotlin 2.0.0+
-   (Versions of kotlin-native-prebuilt prior to 2.0.0 were not published to Maven Central.)
+  (Versions of kotlin-native-prebuilt prior to 2.0.0 were not published to Maven Central.)
 
 #### Using in a project
 
@@ -30,8 +30,9 @@ repositories {
 }
 ```
 
-The installation directory can be obtained using `knToolchain.provisionInstallation()`,
-which returns a `Provider<Path>`.
+The installed toolchain can be obtained using `knToolchain.provisionInstallation()`,
+which returns a `Provider<ProvisionedKnToolchain>`.
+`ProvisionedKnToolchain` contains the `installationDir`, `konanDataDir`, and the path to `runKonan`.
 **Important**: the `Provider` must only be evaluated in the task execution phase.
 
 ```kotlin
@@ -40,7 +41,7 @@ val knToolchainUser by tasks.registering {
 
   doLast {
     val knToolchain = knToolchain.get()
-    println("knToolchain dir: {" + knToolchain.invariantSeparatorsPathString + "}")
+    println("knToolchain dir: {" + knToolchain.installationDir.invariantSeparatorsPathString + "}")
   }
 }
 ```
@@ -48,11 +49,11 @@ val knToolchainUser by tasks.registering {
 ```kotlin
 val knToolchainUser by tasks.registering {
   val knToolchain = knToolchain.provisionInstallation()
-  inputs.dir(knToolchain)
+  inputs.dir(knToolchain.map { it.installationDir })
 
   doLast {
     val knToolchain = knToolchain.get()
-    println("knToolchain dir: " + knToolchain.invariantSeparatorsPathString)
+    println("knToolchain dir: " + knToolchain.installationDir.invariantSeparatorsPathString)
   }
 }
 ```
@@ -64,12 +65,15 @@ in a `settings.gradle.kts` file.
 
 This has two advantages:
 
-1. The `kotlinNativePrebuiltDependencies()` repository will be automatically added in `dependencyResolutionManagement {}`.
-2. The plugin will register a task that will verify the checksums of the install distributions.
+1. The `kotlinNativePrebuiltDependencies()` repository will be automatically added in
+   `dependencyResolutionManagement {}`.
+2. The base installation directory can be configured via the `knToolchain {}` DSL.
+3. The plugin will register a task that will verify the checksums of the install distributions.
 
 ### Configuration
 
-The location of the installation directory can be configured in the DSL, or via the environment variable `KN_TOOLCHAINS_DIR`.
+The location of the installation directory can be configured using the settings plugin DSL,
+or via the environment variable `KN_TOOLCHAINS_DIR`.
 
 ### Motivation
 

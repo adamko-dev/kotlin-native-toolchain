@@ -84,7 +84,7 @@ class ExamplesTest {
                     |exclusiveContent {
                     |  forRepositories(devRepo)
                     |    filter {
-                    |      includeGroupAndSubgroups("dev.adamko")
+                    |      includeGroup("dev.adamko.kotlin-native-toolchain")
                     |  }
                     |}
                     """.trimMargin().prependIndent("  ".repeat(currentIndent + 1))
@@ -110,7 +110,8 @@ class ExamplesTest {
             appendLine(
               """
               |project.extensions.configure<dev.adamko.kntoolchain.KnToolchainProjectExtension> {
-              |  baseInstallDir = file("${konanDataDir.invariantSeparatorsPathString}")
+              |  // Use TestKit's Gradle user home, so toolchains are shared between test runs.
+              |  baseInstallDir = gradle.gradleUserHomeDir.resolve(".konan")
               |}
               """.trimMargin()
             )

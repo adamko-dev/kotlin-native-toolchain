@@ -4,10 +4,7 @@ import javax.inject.Inject
 import kotlin.io.path.*
 import org.apache.tools.ant.taskdefs.condition.Os
 import org.gradle.api.DefaultTask
-import org.gradle.api.file.ConfigurableFileCollection
-import org.gradle.api.file.DirectoryProperty
-import org.gradle.api.file.FileSystemOperations
-import org.gradle.api.file.ProjectLayout
+import org.gradle.api.file.*
 import org.gradle.api.provider.Property
 import org.gradle.api.provider.ProviderFactory
 import org.gradle.api.tasks.*
@@ -15,6 +12,9 @@ import org.gradle.api.tasks.PathSensitivity.RELATIVE
 import org.gradle.process.ExecOperations
 import org.gradle.work.NormalizeLineEndings
 
+/**
+ * Task for compiling C library sources into a shared library.
+ */
 @CacheableTask
 abstract class CompileCLibTask
 @Inject
@@ -52,6 +52,9 @@ internal constructor(
 
   @get:Internal
   abstract val runKonan: Property<Path>
+
+  @get:Internal
+  abstract val konanDataDir: Property<Path>
 
   init {
     group = project.name
@@ -136,12 +139,10 @@ internal constructor(
     args: List<String>,
   ) {
     val runKonan = runKonan.get().absolute().normalize()
-    val kotlinNativeHomeDir = runKonan.parent.parent
-    val konanDataDir = runKonan.parent.parent.parent
+    val konanDataDir = konanDataDir.get().absolute().normalize()
     val isWindows = Os.isFamily(Os.FAMILY_WINDOWS)
 
     println("$path runKonan $runKonan ${runKonan.exists()}")
-    println("$path kotlinNativeHomeDir entries ${kotlinNativeHomeDir.listDirectoryEntries().toList().map { it.name }}")
     println("$path bin entries ${runKonan.parent.listDirectoryEntries().toList().map { it.name }}")
 
     val commandLine = buildList {

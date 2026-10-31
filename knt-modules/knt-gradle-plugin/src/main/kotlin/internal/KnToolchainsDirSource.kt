@@ -1,28 +1,33 @@
 package dev.adamko.kntoolchain.internal
 
-import dev.adamko.kntoolchain.internal.KnToolchainsDirSource.Companion.KN_TOOLCHAINS_DIR
-import dev.adamko.kntoolchain.internal.KnToolchainsDirSource.Companion.knToolchainsDir
+import dev.adamko.kntoolchain.internal.UserOsCacheDirSource.Companion.userCacheDirSource
 import dev.adamko.kntoolchain.internal.utils.info
-import java.nio.file.Path
 import javax.inject.Inject
 import kotlin.io.path.Path
+import kotlin.io.path.absolute
+import kotlin.io.path.invariantSeparatorsPathString
+import org.gradle.api.file.Directory
+import org.gradle.api.file.DirectoryProperty
+import org.gradle.api.file.ProjectLayout
 import org.gradle.api.logging.Logger
 import org.gradle.api.logging.Logging
 import org.gradle.api.provider.*
 import org.gradle.kotlin.dsl.of
 
 /**
- * Get the location of the global kn-toolchains directory.
+ * Get the location of the global kn-toolchains directory
+ * that contains all knp distributions and their dependencies.
  *
- * Either uses the value of the [KN_TOOLCHAINS_DIR] environment variable,
+ * Either uses the value of the [KN_TOOLCHAINS_DIR_ENV_VAR] environment variable,
  * or deduces a cache dir from the current operating system
  *
  * Use [KnToolchainsDirSource.Companion.knToolchainsDir] to get a new instance.
  */
-// A ValueSource is used to simplify combining lots of providers.
-internal abstract class KnToolchainsDirSource
+abstract class KnToolchainsDirSource
 @Inject
-internal constructor() : ValueSource<Path, KnToolchainsDirSource.Parameters> {
+internal constructor(
+  private val layout: ProjectLayout,
+) : ValueSource<Directory, KnToolchainsDirSource.Parameters> {
 
   interface Parameters : ValueSourceParameters {
     /**
@@ -32,56 +37,37 @@ internal constructor() : ValueSource<Path, KnToolchainsDirSource.Parameters> {
      */
     val knToolchainsDir: Property<String>
 
-    /** `systemProperty("os.name")` */
-    val osName: Property<String>
-
-    /** `systemProperty("user.home")` */
-    val homeDir: Property<String>
-
-    /** `environmentVariable("APPDATA")` */
-    val appDataDir: Property<String>
+    /**
+     * The OS-specific cache directory for the current user.
+     */
+    val userCacheDir: DirectoryProperty
   }
 
-  override fun obtain(): Path {
+  override fun obtain(): Directory {
     val knToolchainsDir = parameters.knToolchainsDir.orNull
 
     val value = if (knToolchainsDir != null) {
       Path(knToolchainsDir)
     } else {
-      val cacheDirName = "kn-toolchains"
-      Path(userCacheDir()).resolve(cacheDirName)
+      val userCacheDir = parameters.userCacheDir.get().asFile.toPath()
+      userCacheDir.resolve(KN_TOOLCHAINS_DIR_NAME)
     }
 
     logger.info { "KnToolchainsDirSource: $value" }
 
-    return value
-  }
-
-  private fun userCacheDir(): String {
-    val osName = parameters.osName.get().lowercase()
-
-    val homeDir = parameters.homeDir.get()
-    val appDataDir = parameters.appDataDir.orNull ?: homeDir
-
-    return when {
-      "win" in osName -> "$appDataDir/Caches/"
-      "mac" in osName -> "$homeDir/Library/Caches/"
-      "nix" in osName -> "$homeDir/.cache/"
-      else            -> "$homeDir/.cache/"
-    }
+    return layout.projectDirectory.dir(value.absolute().invariantSeparatorsPathString)
   }
 
   companion object {
-    private const val KN_TOOLCHAINS_DIR = "KN_TOOLCHAINS_DIR"
+    private const val KN_TOOLCHAINS_DIR_ENV_VAR = "KN_TOOLCHAINS_DIR"
+    private const val KN_TOOLCHAINS_DIR_NAME = "kn-toolchains"
 
     private val logger: Logger = Logging.getLogger(KnToolchainsDirSource::class.java)
 
-    fun ProviderFactory.knToolchainsDir(): Provider<Path> {
+    fun ProviderFactory.knToolchainsDir(): Provider<Directory> {
       return of(KnToolchainsDirSource::class) { spec ->
-        spec.parameters.knToolchainsDir.set(environmentVariable(KN_TOOLCHAINS_DIR))
-        spec.parameters.osName.set(systemProperty("os.name"))
-        spec.parameters.homeDir.set(systemProperty("user.home"))
-        spec.parameters.appDataDir.set(environmentVariable("APPDATA"))
+        spec.parameters.knToolchainsDir.set(environmentVariable(KN_TOOLCHAINS_DIR_ENV_VAR))
+        spec.parameters.userCacheDir.fileProvider(userCacheDirSource().map(java.nio.file.Path::toFile))
       }
     }
   }

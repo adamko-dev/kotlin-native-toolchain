@@ -9,13 +9,11 @@ import dev.adamko.kntoolchain.internal.utils.CACHE_DIR_TAG_FILENAME
 import dev.adamko.kntoolchain.tools.data.KnBuildPlatform
 import dev.adamko.kntoolchain.tools.data.KnpVersion
 import java.io.File
-import java.nio.file.Path
 import java.util.*
 import javax.inject.Inject
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.artifacts.Dependency
-import org.gradle.api.file.ProjectLayout
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.Provider
@@ -30,7 +28,6 @@ abstract class KnToolchainProjectPlugin
 internal constructor(
   private val objects: ObjectFactory,
   private val providers: ProviderFactory,
-  private val layout: ProjectLayout,
 ) : Plugin<Project> {
 
   override fun apply(project: Project) {
@@ -52,7 +49,7 @@ internal constructor(
   internal fun createKnToolchainExtension(project: Project): KnToolchainProjectExtension {
     return project.extensions.create<KnToolchainProjectExtension>(EXTENSION_NAME).apply {
 
-      baseInstallDir.convention(layout.dir(providers.knToolchainsDir().map(Path::toFile)))
+      baseInstallDir.convention(providers.knToolchainsDir())
       checksumsDir.convention(baseInstallDir.dir("checksums"))
 
       val currentOs = providers.systemProperty("os.name").map { osName ->
@@ -93,6 +90,12 @@ internal constructor(
           buildPlatform = kotlinNativePrebuiltDistribution.buildPlatform,
           version = kotlinNativePrebuiltDistribution.version,
         )
+      )
+
+      kotlinNativePrebuiltDistribution.relativePathToRunKonan.convention(
+        kotlinNativePrebuiltDistribution.buildPlatform.map { platform ->
+          if (platform.family == KnBuildPlatform.OsFamily.Windows) "bin/run_konan.bat" else "bin/run_konan"
+        }
       )
 
       kotlinNativePrebuiltDistribution.installFileExcludes.convention(

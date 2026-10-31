@@ -4,7 +4,10 @@ import dev.adamko.kntoolchain.tools.internal.BuildConstants
 import dev.adamko.kntoolchain.tools.internal.KotlinNativePrebuiltDataSource
 import dev.adamko.kntoolchain.tools.internal.datamodel.KotlinNativePrebuiltData
 import dev.adamko.kntoolchain.tools.internal.registerKnpDistributionResolver
+import dev.adamko.kntoolchain.tools.internal.utils.isCi
+import dev.adamko.kntoolchain.tools.internal.utils.not
 import dev.adamko.kntoolchain.tools.tasks.KnpDataGenTask
+import dev.adamko.kntoolchain.tools.tasks.KnpDataSyncTask
 import dev.adamko.kntoolchain.tools.tasks.KonanDependenciesReportTask
 import javax.inject.Inject
 import org.gradle.api.NamedDomainObjectProvider
@@ -58,10 +61,16 @@ internal constructor(
         allKonanDistributions = allKonanDistributions,
       )
 
-    registerKnpDataGenTask(
+    val knpDataGenTask =
+      registerKnpDataGenTask(
+        project = project,
+        konanDependenciesReportTask = konanDependenciesReportTask,
+      )
+
+    registerKnpDataSyncTask(
       project = project,
       knpDataExt = knpDataExt,
-      konanDependenciesReportTask = konanDependenciesReportTask,
+      knpDataGenTask = knpDataGenTask,
     )
 
     val konanDependenciesReportTaskClasspathResolver =
@@ -77,13 +86,22 @@ internal constructor(
   }
 
   private fun createExtension(project: Project): KnpDatagenExtension {
-    return project.extensions.create("asd", KnpDatagenExtension::class).also { ext ->
+    return project.extensions.create("knpDatagen", KnpDatagenExtension::class).also { ext ->
       ext.dataDir.convention(layout.projectDirectory.dir("knt-data"))
       ext.generatedKnpDependenciesDataDir.convention(
-        layout.projectDirectory.dir("src/mainGenerated/kotlin/")
+        layout.projectDirectory.dir("src/mainGenerated/")
       )
       ext.regenerateData.convention(
-        providers.gradleProperty("kntRegenerate").map(String::toBoolean).orElse(false)
+        providers.gradleProperty("kntRegenerate")
+          .map(String::toBoolean)
+          .orElse(false)
+      )
+      ext.allowUpdate.convention(
+        providers.gradleProperty(ALLOW_UPDATE_PROPERTY)
+          .map(String::toBoolean)
+          .orElse(
+            ext.regenerateData.zip(providers.isCi()) { regenerate, isCi -> regenerate || !isCi }
+          )
       )
     }
   }
@@ -145,14 +163,25 @@ internal constructor(
 
   private fun registerKnpDataGenTask(
     project: Project,
-    knpDataExt: KnpDatagenExtension,
     konanDependenciesReportTask: TaskProvider<KonanDependenciesReportTask>,
   ): TaskProvider<KnpDataGenTask> {
     return project.tasks.register("knpDataGen", KnpDataGenTask::class) { task ->
-      task.outputDir.convention(knpDataExt.generatedKnpDependenciesDataDir)
+      task.outputDir.convention(layout.buildDirectory.dir("generated/knp-data"))
       task.konanDependenciesReportFile.convention(
         konanDependenciesReportTask.flatMap { it.reportFile }
       )
+    }
+  }
+
+  private fun registerKnpDataSyncTask(
+    project: Project,
+    knpDataExt: KnpDatagenExtension,
+    knpDataGenTask: TaskProvider<KnpDataGenTask>,
+  ) {
+    project.tasks.register("knpDataSync", KnpDataSyncTask::class) { task ->
+      task.generatedDataDir.convention(knpDataGenTask.flatMap { it.outputDir })
+      task.committedDataDir.convention(knpDataExt.generatedKnpDependenciesDataDir)
+      task.allowUpdate.convention(knpDataExt.allowUpdate)
     }
   }
 
@@ -162,16 +191,26 @@ internal constructor(
     konanDependenciesReportTaskClasspathResolver: NamedDomainObjectProvider<@Suppress("UnstableApiUsage") ResolvableConfiguration>,
   ) {
     project.tasks.withType<KonanDependenciesReportTask>().configureEach { task ->
-      task.group = project.name
+      task.group = KNP_DATA_GEN_TASK_GROUP
       task.workerClasspath.from(konanDependenciesReportTaskClasspathResolver)
       task.onlyIf("regenerate is enabled") { _ ->
         knpDataExt.regenerateData.get()
       }
     }
+    project.tasks.withType<KnpDataGenTask>().configureEach {
+      it.group = KNP_DATA_GEN_TASK_GROUP
+    }
+    project.tasks.withType<KnpDataSyncTask>().configureEach {
+      it.group = KNP_DATA_GEN_TASK_GROUP
+    }
   }
   //endregion
 
   companion object {
+    internal const val ALLOW_UPDATE_PROPERTY = "knpDataAllowUpdate"
+
     private val logger: Logger = Logging.getLogger(KnpDatagenPlugin::class.java)
+
+    const val KNP_DATA_GEN_TASK_GROUP = "knp datagen"
   }
 }

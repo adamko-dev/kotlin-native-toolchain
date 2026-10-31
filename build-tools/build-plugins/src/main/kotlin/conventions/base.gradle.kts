@@ -5,4 +5,3 @@ plugins {
 }
 
 group = "dev.adamko.kotlin-native-toolchain"
-//version = "1.0.0"

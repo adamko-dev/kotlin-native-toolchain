@@ -3,6 +3,7 @@ package dev.adamko.kntoolchain.operations
 import dev.adamko.kntoolchain.internal.utils.*
 import dev.adamko.kntoolchain.internal.utils.BuildChecksumContext.Companion.checksum
 import dev.adamko.kntoolchain.internal.utils.BuildChecksumContext.Companion.checksumFile
+import dev.adamko.kntoolchain.model.ProvisionedKnToolchain
 import java.nio.file.FileSystems
 import java.nio.file.Path
 import java.nio.file.attribute.FileTime
@@ -25,12 +26,12 @@ import org.gradle.api.logging.Logging
  *
  * If a tool is missing, it will be downloaded and installed.
  *
- * Returns the directories of the installed distributions
+ * Returns the installed distributions
  * (requested by [BaseKnToolchainsOperation.Parameters.knpDistSpecs]).
  */
 internal abstract class InstallKnToolchains
 @Inject
-internal constructor() : BaseKnToolchainsOperation<Set<Path>>() {
+internal constructor() : BaseKnToolchainsOperation<Set<ProvisionedKnToolchain>>() {
 
   /**
    * Download and provision a Kotlin Native Prebuilt distribution.
@@ -43,7 +44,7 @@ internal constructor() : BaseKnToolchainsOperation<Set<Path>>() {
    * or with non-uniform buildscript class loaders.
    * Engineering a solution to prevent concurrent installations is complex and beyond the current scope).
    */
-  override fun obtain(): Set<Path> = synchronized(Companion) {
+  override fun obtain(): Set<ProvisionedKnToolchain> = synchronized(Companion) {
     val installSpecs = getInstallSpecs()
 
     val installSpecStatuses = installSpecs.associateWith { spec -> spec.installStatus() }
@@ -94,9 +95,21 @@ internal constructor() : BaseKnToolchainsOperation<Set<Path>>() {
       updateLastAccessedTime(spec)
     }
 
-    return installSpecs
-      .filter { it.type == DependencyInstallSpec.Type.KnpDist }
-      .map { it.installDir }
+    return parameters.knpDistSpecs.get()
+      .map { distSpec ->
+        val installDir = distSpec.knpDistInstallDir()
+        val runKonan = installDir.resolve(distSpec.relativePathToRunKonan.get()).normalize()
+        require(runKonan.startsWith(installDir)) {
+          "Path '$runKonan' is not within the installation directory '$installDir'"
+        }
+        ProvisionedKnToolchain(
+          buildPlatform = distSpec.buildPlatform.get(),
+          compileTargets = distSpec.compileTargets.get(),
+          konanDataDir = baseInstallDir,
+          installationDir = installDir,
+          runKonan = runKonan,
+        )
+      }
       .toSet()
   }
 

@@ -9,6 +9,7 @@ import org.apache.commons.compress.archivers.zip.ZipArchiveEntry
 import org.apache.commons.compress.archivers.zip.ZipArchiveOutputStream
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream
 
+@IgnorableReturnValue
 fun Path.createModuleTarGz(
   name: String,
   content: (name: String, sink: TarArchiveOutputStream) -> Unit = { _, _ -> },
@@ -38,6 +39,7 @@ fun Path.createModuleTarGz(
   return out
 }
 
+@IgnorableReturnValue
 fun Path.createModuleZip(
   name: String,
   content: (name: String, sink: ZipArchiveOutputStream) -> Unit = { _, _ -> },

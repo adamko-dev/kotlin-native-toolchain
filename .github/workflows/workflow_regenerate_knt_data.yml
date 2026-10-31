@@ -16,12 +16,15 @@ concurrency:
   cancel-in-progress: true
 
 permissions:
-  contents: write
-  pull-requests: write
+  contents: read
 
 jobs:
   regen:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    outputs:
+      changed: ${{ steps.diff.outputs.changed }}
     steps:
 
       - name: Checkout the repo
@@ -45,8 +48,9 @@ jobs:
       - name: Detect changes
         id: diff
         run: |
-          git status --porcelain
-          if git diff --quiet -- knt-modules/knt-dependency-data/; then
+          changes="$(git status --porcelain -- knt-modules/knt-dependency-data/)"
+          echo "$changes"
+          if [ -z "$changes" ]; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
@@ -54,23 +58,57 @@ jobs:
 
       - name: Commit changes
         if: steps.diff.outputs.changed == 'true'
+        # https://github.com/actions/checkout#push-a-commit-using-the-built-in-token
         run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git checkout -b update-knt-dependency-data
           git add knt-modules/knt-dependency-data/
           git commit -m "Regenerate knt-dependency-data"
-          git push --set-upstream origin update-knt-dependency-data
+          git push --force --set-upstream origin update-knt-dependency-data
+
+  # PRs opened with GITHUB_TOKEN don't trigger other workflows,
+  # so run the tests here, before opening the PR.
+  tests:
+    needs: regen
+    if: needs.regen.outputs.changed == 'true'
+    uses: ./.github/workflows/run_tests.yml
+    permissions:
+      contents: read
+      checks: write
+    with:
+      checkout-ref: update-knt-dependency-data
+
+  pull-request:
+    needs: [ regen, tests ]
+    if: needs.regen.outputs.changed == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+
+      - name: Checkout the repo
+        uses: actions/checkout@v6
+        with:
+          ref: update-knt-dependency-data
 
       - name: Open pull request
-        if: steps.diff.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
+          if [ "$(gh pr view update-knt-dependency-data --json state --jq .state 2>/dev/null)" = "OPEN" ]; then
+            echo "Pull request already open, updated by force-push."
+            exit 0
+          fi
+
           gh pr create \
             --title "Regenerate knt-dependency-data" \
-            --body "Update generated files using `./gradlew assemble -PkntRegenerate=true`" \
-            --base main
+            --body 'Update generated files using `./gradlew assemble -PkntRegenerate=true`' \
+            --base main \
             --head update-knt-dependency-data
-          
-          gh pr merge \
+
+          gh pr merge update-knt-dependency-data \
             --auto \
-            --rebase \
-            --delete-branch \
-            --squash
+            --squash \
+            --delete-branch

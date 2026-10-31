@@ -4,7 +4,9 @@ import java.nio.file.Path
 import kotlin.io.path.*
 
 /**
+ * Creates a sequence of strings describing the metadata of all files in [installDir].
  *
+ * @param[excludes] Glob patterns of files to exclude - see [walkFiltered].
  */
 internal fun listInstallDirPathsMetadata(
   installDir: Path,

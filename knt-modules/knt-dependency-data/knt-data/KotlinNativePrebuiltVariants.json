@@ -84,10 +84,45 @@
       "macos-x86_64@TarGz",
       "windows-x86_64@Zip"
     ],
-    "2.3.20-Beta2": [
+    "2.3.20": [
       "linux-x86_64@TarGz",
       "macos-aarch64@TarGz",
       "macos-x86_64@TarGz",
+      "windows-x86_64@Zip"
+    ],
+    "2.3.21": [
+      "linux-x86_64@TarGz",
+      "macos-aarch64@TarGz",
+      "macos-x86_64@TarGz",
+      "windows-x86_64@Zip"
+    ],
+    "2.4.0": [
+      "linux-x86_64@TarGz",
+      "macos-aarch64@TarGz",
+      "macos-x86_64@TarGz",
+      "windows-x86_64@Zip"
+    ],
+    "2.4.10": [
+      "linux-x86_64@TarGz",
+      "macos-aarch64@TarGz",
+      "macos-x86_64@TarGz",
+      "windows-x86_64@Zip"
+    ],
+    "2.4.20": [
+      "linux-x86_64@TarGz",
+      "macos-aarch64@TarGz",
+      "macos-x86_64@TarGz",
+      "windows-x86_64@Zip"
+    ],
+    "2.4.21": [
+      "linux-x86_64@TarGz",
+      "macos-aarch64@TarGz",
+      "macos-x86_64@TarGz",
+      "windows-x86_64@Zip"
+    ],
+    "2.5.0-Beta2": [
+      "linux-x86_64@TarGz",
+      "macos-aarch64@TarGz",
       "windows-x86_64@Zip"
     ]
   }

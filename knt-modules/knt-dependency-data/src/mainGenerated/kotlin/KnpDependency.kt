@@ -1,14 +1,16 @@
 package dev.adamko.kntoolchain.tools.data
 
+import java.io.Serializable as JavaIoSerializable
+
 /**
  * A specific ancillary dependency for a kotlin-native-prebuilt distribution.
  *
- * For example, when building on macOS and targeting linux a `gcc` dependency is required.
+ * For example, when building on macOS and targeting Linux a `gcc` dependency is required.
  */
 data class KnpDependency internal constructor(
   val coord: String,
   val artifact: String? = null,
-) {
+) : JavaIoSerializable {
 
   val group: String
   val module: String

@@ -31,6 +31,9 @@ gradlew         text eol=lf
 *.bash          text eol=lf
 *.sh            text eol=lf
 
+# Generated Kotlin/Native dependency data uses lf, so published jars are identical on all OSes
+knt-modules/knt-dependency-data/src/mainGenerated/**/*.toml text eol=lf
+
 # These are Windows script files and should use crlf
 *.bat             text eol=crlf
 *.cmd             text eol=crlf
