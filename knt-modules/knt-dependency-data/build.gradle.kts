@@ -7,8 +7,11 @@ plugins {
 }
 
 kotlin {
-  sourceSets.main {
-    kotlin.srcDir(tasks.knpDataSync)
+  sourceSets {
+    main {
+      generatedKotlin.srcDir(tasks.knpDataSync.flatMap { it.committedDataDir.dir("kotlin") })
+      resources.srcDir(tasks.knpDataSync.flatMap { it.committedDataDir.dir("resources") })
+    }
   }
 }
 
@@ -23,6 +26,9 @@ testing {
         implementation(libs.kotest.assertions)
 
         implementation(libs.semver)
+
+        // verifies that the generated data is valid TOML
+        implementation(libs.ktoml.core)
       }
     }
   }

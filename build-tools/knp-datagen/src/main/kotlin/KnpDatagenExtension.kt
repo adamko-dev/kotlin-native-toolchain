@@ -18,6 +18,11 @@ internal constructor() {
   internal val konanDependenciesReportFile: Provider<RegularFile>
     get() = dataDir.file("KonanDependenciesReport.json")
 
+  /**
+   * The committed generated data, synced from the output of [dev.adamko.kntoolchain.tools.tasks.KnpDataGenTask].
+   *
+   * Contains a `kotlin` source directory and a `resources` directory.
+   */
   abstract val generatedKnpDependenciesDataDir: DirectoryProperty
 
   abstract val regenerateData: Property<Boolean>

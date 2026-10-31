@@ -54,23 +54,31 @@ internal constructor() : DefaultTask() {
   private fun generateKotlinData(report: KonanDependenciesReport) {
     val outputDir = outputDir.get().asFile.toPath()
 
-    val ctx = Context(outputDir, report)
+    val ctx = Context(
+      kotlinDir = outputDir.resolve("kotlin"),
+      resourcesDir = outputDir.resolve("resources"),
+      report = report,
+    )
 
     context(ctx) {
       createKnpVersion()
       createKnBuildTarget()
       createKonanCompileTarget()
       createKonanCompileTargetUtils()
-      createKnpDepData()
+      createKnDependencyDataResource()
       createKnpDependency()
     }
   }
 }
 
 private class Context(
-  val outputDir: Path,
+  kotlinDir: Path,
+  resourcesDir: Path,
   val report: KonanDependenciesReport,
 ) {
+
+  val kotlinDir: Path = kotlinDir.createDirectories()
+  val resourcesDir: Path = resourcesDir.createDirectories()
 
   val allVersions: SortedMap<String, String> =
     report.data.map { it.version }.distinct()
@@ -133,7 +141,7 @@ private class Context(
 
 context(ctx: Context)
 private fun createKnpVersion() {
-  ctx.outputDir.resolve("KnpVersion.kt").writeText(
+  ctx.kotlinDir.resolve("KnpVersion.kt").writeText(
     buildStringBlock {
       line("package dev.adamko.kntoolchain.tools.data")
       line()
@@ -208,9 +216,6 @@ private fun createKnpVersion() {
   )
 }
 
-// TODO instead of storing dependencies as code, instead load from a resources file.
-//      Motivation: avoid code compilation when data changes, unless structurally necessary.
-
 private fun StringBlockBuilder.knpVersionInstance(
   version: String,
   name: String,
@@ -268,7 +273,7 @@ private fun createKnBuildTarget() {
   val groupedPlatforms = ctx.allBuildPlatforms.groupBy { it.osFamily }
 
 
-  ctx.outputDir.resolve("${KnBuildPlatformName}.kt").writeText(
+  ctx.kotlinDir.resolve("${KnBuildPlatformName}.kt").writeText(
     buildStringBlock {
       line("package dev.adamko.kntoolchain.tools.data")
       line()
@@ -373,7 +378,7 @@ private fun createKonanCompileTarget() {
     }
 
 
-  ctx.outputDir.resolve("KnCompileTarget.kt").writeText(
+  ctx.kotlinDir.resolve("KnCompileTarget.kt").writeText(
     buildStringBlock {
       line("package dev.adamko.kntoolchain.tools.data")
       line()
@@ -553,7 +558,7 @@ private fun createKonanCompileTargetUtils() {
       }
 
 
-  ctx.outputDir.resolve("utils.KnCompileTarget.kt").writeText(
+  ctx.kotlinDir.resolve("utils.KnCompileTarget.kt").writeText(
     buildStringBlock {
       line("package dev.adamko.kntoolchain.tools.data")
       line()
@@ -594,7 +599,7 @@ private fun createKonanCompileTargetUtils() {
 context(ctx: Context)
 private fun createKnpDependency() {
 
-  ctx.outputDir.resolve("KnpDependency.kt").writeText(
+  ctx.kotlinDir.resolve("KnpDependency.kt").writeText(
     buildStringBlock {
       line("package dev.adamko.kntoolchain.tools.data")
       line()
@@ -648,133 +653,140 @@ private fun createKnpDependency() {
   )
 }
 
+/**
+ * Generate resource files containing the dependencies for every version, build platform, and compile target.
+ *
+ * The files are loaded at runtime by `knDependencyData`, so data changes don't require code changes.
+ * The format must be kept in sync with `parseKnDependencyData()`.
+ *
+ * ## Format specification
+ *
+ * One [TOML](https://toml.io) file per Kotlin version, named `knpdeps-<version>.toml`, in `dev/adamko/kntoolchain/tools/data/`.
+ *
+ * ```toml
+ * # comment
+ * format = 1
+ * kotlinVersion = "2.1.0"
+ *
+ * [artifacts]
+ * "kotlin.native.resources.llvm:16.0.0-x86_64-linux:80@tar.gz" = "llvm-16.0.0-x86_64-linux-essentials"
+ *
+ * [linux-x86_64]
+ * android_arm32 = [
+ *   "kotlin.native:target-sysroot:1:android_ndk@tar.gz",
+ *   "kotlin.native.resources.llvm:16.0.0-x86_64-linux:80@tar.gz",
+ * ]
+ * android_arm64 = { sameAs = "android_arm32" }
+ *
+ * [macos-aarch64]
+ * ...
+ * ```
+ *
+ * The files are valid TOML.
+ * `parseKnDependencyData()` only supports the subset written by this generator:
+ * - full-line `#` comments,
+ * - strings without escapes,
+ * - multi-line arrays, with one item per line and a trailing comma,
+ * - single-line inline tables.
+ *
+ * ### Root table
+ *
+ * - `format = <format version>`. The current format version is `1`.
+ * - `kotlinVersion = "<version>"`, the Kotlin version the data is for (the same as in the file name).
+ *
+ * ### `[artifacts]`
+ *
+ * Optional. Maps dependency coordinates to the name of the downloaded file, if it differs from the module name.
+ *
+ * ### Build platforms
+ *
+ * One table per build platform, named `<os family>-<os arch>`, e.g. `[linux-x86_64]`.
+ * A build platform that has no table has no data for that version.
+ *
+ * Each compile target (e.g. `android_arm32`) is a key, with a value that is either:
+ * - an array: the dependency coordinates, in Gradle dependency notation,
+ *   `group:module:version[:classifier]@extension`.
+ * - an inline table `{ sameAs = "<compile target>" }`: another compile target in the same build platform,
+ *   with the same dependencies. The inline table allows more options to be added in the future.
+ *
+ * TOML keys are unique, so each compile target has exactly one entry.
+ *
+ * The generator uses `sameAs` whenever an entry has the same dependencies as an earlier entry.
+ * Build platforms and compile targets are sorted by name.
+ */
 context(ctx: Context)
-private fun createKnpDepData() {
+private fun createKnDependencyDataResource() {
+  val dataDir = ctx.resourcesDir.resolve("dev/adamko/kntoolchain/tools/data").createDirectories()
 
-  val contentDir = ctx.outputDir.resolve("content").createDirectories()
+  ctx.report.data.groupBy { it.version }.forEach { (version, versionEntries) ->
 
-  contentDir.resolve("KnDependencyDataSpec.kt").writeText(
-    buildStringBlock {
-      line("package dev.adamko.kntoolchain.tools.data.content")
+    val entriesByBuildPlatform = versionEntries
+      .groupBy { "${it.buildPlatform.osFamily}-${it.buildPlatform.osArch}" }
+      .toSortedMap()
+
+    /** The downloaded file name of each dependency, if it differs from the module name. */
+    val artifacts = versionEntries
+      .flatMap { it.dependencies }
+      .groupBy({ it.coords() }, { it.artifact })
+      .filterValues { it.filterNotNull().isNotEmpty() }
+      .mapValues { (coords, artifacts) ->
+        artifacts.distinct().singleOrNull()
+          ?: error("Dependency $coords for version $version has conflicting artifacts $artifacts")
+      }
+      .toSortedMap()
+
+    val data = generateData(version, entriesByBuildPlatform, artifacts)
+
+    dataDir.resolve("knpdeps-$version.toml").writeText(data, Charsets.UTF_8)
+  }
+}
+
+
+private fun generateData(
+  version: String,
+  entriesByBuildPlatform: SortedMap<String, List<KotlinVersionTargetDependencies>>,
+  artifacts: SortedMap<String, String>
+): String {
+
+  fun tomlString(value: String): String = "\"$value\""
+
+  return buildStringBlock {
+    line("# Kotlin/Native $version dependency data.")
+    line("format = 1")
+    line("kotlinVersion = ${tomlString(version)}")
+
+    if (artifacts.isNotEmpty()) {
       line()
-      line("import dev.adamko.kntoolchain.tools.data.*")
-      line("import java.io.Serializable as JavaIoSerializable")
-      line()
-
-      line("/**")
-      line(" * Details the compilation tools required for a specific host machine and compilation target.")
-      line(" */")
-      block("sealed class KnDependencyDataSpec : JavaIoSerializable {", "}") {
-        line()
-        line("/** The version of the kotlin-native-prebuilt distribution. */")
-        line("abstract val version: KnpVersion")
-        line()
-        line("/** The platform on which the compilation tools are executed. */")
-        line("abstract val buildPlatform: $KnBuildPlatformName")
-        line()
-        line("/** The Kotlin Native target platform that the compiler will generate code for. */")
-        line("abstract val compileTarget: KnCompileTarget")
-        line()
-        line("/** The required ancillary dependencies for the kotlin-native-prebuilt distribution. */")
-        line("abstract val dependencies: Set<KnpDependency>")
-        line()
-        line("companion object")
+      line("[artifacts]")
+      artifacts.forEach { (coords, artifact) ->
+        line("${tomlString(coords)} = ${tomlString(artifact)}")
       }
     }
-  )
 
-  val allKnDependencyDataSpecs = mutableSetOf<String>()
+    entriesByBuildPlatform.forEach { (buildPlatform, platformEntries) ->
+      val entries = platformEntries.sortedBy { it.targetPlatform }
 
-  val dataGroupedByVersion: Map<String, List<KotlinVersionTargetDependencies>> =
-    ctx.report.data.groupBy { it.version }
+      /** Map each distinct set of dependencies to the compile target of the first entry that uses it. */
+      val firstEntryTargets = mutableMapOf<Set<KotlinVersionTargetDependencies.Coordinates>, String>()
 
-  dataGroupedByVersion.forEach { (version, reports) ->
-    val versionPretty = ctx.allVersions[version] ?: error("Unknown version: $version")
-
-    val outputFile = contentDir.resolve("KnDependencyData_${versionPretty}.kt")
-
-    outputFile.writeText(
-      buildStringBlock {
-        line("package dev.adamko.kntoolchain.tools.data.content")
-        line()
-        line("import dev.adamko.kntoolchain.tools.data.*")
-        line()
-
-        val clsNameVersion = "KnDependencyData_${versionPretty}"
-        line("""@Suppress("ClassName")""")
-        block("sealed class ${clsNameVersion}: KnDependencyDataSpec() {", "}") {
-
-          line()
-          line("override val version: KnpVersion = KnpVersion.$versionPretty")
-
-          val dataGroupedByBuildPlatform = reports.groupBy { it.buildPlatform }
-
-          dataGroupedByBuildPlatform.forEach { (buildPlatform, targetDependencies) ->
-            val buildOs = ctx.allOsFamilies[buildPlatform.osFamily]
-              ?: error("Unknown OS family: ${buildPlatform.osFamily}")
-            val buildArch = ctx.allOsArches[buildPlatform.osArch]
-              ?: error("Unknown OS arch: ${buildPlatform.osArch}")
-
-            val baseClsName = "${buildOs}_${buildArch}"
-
-            line()
-            block("sealed class ${baseClsName}: ${clsNameVersion}() {", "}") {
-
-              line()
-              line("override val buildPlatform: $KnBuildPlatformName = ${KnBuildPlatformName}.${buildOs}.${buildArch}")
-
-              targetDependencies.forEach { dependencies ->
-
-                val targetName = ctx.allKonanTargets[dependencies.targetPlatform]
-                  ?: error("Unknown target: ${dependencies.targetPlatform}")
-
-                allKnDependencyDataSpecs += "${clsNameVersion}.${baseClsName}.${targetName}"
-
-                line()
-                dataObject(
-                  name = targetName,
-                  scope = "$clsNameVersion.$baseClsName",
-                  supertypes = "${baseClsName}()",
-                ) {
-                  line()
-                  line("override val compileTarget: KnCompileTarget = KnCompileTarget.${targetName}")
-                  line()
-                  block("override val dependencies: Set<KnpDependency> =", "") {
-                    block("setOf(", ")") {
-                      dependencies.dependencies.forEach { dep ->
-                        if (dep.artifact != null) {
-                          line("KnpDependency(\"${dep.coords()}\", \"${dep.artifact}\"),")
-                        } else {
-                          line("KnpDependency(\"${dep.coords()}\"),")
-                        }
-                      }
-                    }
-                  }
-                }
-              }
+      line()
+      line("[$buildPlatform]")
+      entries.forEach { entry ->
+        val target = entry.targetPlatform.name
+        require(entry.dependencies.isNotEmpty()) {
+          "Entry '$target' for version $version and build platform $buildPlatform has no dependencies"
+        }
+        val firstEntryTarget = firstEntryTargets.putIfAbsent(entry.dependencies, target)
+        if (firstEntryTarget != null) {
+          line("$target = { sameAs = ${tomlString(firstEntryTarget)} }")
+        } else {
+          block("$target = [", "]") {
+            entry.dependencies.forEach { dep ->
+              line("${tomlString(dep.coords())},")
             }
           }
         }
       }
-    )
-  }
-
-  ctx.outputDir.resolve("knDependencyData.kt").writeText(
-    buildStringBlock {
-      line("package dev.adamko.kntoolchain.tools.data")
-      line()
-      line("import dev.adamko.kntoolchain.tools.data.content.*")
-      line()
-      line("/**")
-      line(" * All known [KnDependencyDataSpec] instances.")
-      line(" */")
-      block("val knDependencyData: Set<KnDependencyDataSpec> =", "") {
-        block("setOf(", ")") {
-          allKnDependencyDataSpecs.forEach { spec ->
-            line("$spec,")
-          }
-        }
-      }
     }
-  )
+  }
 }

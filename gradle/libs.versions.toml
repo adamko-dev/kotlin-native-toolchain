@@ -35,6 +35,7 @@ junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
 junit-platformLauncher = { module = "org.junit.platform:junit-platform-launcher" }
 
 kotest-assertions = { module = "io.kotest:kotest-assertions-core-jvm", version.ref = "kotest" }
+ktoml-core = { module = "com.akuleshov7:ktoml-core", version = "0.7.1" }
 
 semver = { module = "io.github.z4kn4fein:semver", version.ref = "semver" }
 

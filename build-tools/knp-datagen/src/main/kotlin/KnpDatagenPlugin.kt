@@ -89,7 +89,7 @@ internal constructor(
     return project.extensions.create("knpDatagen", KnpDatagenExtension::class).also { ext ->
       ext.dataDir.convention(layout.projectDirectory.dir("knt-data"))
       ext.generatedKnpDependenciesDataDir.convention(
-        layout.projectDirectory.dir("src/mainGenerated/kotlin/")
+        layout.projectDirectory.dir("src/mainGenerated/")
       )
       ext.regenerateData.convention(
         providers.gradleProperty("kntRegenerate")
@@ -166,7 +166,7 @@ internal constructor(
     konanDependenciesReportTask: TaskProvider<KonanDependenciesReportTask>,
   ): TaskProvider<KnpDataGenTask> {
     return project.tasks.register("knpDataGen", KnpDataGenTask::class) { task ->
-      task.outputDir.convention(layout.buildDirectory.dir("generated/knp-data/kotlin"))
+      task.outputDir.convention(layout.buildDirectory.dir("generated/knp-data"))
       task.konanDependenciesReportFile.convention(
         konanDependenciesReportTask.flatMap { it.reportFile }
       )

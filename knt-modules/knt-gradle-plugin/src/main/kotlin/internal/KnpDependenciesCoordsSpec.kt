@@ -92,10 +92,8 @@ internal constructor() :
   internal fun dependenciesCoordinates(): Set<KnpDependency> {
     val requestedTargets = parameters.compileTargets.get()
 
-    val data = knDependencyData.filter { data ->
-      data.version == parameters.kotlinVersion.get()
-          && data.compileTarget in requestedTargets
-          && data.buildPlatform == parameters.buildPlatform.get()
+    val data = knDependencyDataFor(parameters.kotlinVersion.get(), parameters.buildPlatform.get()).filter { data ->
+      data.compileTarget in requestedTargets
     }
 
     require(data.isNotEmpty()) {

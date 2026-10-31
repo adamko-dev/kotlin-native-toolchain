@@ -56,5 +56,10 @@ internal object CoordinatesSerializer : KSerializer<KotlinVersionTargetDependenc
     )
   }
 
-  private const val ARTIFACT_SEPARATOR = " // "
+  /**
+   * Separates the coordinates from the artifact name (the file name, when it differs from the module name).
+   *
+   * E.g. `kotlin.native.resources.llvm:11.1.0-aarch64-macos:60@tar.gz artifact:llvm-11.1.0-aarch64-macos-essentials`
+   */
+  private const val ARTIFACT_SEPARATOR = " artifact:"
 }
