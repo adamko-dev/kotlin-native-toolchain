@@ -17,6 +17,7 @@ class TaskRegistrationTest {
       settingsGradleKts += """
         |plugins {
         |  id("dev.adamko.kotlin-native-toolchain") version "$kntGradlePluginProjectVersion"
+        |  id("dev.adamko.gradle-kotlin-accessors") version "0.0.1"
         |}
         |""".trimMargin()
 

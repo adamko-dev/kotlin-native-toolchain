@@ -37,6 +37,7 @@ gradlePlugin {
 
 dependencies {
   devPublication(projects.kntModules.kntDependencyData)
+  devPublication(project())
 }
 
 testing {
@@ -50,6 +51,16 @@ testing {
         implementation(libs.kotest.assertions)
 
         implementation(testFixtures(project(project.path)))
+      }
+
+      targets.configureEach {
+        testTask.configure {
+          // Used as a read-only dependency cache by TestKit builds.
+          val hostGradleUserHome = gradle.gradleUserHomeDir
+          jvmArgumentProviders.add {
+            listOf("-DhostGradleUserHome=${hostGradleUserHome.invariantSeparatorsPath}")
+          }
+        }
       }
     }
 

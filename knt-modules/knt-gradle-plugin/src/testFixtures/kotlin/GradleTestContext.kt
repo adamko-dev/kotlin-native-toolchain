@@ -80,11 +80,34 @@ class GradleTestContext(
 
   val runner: GradleRunner = GradleRunner.create()
     .withProjectDir(projectDir.toFile())
+    .withEnvironment(
+      buildMap {
+        // withEnvironment() replaces the environment, so keep the current environment.
+        putAll(System.getenv())
+        roDependencyCache?.let { put("GRADLE_RO_DEP_CACHE", it.invariantSeparatorsPathString) }
+      }
+    )
 
   override fun close() {}
 
   companion object {
     val devMavenRepo: Path by systemProperty(::Path)
+
+    /**
+     * The `caches` directory of the current Gradle user home, used as a
+     * [read-only dependency cache](https://docs.gradle.org/current/userguide/dependency_caching.html#sec:shared-readonly-cache)
+     * so TestKit builds don't re-download dependencies.
+     *
+     * The Gradle user home is provided by the Gradle Test task, as the `hostGradleUserHome` system property.
+     *
+     * `null` if the tests are not launched by Gradle, or the Gradle user home has no dependency cache.
+     */
+    private val roDependencyCache: Path? by lazy {
+      System.getProperty("hostGradleUserHome")
+        ?.let(::Path)
+        ?.resolve("caches")
+        ?.takeIf { it.resolve("modules-2").isDirectory() }
+    }
   }
 }
 
